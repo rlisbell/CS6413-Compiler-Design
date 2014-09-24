@@ -37,7 +37,7 @@ public class Compiler {
 	
 	private void compile(String out_file_name) throws IOException {
 		File file = new File(out_file_name);
-		BufferedWriter writer;
+		BufferedWriter writer = null;
 
 	    try {
 		    file.createNewFile();

@@ -1,25 +1,6 @@
 import java.io.*;
-import java.util.regex.*;
 
 public class Scanner {
-	//maybe this token stuff belongs in the token class?
-	/**
-	 * pattern that matches word type tokens 
-	 */
-	static final Pattern TOKEN_WORD_PATERN = Pattern.compile("^\\w[\\w\\d_]*$");
-
-	/**
-	 * pattern that matches number type tokens 
-	 * TODO: Allow for decimals and scientific notation
-	 */
-	static final Pattern TOKEN_NUMBER_PATERN = Pattern.compile("^\\d+$");
-
-	/**
-	 * pattern that matches operator type tokens
-	 * TODO: greater/lessthan, operator keywords (e.g. OR)
-	 */
-	static final Pattern TOKEN_OPERATOR_PATERN = Pattern.compile("^[-+/*=:]+$");
-	
 	/**
 	 * input giving us the source code
 	 */
@@ -56,28 +37,7 @@ public class Scanner {
 		int starting_line = line_number;
 		int starting_column = column_number;
 		String lexeme = getLexeme();
-		return new Token(determineTokenType(lexeme), lexeme, starting_line, starting_column);
-	}
-	
-	//this really feels like it might belong in the Token class
-	/**
-	 * determines what type of token is in the lexeme
-	 * @param lexeme
-	 * @return
-	 */
-	private Token.Type determineTokenType(String lexeme) {
-		if(TOKEN_WORD_PATERN.matcher(lexeme).matches()){
-			return Token.Type.WORD;
-		}
-		else if(TOKEN_NUMBER_PATERN.matcher(lexeme).matches()){
-			return Token.Type.NUMBER;
-		}
-		else if(TOKEN_OPERATOR_PATERN.matcher(lexeme).matches()){
-			return Token.Type.OPERATOR;
-		}
-		else{
-			return Token.Type.ERROR;
-		}
+		return new Token(lexeme, starting_line, starting_column);
 	}
 
 	/**
