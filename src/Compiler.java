@@ -9,17 +9,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * 
- */
-
-/**
  * @author bobboau
  * class for the top level organization of the compiler
  *
  */
 public class Compiler {
-	
-	Scanner scanner;
+	/**
+	 * Yanks lexemes from file and converts to tokens
+	 */
+	private Scanner scanner;
 
 	/**
 	 * @param String args - Paths to files to be scanned
@@ -37,12 +35,13 @@ public class Compiler {
 		}
 	}
 	
-	private void compile(String out_file_name) {
+	private void compile(String out_file_name) throws IOException {
 		File file = new File(out_file_name);
+		BufferedWriter writer;
 
 	    try {
 		    file.createNewFile();
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer = new BufferedWriter(new FileWriter(file));
 			Token next_token;
 			while((next_token = scanner.getNextToken()) != null){
 				System.out.println(next_token.print());
@@ -52,13 +51,15 @@ public class Compiler {
 		} catch (IOException e) {
 			System.out.println("could not open file "+out_file_name+" for writting");
 			System.out.println(e.toString());
+		} finally {
+			writer.close();
 		}
-	    
 	}
 
 	Compiler(String in_file_name) throws IOException{
 		Path file_path = Paths.get(in_file_name);
 		Charset charset = Charset.forName("UTF-8");
+		//Consider using a PushbackReader to .unread() characters?
 		BufferedReader reader = Files.newBufferedReader(file_path,charset);
 		
 		scanner = new Scanner(reader);

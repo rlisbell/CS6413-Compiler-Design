@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.regex.*;
 
 public class Scanner {
-	
 	//maybe this token stuff belongs in the token class?
 	/**
 	 * pattern that matches word type tokens 
@@ -10,12 +9,14 @@ public class Scanner {
 	static final Pattern TOKEN_WORD_PATERN = Pattern.compile("^\\w[\\w\\d_]*$");
 
 	/**
-	 * pattern that matches word type tokens 
+	 * pattern that matches number type tokens 
+	 * TODO: Allow for decimals and scientific notation
 	 */
 	static final Pattern TOKEN_NUMBER_PATERN = Pattern.compile("^\\d+$");
 
 	/**
-	 * pattern that matches word type tokens 
+	 * pattern that matches operator type tokens
+	 * TODO: greater/lessthan, operator keywords (e.g. OR)
 	 */
 	static final Pattern TOKEN_OPERATOR_PATERN = Pattern.compile("^[-+/*=:]+$");
 	
@@ -24,12 +25,10 @@ public class Scanner {
 	 */
 	private BufferedReader source;
 	
-	
 	/**
 	 * the line in the file we are currently on
 	 */
 	private int line_number;
-	
 	
 	/**
 	 * the column in the file we are currently in
@@ -46,6 +45,11 @@ public class Scanner {
 		column_number = 0;
 	}
 	
+	/**
+	 * Begins fetching next token
+	 * @return
+	 * @throws IOException
+	 */
 	public Token getNextToken() throws IOException{
 		source.mark(1);
 		skipNonlexeme();
@@ -76,6 +80,11 @@ public class Scanner {
 		}
 	}
 
+	/**
+	 * Builds the next lexeme
+	 * @return
+	 * @throws IOException
+	 */
 	private String getLexeme() throws IOException{
 		StringBuilder lexeme = new StringBuilder();
 		char new_char;
@@ -86,7 +95,7 @@ public class Scanner {
 		backOut();
 		return lexeme.toString();
 	}
-	
+
 	/**
 	 * determines possible lexeme chars
 	 * @param next_char
@@ -106,18 +115,17 @@ public class Scanner {
 	 * @throws IOException 
 	 */
 	private void skipNonlexeme() throws IOException {
-		boolean did_anything = false;
+		boolean skip = false;
 		do{
-			did_anything = 
+			skip = 
 						skipWhiteSpace()
 					||
 						skipNewlines()
 					||
 						skipComments();
 		}
-		while(did_anything);
+		while(skip);
 	}
-
 	
 	/**
 	 * moves past comments
@@ -126,22 +134,23 @@ public class Scanner {
 	 */
 	private boolean skipComments() throws IOException{
 		
-		boolean did_anything = false;
+		boolean skip = false;
 		char new_char;
 		new_char = getChar();
 		
 		if(new_char == '{'){
-			did_anything = true;
+			skip = true;
 			do{
+				//TODO: This should just be passing over characters until it finds }
+				//TODO: Throw error on {
 				skipNewlines();
 			}while(getChar() != '}');
 		}
 		else{
 			backOut();
 		}
-		return did_anything;
+		return skip;
 	}
-
 	
 	/**
 	 * moves past whitespace
@@ -149,14 +158,13 @@ public class Scanner {
 	 * @throws IOException 
 	 */
 	private boolean skipWhiteSpace() throws IOException{
-		boolean did_anything = false;
+		boolean skip = false;
 		while(isWhiteSpace(getChar())){
-			did_anything = true;
+			skip = true;
 		}
 		backOut();
-		return did_anything;
+		return skip;
 	}
-
 	
 	/**
 	 * moves past new lines
@@ -164,21 +172,22 @@ public class Scanner {
 	 * @throws IOException 
 	 */
 	private boolean skipNewlines() throws IOException{
-		boolean did_anything = false;
+		boolean skip = false;
 		while(isNewline(getChar())){
-			if(!did_anything){
+			//why only increment line_number on the first newline?
+			if(!skip){
 				line_number++;
 				column_number = 0;
 			}
-			did_anything = true;
+			skip = true;
 		}
 		backOut();
-		return did_anything;
+		return skip;
 	}
-
 
 	/**
 	 * determines newlines
+	 * WARNING: Might not work properly with certain file formats?
 	 * @param next_char
 	 * @return returns true if the passed char is a newline character
 	 */
@@ -186,17 +195,16 @@ public class Scanner {
 		return next_char == '\n' || next_char == '\r';
 	}
 
-	
 	/**
 	 * determines whitespace
+	 * TODO: Consider making this a whitelist instead of a blacklist
 	 * @param next_char
 	 * @return returns true if the passed char is a white space character
 	 */
 	private static boolean isWhiteSpace(char next_char) {
 		return next_char == ' ' || next_char == '\t';
 	}
-	
-	
+
 	/**
 	 * gets the next character marks it in case we need to backtrack and moves past it
 	 * @return
@@ -209,10 +217,13 @@ public class Scanner {
 		column_number++;
 		return next_char;
 	}
-	
+
+	/**
+	 * Moves reader pointer back by a character
+	 * @throws IOException
+	 */
 	private void backOut() throws IOException{
 		source.reset();
 		column_number--;
 	}
-	
 }

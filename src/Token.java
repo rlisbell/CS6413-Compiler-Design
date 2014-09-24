@@ -11,35 +11,32 @@ public class Token {
 	 */
 	public enum Type {WORD, NUMBER, OPERATOR, EOF, ERROR}
 	
-	
 	/**
 	 * what type of token this is
 	 */
 	private final Type type;
-	
 	
 	/**
 	 * the string that generated this token
 	 */
 	private final String lexeme;
 	
-	
 	/**
 	 * which line in the source file did this token start on
 	 */
 	private final int line_number;
-	
 	
 	/**
 	 * which column on the source line did this token start on
 	 */
 	private final int column_number;
 	
-	
 	/**
 	 * basic constructor
 	 * @param _type
 	 * @param _lexeme
+	 * @param _line_number
+	 * @param _column_number
 	 */
 	public Token(Type _type, String _lexeme, int _line_number, int _column_number){
 		type = _type;
