@@ -14,12 +14,42 @@ import java.nio.file.Paths;
  *
  */
 public class Compiler {
+	
+	/**********************\
+	|* private properties *|
+	\**********************/
+	
 	/**
 	 * Yanks lexemes from file and converts to tokens
 	 */
 	private Scanner scanner;
 
+	
+	/****************\
+	|* constructors *| 
+	\****************/
+	
 	/**
+	 * constructor
+	 * @param in_file_name source file
+	 * @throws IOException
+	 */
+	Compiler(String in_file_name) throws IOException{
+		Path file_path = Paths.get(in_file_name);
+		Charset charset = Charset.forName("UTF-8");
+		//Consider using a PushbackReader to .unread() characters?
+		PushbackReader reader = new PushbackReader(Files.newBufferedReader(file_path,charset));
+		
+		scanner = new Scanner(reader);
+	}
+
+	
+	/******************\
+	|* public methods *| 
+	\******************/
+	
+	/**
+	 * main entry point of the application
 	 * @param String args - Paths to files to be scanned
 	 */
 	public static void main(String[] args) {
@@ -35,6 +65,11 @@ public class Compiler {
 		}
 	}
 	
+	/**
+	 * process a file and output the result to the file identified in the parameter
+	 * @param out_file_name
+	 * @throws IOException
+	 */
 	private void compile(String out_file_name) throws IOException {
 		File file = new File(out_file_name);
 		BufferedWriter writer = null;
@@ -57,14 +92,5 @@ public class Compiler {
 		} finally {
 			writer.close();
 		}
-	}
-
-	Compiler(String in_file_name) throws IOException{
-		Path file_path = Paths.get(in_file_name);
-		Charset charset = Charset.forName("UTF-8");
-		//Consider using a PushbackReader to .unread() characters?
-		PushbackReader reader = new PushbackReader(Files.newBufferedReader(file_path,charset));
-		
-		scanner = new Scanner(reader);
 	}
 }
