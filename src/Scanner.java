@@ -17,6 +17,11 @@ public class Scanner {
 	private int column_number;
 	
 	/**
+	 * last char pulled from the file
+	 */
+	private char last_char;
+	
+	/**
 	 * basic constructor, specifies the source code input stream
 	 * @param _source
 	 */
@@ -24,6 +29,7 @@ public class Scanner {
 		source = _source;
 		line_number = 0;
 		column_number = 0;
+		last_char = '\0';
 	}
 	
 	/**
@@ -100,9 +106,7 @@ public class Scanner {
 		if(new_char == '{'){
 			skip = true;
 			do{
-				//TODO: This should just be passing over characters until it finds }
 				//TODO: Throw error on {
-				skipNewlines();
 			}while(getChar() != '}');
 		}
 		else{
@@ -134,14 +138,7 @@ public class Scanner {
 	private boolean skipNewlines() throws IOException{
 		boolean skip = false;
 		char new_char;
-		while(isNewline(new_char = getChar())){
-			//why only increment line_number on the first newline?
-			if(!skip){
-				line_number++;
-				column_number = 0;
-			}
-			skip = true;
-		}
+		while(isNewline(new_char = getChar()));
 		backOut(new_char);
 		return skip;
 	}
@@ -174,7 +171,18 @@ public class Scanner {
 	private char getChar() throws IOException {
 		char next_char;
 		next_char = (char) source.read();
-		column_number++;
+		if(next_char == '\n' && last_char == '\r'){
+			//windows newlines are screwy, \r\n should be treated as a single character
+			next_char = (char) source.read();
+		}
+		last_char = next_char;
+		if(isNewline(next_char)){
+			line_number++;
+			column_number = 0;
+		}
+		else{
+			column_number++;
+		}
 		return next_char;
 	}
 
@@ -184,6 +192,11 @@ public class Scanner {
 	 */
 	private void backOut(char c) throws IOException{
 		source.unread((int) c);
-		column_number--;
+		if(isNewline(c)){
+			line_number--;
+			//column_number = wtf who knows
+		}else{
+			column_number--;
+		}
 	}
 }
