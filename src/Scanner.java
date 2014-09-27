@@ -12,11 +12,6 @@ public class Scanner {
 	private int line_number;
 	
 	/**
-	 * the column in the file we are currently in
-	 */
-	private int column_number;
-	
-	/**
 	 * last char pulled from the file
 	 */
 	private char last_char;
@@ -28,7 +23,6 @@ public class Scanner {
 	public Scanner(PushbackReader _source) {
 		source = _source;
 		line_number = 0;
-		column_number = 0;
 		last_char = '\0';
 	}
 	
@@ -40,9 +34,8 @@ public class Scanner {
 	public Token getNextToken() throws IOException{
 		skipNonlexeme();
 		int starting_line = line_number;
-		int starting_column = column_number;
 		String lexeme = getLexeme();
-		return Token.makeToken(lexeme, starting_line, starting_column);
+		return Token.makeToken(lexeme, starting_line);
 	}
 
 	/**
@@ -178,10 +171,6 @@ public class Scanner {
 		last_char = next_char;
 		if(isNewline(next_char)){
 			line_number++;
-			column_number = 0;
-		}
-		else{
-			column_number++;
 		}
 		return next_char;
 	}
@@ -194,9 +183,6 @@ public class Scanner {
 		source.unread((int) c);
 		if(isNewline(c)){
 			line_number--;
-			//column_number = wtf who knows
-		}else{
-			column_number--;
 		}
 	}
 }

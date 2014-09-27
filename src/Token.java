@@ -48,20 +48,13 @@ public class Token {
 	private final int line_number;
 	
 	/**
-	 * which column on the source line did this token start on
-	 */
-	private final int column_number;
-	
-	/**
 	 * basic constructor
 	 * @param _lexeme
 	 * @param _line_number
-	 * @param _column_number
 	 */
-	public Token(String _lexeme, int _line_number, int _column_number){
+	public Token(String _lexeme, int _line_number){
 		lexeme = _lexeme;
 		line_number = _line_number;
-		column_number = _column_number;
 		//determine Token type... if Token is subclassed, consider factory method
 		if(TOKEN_WORD_PATTERN.matcher(lexeme).matches()){
 			type = Token.Type.WORD;
@@ -75,13 +68,6 @@ public class Token {
 		else{
 			type = Token.Type.ERROR;
 		}
-	}
-
-	/**
-	 * @return the column_number
-	 */
-	public int getColumnNumber() {
-		return column_number;
 	}
 
 	/**
@@ -114,12 +100,14 @@ public class Token {
 		return "Type:"+type.toString()+" Lexeme:"+lexeme;
 	}
 	
-	
+
 	/**
 	 * factory that makes Tokens
-	 * @return 
+	 * @param _lexeme string that made the Token
+	 * @param _line_number where in the file the string was from
+	 * @return a Token
 	 */
-	public static Token makeToken(String _lexeme, int _line_number, int _column_number){
-		return new Token(_lexeme, _line_number, _column_number);
+	public static Token makeToken(String _lexeme, int _line_number){
+		return new Token(_lexeme, _line_number);
 	}
 }
