@@ -1,5 +1,9 @@
 import java.io.*;
 
+/**
+ * Class for interpreting file as lexemes
+ * @author Ryan
+ */
 public class Scanner {
 
 	/*********************\
@@ -7,7 +11,6 @@ public class Scanner {
 	\*********************/
 	
 	/**
-	 * 
 	 * @author bobboau
 	 *
 	 * common base for all scanner exceptions
@@ -228,7 +231,9 @@ public class Scanner {
 	private boolean skipNewlines() throws IOException{
 		boolean skip = false;
 		char new_char;
-		while(isNewline(new_char = getChar()) && !eof);
+		while(isNewline(new_char = getChar()) && !eof){
+			skip = true;
+		}
 		if(!eof){
 			backOut(new_char);
 		}
@@ -238,7 +243,7 @@ public class Scanner {
 	
 	/**
 	 * determines newlines
-	 * WARNING: Might not work properly with certain file formats?
+	 * NOTE: windows newlines (\r\n) are a special case handled in getChar
 	 * @param next_char
 	 * @return returns true if the passed char is a newline character
 	 */
@@ -272,6 +277,8 @@ public class Scanner {
 		//we check for end of line
 		if(next_char == -1){
 			eof = true;
+			//we shouldn't be using anything if we're at EOF
+			return '\0';
 		}
 		
 		//now we check for windows' messed up newlines
@@ -293,7 +300,7 @@ public class Scanner {
 
 	
 	/**
-	 * Moves reader pointer back by a character
+	 * Pushes character back onto the reader
 	 * @throws IOException
 	 */
 	private void backOut(char c) throws IOException{

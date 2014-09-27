@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 /**
  * @author bobboau
  * class for the top level organization of the compiler
- *
  */
 public class Compiler {
 	
@@ -37,7 +36,6 @@ public class Compiler {
 	Compiler(String in_file_name) throws IOException{
 		Path file_path = Paths.get(in_file_name);
 		Charset charset = Charset.forName("UTF-8");
-		//Consider using a PushbackReader to .unread() characters?
 		PushbackReader reader = new PushbackReader(Files.newBufferedReader(file_path,charset));
 		
 		scanner = new Scanner(reader);
