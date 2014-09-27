@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.regex.Pattern;
 
 /**
  * Class for interpreting file as lexemes
@@ -68,6 +69,10 @@ public class Scanner {
 	 */
 	private char last_char;
 	
+	/**
+	 * current chunk of lexemes
+	 */
+	private StringBuilder lexemeChunk;
 	
 	/**
 	 * we have read past the end of the file
@@ -107,7 +112,10 @@ public class Scanner {
 		}
 		skipNonlexeme();
 		int starting_line = line_number;
-		String lexeme = getLexeme();
+		if(lexemeChunk.length()==0){
+			getNextLexemeChunk();
+		}
+		String lexeme = dequeueLexeme();
 		return Token.makeToken(lexeme, starting_line);
 	}
 	
@@ -115,23 +123,54 @@ public class Scanner {
 	/*******************\
 	|* private methods *|
 	\*******************/
+	
+	private String dequeueLexeme(){
+		String lexeme = null;
+		char first_char = lexemeChunk.charAt(0);
+		if(isLetter(first_char)){
+			lexeme = dequeueWord(lexeme);
+		} elseif(isDigit(first_char)){
+			lexeme = dequeueNumber(lexeme);
+		} else{
+			lexeme = dequeueOperator(lexeme);
+		}
+		return lexeme;
+	}
+	
+	private String dequeueWord(String lexeme){
+		if(/*lexemeChunkFirstChar.isLetterOrDigit*/){
+			/*store char in lexeme*/
+			/*remove Chunk Char*/
+			/*return dequeueWord(lexeme)*/
+		}
+		return lexeme;
+	}
+	
+	private String dequeueNumber(){
+		
+	}
+	
+	private String dequeueOperator(){
+		
+	}
 
 	/**
-	 * Builds the next lexeme
+	 * Builds the next lexeme chunk
+	 * "chunk" here means there may possibly be multiple lexemes in the result
 	 * @return
 	 * @throws IOException
 	 */
-	private String getLexeme() throws IOException{
-		StringBuilder lexeme = new StringBuilder();
+	private StringBuilder getNextLexemeChunk() throws IOException{
+		StringBuilder _lexemeChunk = new StringBuilder();
 		char new_char;
 		
 		while(isLexemeChar(new_char = getChar()) && !eof){
-			lexeme.append(new_char);
+			_lexemeChunk.append(new_char);
 		}
 		if(!eof){
 			backOut(new_char);
 		}
-		return lexeme.toString();
+		return _lexemeChunk;
 	}
 
 	
