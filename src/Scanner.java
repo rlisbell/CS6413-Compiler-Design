@@ -37,7 +37,7 @@ public class Scanner {
 		int starting_line = line_number;
 		int starting_column = column_number;
 		String lexeme = getLexeme();
-		return new Token(lexeme, starting_line, starting_column);
+		return Token.makeToken(lexeme, starting_line, starting_column);
 	}
 
 	/**

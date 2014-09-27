@@ -113,4 +113,13 @@ public class Token {
 	public String print() {
 		return "Type:"+type.toString()+" Lexeme:"+lexeme;
 	}
+	
+	
+	/**
+	 * factory that makes Tokens
+	 * @return 
+	 */
+	public static Token makeToken(String _lexeme, int _line_number, int _column_number){
+		return new Token(_lexeme, _line_number, _column_number);
+	}
 }
