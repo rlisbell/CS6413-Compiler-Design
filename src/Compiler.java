@@ -1,4 +1,4 @@
-import java.io.BufferedReader;
+import java.io.PushbackReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -60,7 +60,7 @@ public class Compiler {
 		Path file_path = Paths.get(in_file_name);
 		Charset charset = Charset.forName("UTF-8");
 		//Consider using a PushbackReader to .unread() characters?
-		BufferedReader reader = Files.newBufferedReader(file_path,charset);
+		PushbackReader reader = new PushbackReader(Files.newBufferedReader(file_path,charset));
 		
 		scanner = new Scanner(reader);
 	}

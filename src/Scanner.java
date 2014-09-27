@@ -4,7 +4,7 @@ public class Scanner {
 	/**
 	 * input giving us the source code
 	 */
-	private BufferedReader source;
+	private PushbackReader source;
 	
 	/**
 	 * the line in the file we are currently on
@@ -20,7 +20,7 @@ public class Scanner {
 	 * basic constructor, specifies the source code input stream
 	 * @param _source
 	 */
-	public Scanner(BufferedReader _source) {
+	public Scanner(PushbackReader _source) {
 		source = _source;
 		line_number = 0;
 		column_number = 0;
@@ -32,7 +32,6 @@ public class Scanner {
 	 * @throws IOException
 	 */
 	public Token getNextToken() throws IOException{
-		source.mark(1);
 		skipNonlexeme();
 		int starting_line = line_number;
 		int starting_column = column_number;
@@ -52,7 +51,7 @@ public class Scanner {
 		while(isLexemeChar(new_char = getChar())){
 			lexeme.append(new_char);
 		}
-		backOut();
+		backOut(new_char);
 		return lexeme.toString();
 	}
 
@@ -107,7 +106,7 @@ public class Scanner {
 			}while(getChar() != '}');
 		}
 		else{
-			backOut();
+			backOut(new_char);
 		}
 		return skip;
 	}
@@ -119,10 +118,11 @@ public class Scanner {
 	 */
 	private boolean skipWhiteSpace() throws IOException{
 		boolean skip = false;
-		while(isWhiteSpace(getChar())){
+		char new_char;
+		while(isWhiteSpace(new_char = getChar())){
 			skip = true;
 		}
-		backOut();
+		backOut(new_char);
 		return skip;
 	}
 	
@@ -133,7 +133,8 @@ public class Scanner {
 	 */
 	private boolean skipNewlines() throws IOException{
 		boolean skip = false;
-		while(isNewline(getChar())){
+		char new_char;
+		while(isNewline(new_char = getChar())){
 			//why only increment line_number on the first newline?
 			if(!skip){
 				line_number++;
@@ -141,7 +142,7 @@ public class Scanner {
 			}
 			skip = true;
 		}
-		backOut();
+		backOut(new_char);
 		return skip;
 	}
 
@@ -172,7 +173,6 @@ public class Scanner {
 	 */
 	private char getChar() throws IOException {
 		char next_char;
-		source.mark(1);
 		next_char = (char) source.read();
 		column_number++;
 		return next_char;
@@ -182,8 +182,8 @@ public class Scanner {
 	 * Moves reader pointer back by a character
 	 * @throws IOException
 	 */
-	private void backOut() throws IOException{
-		source.reset();
+	private void backOut(char c) throws IOException{
+		source.unread((int) c);
 		column_number--;
 	}
 }
