@@ -1,26 +1,80 @@
 import java.io.*;
 
 public class Scanner {
+
+	/*********************\
+	|* custom exceptions *| 
+	\*********************/
+	
+	/**
+	 * 
+	 * @author bobboau
+	 *
+	 * common base for all scanner exceptions
+	 */
+	public class ScannerException extends Exception {
+		public ScannerException(String message){
+			super(message);
+		}
+	}
+	
+	
+	/**
+	 * @author bobboau
+	 *
+	 * thrown when the file ends while in a comment
+	 */
+	public class CommentNotClosedException extends ScannerException {
+		public CommentNotClosedException(String message){
+			super(message);
+		}
+	}
+	
+	
+	/**
+	 * @author bobboau
+	 *
+	 * thrown when there is another comment inside a comment
+	 */
+	public class RecursiveCommentException extends ScannerException {
+		public RecursiveCommentException(String message){
+			super(message);
+		}
+	}
+	 
+	
+	/**********************\
+	|* private properties *|
+	\**********************/
+	
 	
 	/**
 	 * input giving us the source code
 	 */
 	private PushbackReader source;
 	
+	
 	/**
 	 * the line in the file we are currently on
 	 */
 	private int line_number;
+	
 	
 	/**
 	 * last char pulled from the file
 	 */
 	private char last_char;
 	
+	
 	/**
 	 * we have read past the end of the file
 	 */
 	private boolean eof;
+	
+	
+	/****************\
+	|* constructors *|
+	\****************/
 	
 	/**
 	 * basic constructor, specifies the source code input stream
@@ -33,12 +87,18 @@ public class Scanner {
 		eof = false;
 	}
 	
+	
+	/******************\
+	|* public methods *|
+	\******************/
+	
 	/**
 	 * Begins fetching next token
 	 * @return Token the next one in the file, or null if there were none
 	 * @throws IOException
+	 * @throws ScannerException 
 	 */
-	public Token getNextToken() throws IOException{
+	public Token getNextToken() throws IOException, ScannerException{
 		if(eof){
 			return null;
 		}
@@ -47,6 +107,11 @@ public class Scanner {
 		String lexeme = getLexeme();
 		return Token.makeToken(lexeme, starting_line);
 	}
+	
+	
+	/*******************\
+	|* private methods *|
+	\*******************/
 
 	/**
 	 * Builds the next lexeme
@@ -66,6 +131,7 @@ public class Scanner {
 		return lexeme.toString();
 	}
 
+	
 	/**
 	 * determines possible lexeme chars
 	 * @param next_char
@@ -80,11 +146,13 @@ public class Scanner {
 				!isNewline(next_char);
 	}
 
+	
 	/**
 	 * moves past everything that is not part of the next useful lexeme
 	 * @throws IOException 
+	 * @throws ScannerException 
 	 */
-	private void skipNonlexeme() throws IOException {
+	private void skipNonlexeme() throws IOException, ScannerException {
 		boolean skip = false;
 		do{
 			skip = 
@@ -97,26 +165,42 @@ public class Scanner {
 		while(skip);
 	}
 	
+	
 	/**
 	 * moves past comments
 	 * @return returns true if any comment was skipped
 	 * @throws IOException 
+	 * @throws ScannerException 
 	 */
-	private boolean skipComments() throws IOException{
-		
+	private boolean skipComments() throws IOException, ScannerException{
 		boolean skip = false;
 		char new_char;
 		new_char = getChar();
 		
+		int starting_line = line_number;
 		if(new_char == '{'){
+			//we did something
 			skip = true;
-			while(getChar() != '}' && !eof);//TODO: Throw error on {
+			//skip everything until we find a close something
+			while((new_char = getChar()) != '}' && !eof){
+				if(new_char == '{'){
+					//you cannot start another comment inside a comment
+					throw new RecursiveCommentException("comment started on line "+starting_line+" has another comment starting on line "+line_number);
+				}
+			}
 		}
-		else if(!eof){
-			backOut(new_char);
+		else{
+			if(eof){
+				//we never found the end of the comment
+				throw new CommentNotClosedException("comment started on line "+starting_line+" not closed before end of file");
+			}
+			else{
+				backOut(new_char);
+			}
 		}
 		return skip;
 	}
+	
 	
 	/**
 	 * moves past whitespace
@@ -135,6 +219,7 @@ public class Scanner {
 		return skip;
 	}
 	
+	
 	/**
 	 * moves past new lines
 	 * @return returns true if any new lines were skipped
@@ -150,6 +235,7 @@ public class Scanner {
 		return skip;
 	}
 
+	
 	/**
 	 * determines newlines
 	 * WARNING: Might not work properly with certain file formats?
@@ -160,6 +246,7 @@ public class Scanner {
 		return next_char == '\n' || next_char == '\r';
 	}
 
+	
 	/**
 	 * determines whitespace
 	 * TODO: Consider making this a whitelist instead of a blacklist
@@ -170,6 +257,7 @@ public class Scanner {
 		return next_char == ' ' || next_char == '\t';
 	}
 
+	
 	/**
 	 * gets the next character marks it in case we need to backtrack and moves past it
 	 * @return
@@ -178,6 +266,7 @@ public class Scanner {
 	private char getChar() throws IOException {
 		int next_char;
 		
+		//get the next char
 		next_char = source.read();
 		
 		//we check for end of line
@@ -202,6 +291,7 @@ public class Scanner {
 		return last_char;
 	}
 
+	
 	/**
 	 * Moves reader pointer back by a character
 	 * @throws IOException

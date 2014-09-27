@@ -51,6 +51,9 @@ public class Compiler {
 		} catch (IOException e) {
 			System.out.println("could not open file "+out_file_name+" for writting");
 			System.out.println(e.toString());
+		}  catch (Scanner.ScannerException e) {
+			System.out.println("Syntax Error");
+			System.out.println(e.toString());
 		} finally {
 			writer.close();
 		}
