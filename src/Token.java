@@ -9,14 +9,16 @@ import java.util.regex.Pattern;
 public class Token {
 	/**
 	 * pattern that matches word type tokens 
+	 * \\w matches [a-zA-Z_0-9]
 	 */
-	static final Pattern TOKEN_WORD_PATTERN = Pattern.compile("^\\w[\\w\\d_]*$");
+	static final Pattern TOKEN_WORD_PATTERN = Pattern.compile("^\\w*$");
 
 	/**
 	 * pattern that matches number type tokens 
-	 * TODO: Allow for decimals and scientific notation
+	 * \\d+  (\\.  \\d+   (E [+-]?  \\d+)? )?
+	 * 1+ digits, optional . and 1+ digits, optional E optional +/- and 1+ digits
 	 */
-	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+$");
+	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+(E[+-]?\\d+)?)?$");
 
 	/**
 	 * pattern that matches operator type tokens
