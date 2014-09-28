@@ -85,7 +85,7 @@ public class Scanner {
 	/**
 	 * current chunk of lexemes
 	 */
-	private StringBuilder lexemeChunk;
+	private StringBuilder lexeme_chunk;
 	
 	/**
 	 * we have read past the end of the file
@@ -125,7 +125,7 @@ public class Scanner {
 		}
 		skipNonlexeme();
 		int starting_line = line_number;
-		if(lexemeChunk.length()==0){
+		if(lexeme_chunk.length()==0){
 			getNextLexemeChunk();
 		}
 		String lexeme = dequeueLexeme();
@@ -139,32 +139,36 @@ public class Scanner {
 	
 	private String dequeueLexeme(){
 		StringBuilder lexeme = null;
-		char first_char = lexemeChunk.charAt(0);
+		char first_char = lexeme_chunk.charAt(0);
 		if(isLetter(first_char)){
-			lexeme = dequeueWord(lexeme);
+			lexeme = dequeueWord();
 		} elseif(isDigit(first_char)){
 			lexeme = dequeueNumber(lexeme);
 		} else{
 			lexeme = dequeueOperator(lexeme);
 		}
+		lexeme_chunk.delete(0, lexeme.length());
 		return lexeme.toString();
 	}
 	
+	/**
+	 * Determines if a character is a letter
+	 * @param c
+	 * @return
+	 */
 	private boolean isLetter(char c){
 		return Pattern.matches("[a-zA-Z]", Character.toString(c));
 	}
 	
 	/**
 	 * Pop a a word off the lexeme chunk
-	 * @param lexeme
 	 * @return
 	 */
-	private StringBuilder dequeueWord(StringBuilder lexeme){
-		int offset = Token.TOKEN_WORD_PATTERN.matcher(lexemeChunk).end();
+	private StringBuilder dequeueWord(){
+		int offset = Token.TOKEN_WORD_PATTERN.matcher(lexeme_chunk).end();
+		StringBuilder lexeme = new StringBuilder();
 		if(offset>=0){
-			lexeme.append(lexemeChunk.substring(0,offset));
-			lexemeChunk.delete(0,offset);
-			return dequeueWord(lexeme);
+			lexeme.append(lexeme_chunk.substring(0,offset));
 		}
 		return lexeme;
 	}
@@ -172,12 +176,12 @@ public class Scanner {
 	private StringBuilder dequeueNumber() throws NumberLiteralInvalidException{
 		StringBuilder return_value = new StringBuilder("");
 		final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?");
-		Matcher m = TOKEN_NUMBER_PATTERN.matcher(lexemeChunk);
+		Matcher m = TOKEN_NUMBER_PATTERN.matcher(lexeme_chunk);
 		if(m.find()){
 			return_value.append(m.group(0));
 		}
 		else{
-			throw new NumberLiteralInvalidException("invalid number "+lexemeChunk.toString()+" on line "+line_number);
+			throw new NumberLiteralInvalidException("invalid number "+lexeme_chunk.toString()+" on line "+line_number);
 		}
 		return return_value;
 	}
@@ -193,16 +197,16 @@ public class Scanner {
 	 * @throws IOException
 	 */
 	private StringBuilder getNextLexemeChunk() throws IOException{
-		StringBuilder _lexemeChunk = new StringBuilder();
+		StringBuilder _lexeme_chunk = new StringBuilder();
 		char new_char;
 		
 		while(isLexemeChar(new_char = getChar()) && !eof){
-			_lexemeChunk.append(new_char);
+			_lexeme_chunk.append(new_char);
 		}
 		if(!eof){
 			backOut(new_char);
 		}
-		return _lexemeChunk;
+		return _lexeme_chunk;
 	}
 
 	
