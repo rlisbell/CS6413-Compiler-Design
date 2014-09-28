@@ -122,15 +122,20 @@ public class Scanner {
 	 * @return Token the next one in the file, or null if there were none
 	 * @throws IOException
 	 * @throws ScannerException 
+	 * @throws KeywordException 
 	 */
-	public Token getNextToken() throws IOException, ScannerException{
+	public Token getNextToken() throws IOException, ScannerException, Token.KeywordException{
 		if(lexeme_chunk.length()==0){
 			if(eof){
 				return null;
 			}
 			skipNonlexeme();
 			getNextLexemeChunk();
-			//TODO:checking for keywords goes here
+			Token tryKeywordToken = Token.makeKeywordToken(lexeme_chunk.toString(), line_number);
+			if(tryKeywordToken.getType()!=Token.Type.ERROR){
+				dequeueLexeme();
+				return tryKeywordToken;
+			}
 		}
 		String lexeme = dequeueLexeme();
 		return Token.makeToken(lexeme, line_number);

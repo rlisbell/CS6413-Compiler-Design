@@ -87,6 +87,9 @@ public class Compiler {
 		}  catch (Scanner.ScannerException e) {
 			System.out.println("Syntax Error");
 			System.out.println(e.toString());
+		} catch (Token.KeywordException e) {
+			System.out.println("Keyword Error");
+			System.out.println(e.toString());
 		} finally {
 			writer.close();
 		}

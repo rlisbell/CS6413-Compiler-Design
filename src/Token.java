@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -7,6 +9,22 @@ import java.util.regex.Pattern;
  * @author bobboau
  */
 public class Token {
+	
+	/**
+	 * Thrown when a Keyword is found in a bad context
+	 */
+	public static class KeywordException extends Exception {
+		private static final long serialVersionUID = 8741809598928881876L;
+
+		public KeywordException(String message){
+			super(message);
+		}
+	}
+	/**
+	 * Language keywords
+	 */
+	static final List<String> KEYWORDS = Arrays.asList("PROGRAM","BEGIN","END","CONST");
+	
 	/**
 	 * pattern that matches word type tokens 
 	 * \\w matches [a-zA-Z_0-9]
@@ -109,8 +127,24 @@ public class Token {
 	 * @param _lexeme string that made the Token
 	 * @param _line_number where in the file the string was from
 	 * @return a Token
+	 * @throws KeywordException 
 	 */
-	public static Token makeToken(String _lexeme, int _line_number){
+	public static Token makeToken(String _lexeme, int _line_number) throws KeywordException{
+		Token token = new Token(_lexeme, _line_number);
+		if(token.getType()==Type.WORD && KEYWORDS.contains(_lexeme)){
+			//line number?
+			throw new KeywordException("keyword "+_lexeme+" must be space delimited");
+		}
+		return token;
+	}
+	
+	/**
+	 * makes tokens and allows for keywords
+	 * @param _lexeme
+	 * @param _line_number
+	 * @return Token
+	 */
+	public static Token makeKeywordToken(String _lexeme, int _line_number){
 		return new Token(_lexeme, _line_number);
 	}
 }
