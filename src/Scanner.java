@@ -150,17 +150,23 @@ public class Scanner {
 		return lexeme.toString();
 	}
 	
+	private boolean isLetter(char c){
+		return Pattern.matches("[a-zA-Z]", Character.toString(c));
+	}
+	
+	/**
+	 * Pop a a word off the lexeme chunk
+	 * @param lexeme
+	 * @return
+	 */
 	private StringBuilder dequeueWord(StringBuilder lexeme){
-		if(isWordChar(lexemeChunk.charAt(0))){
-			lexeme.append(lexemeChunk.charAt(0));
-			lexemeChunk.deleteCharAt(0);
+		int offset = Token.TOKEN_WORD_PATTERN.matcher(lexemeChunk).end();
+		if(offset>=0){
+			lexeme.append(lexemeChunk.substring(0,offset));
+			lexemeChunk.delete(0,offset);
 			return dequeueWord(lexeme);
 		}
 		return lexeme;
-	}
-	
-	private boolean isWordChar(char c){
-		
 	}
 	
 	private StringBuilder dequeueNumber() throws NumberLiteralInvalidException{
