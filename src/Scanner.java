@@ -70,6 +70,15 @@ public class Scanner {
 			super(message);
 		}
 	}
+	
+	/**
+	 * thrown when there is an apparent word that we cannot parse for some reason
+	 */
+	public class WordLiteralInvalidException extends ScannerException {
+		public WordLiteralInvalidException(String message){
+			super(message);
+		}
+	}
 	 
 	
 	/**********************\
@@ -177,12 +186,15 @@ public class Scanner {
 	 * @return
 	 */
 	private StringBuilder dequeueWord(){
-		int offset = Token.TOKEN_WORD_PATTERN.matcher(lexeme_chunk).end();
-		StringBuilder lexeme = new StringBuilder();
-		if(offset>=0){
-			lexeme.append(lexeme_chunk.substring(0,offset));
+		StringBuilder word = new StringBuilder();
+		Matcher m = Token.TOKEN_WORD_PATTERN.matcher(lexeme_chunk);
+		if(m.find()){
+			word.append(m.group(0));
 		}
-		return lexeme;
+		else{
+			throw new WordLiteralInvalidException("invalid word "+lexeme_chunk.toString()+" on line "+line_number);
+		}
+		return word;
 	}
 	
 	private StringBuilder dequeueNumber() throws NumberLiteralInvalidException{
