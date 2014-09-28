@@ -23,7 +23,6 @@ public class Scanner {
 		}
 	}
 	
-	
 	/**
 	 * @author bobboau
 	 *
@@ -34,7 +33,6 @@ public class Scanner {
 			super(message);
 		}
 	}
-	
 	
 	/**
 	 * @author bobboau
@@ -47,35 +45,11 @@ public class Scanner {
 		}
 	}
 	
-	
 	/**
-	 * @author bobboau
-	 *
-	 * thrown when there is an apparent number that we cannot parse for some reason
+	 * thrown when there is an apparent lexeme of a certain type that we cannot parse for some reason
 	 */
-	public class NumberLiteralInvalidException extends ScannerException {
-		public NumberLiteralInvalidException(String message){
-			super(message);
-		}
-	}
-	
-	
-	/**
-	 * @author bobboau
-	 *
-	 * thrown when there is an apparent operator that we cannot parse for some reason
-	 */
-	public class OperatorLiteralInvalidException extends ScannerException {
-		public OperatorLiteralInvalidException(String message){
-			super(message);
-		}
-	}
-	
-	/**
-	 * thrown when there is an apparent word that we cannot parse for some reason
-	 */
-	public class WordLiteralInvalidException extends ScannerException {
-		public WordLiteralInvalidException(String message){
+	public class LexemeLiteralInvalidException extends ScannerException {
+		public LexemeLiteralInvalidException(String message){
 			super(message);
 		}
 	}
@@ -158,18 +132,41 @@ public class Scanner {
 	|* private methods *|
 	\*******************/
 	
-	private String dequeueLexeme(){
-		StringBuilder lexeme = null;
+	/**
+	 * Pulls next lexeme out of lexeme_chunk
+	 * @return
+	 * @throws LexemeLiteralInvalidException 
+	 */
+	private String dequeueLexeme() throws LexemeLiteralInvalidException{
+		String lexeme;
 		char first_char = lexeme_chunk.charAt(0);
 		if(isLetter(first_char)){
-			lexeme = dequeueWord();
-		} elseif(isDigit(first_char)){
-			lexeme = dequeueNumber(lexeme);
+			lexeme = parseLexeme(Token.TOKEN_WORD_PATTERN);
+		} else if(isDigit(first_char)){
+			lexeme = parseLexeme(Token.TOKEN_NUMBER_PATTERN);
 		} else{
-			lexeme = dequeueOperator(lexeme);
+			lexeme = parseLexeme(Token.TOKEN_OPERATOR_PATTERN);
 		}
 		lexeme_chunk.delete(0, lexeme.length());
-		return lexeme.toString();
+		return lexeme;
+	}
+	
+	/**
+	 * Parses lexeme out of chunk of a given pattern type(WORD, NUMBER, OPERATOR)
+	 * @param pattern
+	 * @return
+	 * @throws LexemeLiteralInvalidException
+	 */
+	private String parseLexeme(Pattern pattern) throws LexemeLiteralInvalidException{
+		String lexeme;
+		Matcher m = pattern.matcher(lexeme_chunk);
+		if(m.find()){
+			lexeme = m.group(0);
+		}
+		else{
+			throw new LexemeLiteralInvalidException("invalid lexeme "+lexeme_chunk.toString()+" on line "+line_number);
+		}
+		return lexeme;
 	}
 	
 	/**
@@ -182,45 +179,12 @@ public class Scanner {
 	}
 	
 	/**
-	 * Pop a a word off the lexeme chunk
+	 * Determines if a character is a digit
+	 * @param c
 	 * @return
 	 */
-	private StringBuilder dequeueWord(){
-		StringBuilder word = new StringBuilder();
-		Matcher m = Token.TOKEN_WORD_PATTERN.matcher(lexeme_chunk);
-		if(m.find()){
-			word.append(m.group(0));
-		}
-		else{
-			throw new WordLiteralInvalidException("invalid word "+lexeme_chunk.toString()+" on line "+line_number);
-		}
-		return word;
-	}
-	
-	private StringBuilder dequeueNumber() throws NumberLiteralInvalidException{
-		StringBuilder return_value = new StringBuilder("");
-		final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?");
-		Matcher m = TOKEN_NUMBER_PATTERN.matcher(lexeme_chunk);
-		if(m.find()){
-			return_value.append(m.group(0));
-		}
-		else{
-			throw new NumberLiteralInvalidException("invalid number "+lexeme_chunk.toString()+" on line "+line_number);
-		}
-		return return_value;
-	}
-	
-	private StringBuilder dequeueOperator() throws OperatorLiteralInvalidException{
-		StringBuilder return_value = new StringBuilder("");
-		final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^([-+/*=:]+|AND|OR|MOD|DIV)");
-		Matcher m = TOKEN_OPERATOR_PATTERN.matcher(lexeme_chunk);
-		if(m.find()){
-			return_value.append(m.group(0));
-		}
-		else{
-			throw new OperatorLiteralInvalidException("invalid operator "+lexeme_chunk.toString()+" on line "+line_number);
-		}
-		return return_value;
+	private boolean isDigit(char c){
+		return Pattern.matches("\\d", Character.toString(c));
 	}
 
 	/**
