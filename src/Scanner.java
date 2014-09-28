@@ -18,6 +18,8 @@ public class Scanner {
 	 * common base for all scanner exceptions
 	 */
 	public class ScannerException extends Exception {
+		private static final long serialVersionUID = 3357151207683981122L;
+
 		public ScannerException(String message){
 			super(message);
 		}
@@ -29,6 +31,8 @@ public class Scanner {
 	 * thrown when the file ends while in a comment
 	 */
 	public class CommentNotClosedException extends ScannerException {
+		private static final long serialVersionUID = -6249589749885372084L;
+
 		public CommentNotClosedException(String message){
 			super(message);
 		}
@@ -40,6 +44,8 @@ public class Scanner {
 	 * thrown when there is another comment inside a comment
 	 */
 	public class RecursiveCommentException extends ScannerException {
+		private static final long serialVersionUID = 4083771233656858205L;
+
 		public RecursiveCommentException(String message){
 			super(message);
 		}
@@ -49,6 +55,8 @@ public class Scanner {
 	 * thrown when there is an apparent lexeme of a certain type that we cannot parse for some reason
 	 */
 	public class LexemeLiteralInvalidException extends ScannerException {
+		private static final long serialVersionUID = -6527222350803000048L;
+
 		public LexemeLiteralInvalidException(String message){
 			super(message);
 		}
@@ -116,16 +124,16 @@ public class Scanner {
 	 * @throws ScannerException 
 	 */
 	public Token getNextToken() throws IOException, ScannerException{
-		if(eof){
-			return null;
-		}
-		skipNonlexeme();
-		int starting_line = line_number;
 		if(lexeme_chunk.length()==0){
+			if(eof){
+				return null;
+			}
+			skipNonlexeme();
 			getNextLexemeChunk();
+			//TODO:checking for keywords goes here
 		}
 		String lexeme = dequeueLexeme();
-		return Token.makeToken(lexeme, starting_line);
+		return Token.makeToken(lexeme, line_number);
 	}
 	
 	
@@ -141,7 +149,9 @@ public class Scanner {
 	private String dequeueLexeme() throws LexemeLiteralInvalidException{
 		String lexeme;
 		char first_char = lexeme_chunk.charAt(0);
-		if(isLetter(first_char)){
+		if(first_char == '.'){
+			lexeme = ".";
+		} else if(isLetter(first_char)){
 			lexeme = parseLexeme(Token.TOKEN_WORD_PATTERN);
 		} else if(isDigit(first_char)){
 			lexeme = parseLexeme(Token.TOKEN_NUMBER_PATTERN);

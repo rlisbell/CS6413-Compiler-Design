@@ -11,20 +11,19 @@ public class Token {
 	 * pattern that matches word type tokens 
 	 * \\w matches [a-zA-Z_0-9]
 	 */
-	static final Pattern TOKEN_WORD_PATTERN = Pattern.compile("^\\w*$");
+	static final Pattern TOKEN_WORD_PATTERN = Pattern.compile("^\\w+");
 
 	/**
 	 * pattern that matches number type tokens 
 	 * \\d+  (\\.  \\d+   (E [+-]?  \\d+)? )?
 	 * 1+ digits, optional . and 1+ digits, optional E optional +/- and 1+ digits
 	 */
-	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+(E[+-]?\\d+)?)?$");
+	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+(E[+-]?\\d+)?)?");
 
 	/**
 	 * pattern that matches operator type tokens
-	 * TODO: greater/lessthan, operator keywords (e.g. OR)
 	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^([-+/*=<>])|(<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)$");
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^([-+/*=<>])|(<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)");
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -101,7 +100,7 @@ public class Token {
 	 * @return String with a small mini-report about this token
 	 */
 	public String print() {
-		return "Type:"+type.toString()+" Lexeme:"+lexeme;
+		return String.format("%-30s", lexeme)+"Type:"+type.toString();
 	}
 	
 
