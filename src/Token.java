@@ -131,9 +131,8 @@ public class Token {
 	 */
 	public static Token makeToken(String _lexeme, int _line_number) throws KeywordException{
 		Token token = new Token(_lexeme, _line_number);
-		if(token.getType()==Type.WORD && KEYWORDS.contains(_lexeme)){
-			//line number?
-			throw new KeywordException("keyword "+_lexeme+" must be space delimited");
+		if(token.getType()==Type.WORD && KEYWORDS.contains(_lexeme) && _lexeme.charAt(_lexeme.length()-1)!='.'){
+			throw new KeywordException("keyword "+_lexeme+" on line "+_line_number+" must be space delimited or end of program");
 		}
 		return token;
 	}
@@ -145,6 +144,16 @@ public class Token {
 	 * @return Token
 	 */
 	public static Token makeKeywordToken(String _lexeme, int _line_number){
-		return new Token(_lexeme, _line_number);
+		Token token = new Token(_lexeme, _line_number);
+		if(token.getType()==Type.ERROR){
+			if(_lexeme.charAt(_lexeme.length()-1)=='.'){
+				String new_lexeme = _lexeme.substring(0,_lexeme.length()-1);
+				return makeKeywordToken(new_lexeme, _line_number);
+			}
+			return null;
+		}
+		else{
+			return token;
+		}
 	}
 }

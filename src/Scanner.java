@@ -132,7 +132,7 @@ public class Scanner {
 			skipNonlexeme();
 			getNextLexemeChunk();
 			Token tryKeywordToken = Token.makeKeywordToken(lexeme_chunk.toString(), line_number);
-			if(tryKeywordToken.getType()!=Token.Type.ERROR){
+			if(tryKeywordToken!=null){
 				dequeueLexeme();
 				return tryKeywordToken;
 			}
