@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -42,6 +43,18 @@ public class Scanner {
 	 */
 	public class RecursiveCommentException extends ScannerException {
 		public RecursiveCommentException(String message){
+			super(message);
+		}
+	}
+	
+	
+	/**
+	 * @author bobboau
+	 *
+	 * thrown when there is an apparent number that we cannot parse for some reason
+	 */
+	public class NumberLiteralInvalidException extends ScannerException {
+		public NumberLiteralInvalidException(String message){
 			super(message);
 		}
 	}
@@ -150,8 +163,17 @@ public class Scanner {
 		
 	}
 	
-	private StringBuilder dequeueNumber(){
-		
+	private StringBuilder dequeueNumber() throws NumberLiteralInvalidException{
+		StringBuilder return_value = new StringBuilder("");
+		final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?");
+		Matcher m = TOKEN_NUMBER_PATTERN.matcher(lexemeChunk);
+		if(m.find()){
+			return_value.append(m.group(0));
+		}
+		else{
+			throw new NumberLiteralInvalidException("invalid number "+lexemeChunk.toString()+" on line "+line_number);
+		}
+		return return_value;
 	}
 	
 	private StringBuilder dequeueOperator(){
