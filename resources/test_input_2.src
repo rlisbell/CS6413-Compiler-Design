@@ -4,4 +4,4 @@ PROGRAM Sample (Input, Output);
   BEGIN
   {here is a comment}
     WriteLn(x)
-  END;
+  END.

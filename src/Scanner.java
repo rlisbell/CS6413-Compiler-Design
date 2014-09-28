@@ -194,17 +194,14 @@ public class Scanner {
 	 * @return
 	 * @throws IOException
 	 */
-	private StringBuilder getNextLexemeChunk() throws IOException{
-		StringBuilder _lexeme_chunk = new StringBuilder();
+	private void getNextLexemeChunk() throws IOException{
 		char new_char;
-		
 		while(isLexemeChar(new_char = getChar()) && !eof){
-			_lexeme_chunk.append(new_char);
+			lexeme_chunk.append(new_char);
 		}
 		if(!eof){
 			backOut(new_char);
 		}
-		return _lexeme_chunk;
 	}
 
 	
