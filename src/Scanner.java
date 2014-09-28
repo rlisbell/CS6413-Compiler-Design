@@ -98,7 +98,7 @@ public class Scanner {
 	 */
 	public Scanner(PushbackReader _source) {
 		source = _source;
-		line_number = 0;
+		line_number = 1;
 		last_char = '\0';
 		lexeme_chunk = new StringBuilder();
 		eof = false;

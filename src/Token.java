@@ -24,7 +24,7 @@ public class Token {
 	 * pattern that matches operator type tokens
 	 * TODO: greater/lessthan, operator keywords (e.g. OR)
 	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^[-+/*=:<>]+$");
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^([-+/*=<>])|(<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)$");
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -61,13 +61,13 @@ public class Token {
 			type = Token.Type.EOF;
 		}
 		else if(TOKEN_OPERATOR_PATTERN.matcher(lexeme).matches()){
-			type = Token.Type.WORD;
+			type = Token.Type.OPERATOR;
 		}
 		else if(TOKEN_NUMBER_PATTERN.matcher(lexeme).matches()){
 			type = Token.Type.NUMBER;
 		}
 		else if(TOKEN_WORD_PATTERN.matcher(lexeme).matches()){
-			type = Token.Type.OPERATOR;
+			type = Token.Type.WORD;
 		}
 		else{
 			type = Token.Type.ERROR;
