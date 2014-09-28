@@ -24,7 +24,7 @@ public class Token {
 	 * pattern that matches operator type tokens
 	 * TODO: greater/lessthan, operator keywords (e.g. OR)
 	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^[-+/*=:]+$");
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^[-+/*=:<>]+$");
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -56,13 +56,17 @@ public class Token {
 		lexeme = _lexeme;
 		line_number = _line_number;
 		//determine Token type... if Token is subclassed, consider factory method
-		if(TOKEN_WORD_PATTERN.matcher(lexeme).matches()){
+		//order is important!
+		if(lexeme == "."){
+			type = Token.Type.EOF;
+		}
+		else if(TOKEN_OPERATOR_PATTERN.matcher(lexeme).matches()){
 			type = Token.Type.WORD;
 		}
 		else if(TOKEN_NUMBER_PATTERN.matcher(lexeme).matches()){
 			type = Token.Type.NUMBER;
 		}
-		else if(TOKEN_OPERATOR_PATTERN.matcher(lexeme).matches()){
+		else if(TOKEN_WORD_PATTERN.matcher(lexeme).matches()){
 			type = Token.Type.OPERATOR;
 		}
 		else{
