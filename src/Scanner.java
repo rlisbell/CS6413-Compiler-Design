@@ -125,7 +125,7 @@ public class Scanner {
 	\*******************/
 	
 	private String dequeueLexeme(){
-		String lexeme = null;
+		StringBuilder lexeme = null;
 		char first_char = lexemeChunk.charAt(0);
 		if(isLetter(first_char)){
 			lexeme = dequeueWord(lexeme);
@@ -134,23 +134,27 @@ public class Scanner {
 		} else{
 			lexeme = dequeueOperator(lexeme);
 		}
-		return lexeme;
+		return lexeme.toString();
 	}
 	
-	private String dequeueWord(String lexeme){
-		if(/*lexemeChunkFirstChar.isLetterOrDigit*/){
-			/*store char in lexeme*/
-			/*remove Chunk Char*/
-			/*return dequeueWord(lexeme)*/
+	private StringBuilder dequeueWord(StringBuilder lexeme){
+		if(isWordChar(lexemeChunk.charAt(0))){
+			lexeme.append(lexemeChunk.charAt(0));
+			lexemeChunk.deleteCharAt(0);
+			return dequeueWord(lexeme);
 		}
 		return lexeme;
 	}
 	
-	private String dequeueNumber(){
+	private boolean isWordChar(char c){
 		
 	}
 	
-	private String dequeueOperator(){
+	private StringBuilder dequeueNumber(){
+		
+	}
+	
+	private StringBuilder dequeueOperator(){
 		
 	}
 
