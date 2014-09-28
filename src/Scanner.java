@@ -100,6 +100,7 @@ public class Scanner {
 		source = _source;
 		line_number = 0;
 		last_char = '\0';
+		lexeme_chunk = new StringBuilder();
 		eof = false;
 	}
 	
