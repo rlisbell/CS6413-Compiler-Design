@@ -58,6 +58,18 @@ public class Scanner {
 			super(message);
 		}
 	}
+	
+	
+	/**
+	 * @author bobboau
+	 *
+	 * thrown when there is an apparent operator that we cannot parse for some reason
+	 */
+	public class OperatorLiteralInvalidException extends ScannerException {
+		public OperatorLiteralInvalidException(String message){
+			super(message);
+		}
+	}
 	 
 	
 	/**********************\
@@ -186,8 +198,17 @@ public class Scanner {
 		return return_value;
 	}
 	
-	private StringBuilder dequeueOperator(){
-		
+	private StringBuilder dequeueOperator() throws OperatorLiteralInvalidException{
+		StringBuilder return_value = new StringBuilder("");
+		final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^([-+/*=:]+|AND|OR|MOD|DIV)");
+		Matcher m = TOKEN_OPERATOR_PATTERN.matcher(lexeme_chunk);
+		if(m.find()){
+			return_value.append(m.group(0));
+		}
+		else{
+			throw new OperatorLiteralInvalidException("invalid operator "+lexeme_chunk.toString()+" on line "+line_number);
+		}
+		return return_value;
 	}
 
 	/**
