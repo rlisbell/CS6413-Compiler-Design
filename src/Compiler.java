@@ -30,12 +30,13 @@ public class Compiler {
 	
 	/**
 	 * constructor
-	 * @param in_file_name source file
+	 * @param in_file_name source file path
 	 * @throws IOException
 	 */
 	Compiler(String in_file_name) throws IOException{
 		Path file_path = Paths.get(in_file_name);
 		Charset charset = Charset.forName("UTF-8");
+		//PushbackReader allows us to unread characters easily and semantically
 		PushbackReader reader = new PushbackReader(Files.newBufferedReader(file_path,charset));
 		
 		scanner = new Scanner(reader);
@@ -65,7 +66,7 @@ public class Compiler {
 	
 	/**
 	 * process a file and output the result to the file identified in the parameter
-	 * @param out_file_name
+	 * @param out_file_name destination path of output file
 	 * @throws IOException
 	 */
 	private void compile(String out_file_name) throws IOException {
@@ -87,9 +88,9 @@ public class Compiler {
 		}  catch (Scanner.ScannerException e) {
 			System.out.println("Syntax Error");
 			System.out.println(e.toString());
-		} catch (Token.KeywordException e) {
-			System.out.println("Keyword Error");
-			System.out.println(e.toString());
+//		} catch (Token.KeywordException e) { //to be implemented with symbol table
+//			System.out.println("Keyword Error");
+//			System.out.println(e.toString());
 		} finally {
 			writer.close();
 		}

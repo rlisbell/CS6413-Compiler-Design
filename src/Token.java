@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * class that represents a chunk of source code
+ * class that represents a token of code
  * the smallest atomic chunk that might have any meaning
  * class is immutable
  * @author bobboau
@@ -13,19 +13,19 @@ public class Token {
 	
 	/**
 	 * Thrown when a Keyword is found in a bad context
-	 */
-	public static class KeywordException extends Exception {
-		private static final long serialVersionUID = 8741809598928881876L;
-
-		public KeywordException(String message){
-			super(message);
-		}
-	}
-	/**
-	 * Language keywords
 	 * TODO: Implement along with symbol table
 	 */
-	//static final List<String> KEYWORDS = Arrays.asList("PROGRAM","BEGIN","END","CONST");
+//	public static class KeywordException extends Exception {
+//		private static final long serialVersionUID = 8741809598928881876L;
+//
+//		public KeywordException(String message){
+//			super(message);
+//		}
+//	}
+	/**
+	 * Language keywords
+	 */
+//	static final List<String> KEYWORDS = Arrays.asList("PROGRAM","BEGIN","END","CONST");
 	
 	/**
 	 * pattern that matches word type tokens 
@@ -35,13 +35,14 @@ public class Token {
 
 	/**
 	 * pattern that matches number type tokens 
-	 * \\d+  (\\.  \\d+   (E [+-]?  \\d+)? )?
-	 * 1+ digits, optional . and 1+ digits, optional E optional +/- and 1+ digits
+	 * \\d+  (\\.  \\d+)?   (E [+-]?  \\d+)?
+	 * 1+ digits, optional . and 1+ digits, optional (E optional +/- and 1+ digits)
 	 */
 	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?");
 
 	/**
 	 * pattern that matches operator type tokens
+	 * longer patterns must be listed first
 	 */
 	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^((<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>]))");
 	
@@ -104,19 +105,17 @@ public class Token {
 	 * @return String with a small mini-report about this token
 	 */
 	public String print() {
+		//30 column aligned for prettification
 		return String.format("%-30s", lexeme)+"Type:"+type.toString();
 	}
 	
-
 	/**
 	 * factory that makes Tokens from a block
 	 * @param lexeme_block string that should contain one or more lexemes
 	 * @param line_number where in the file the string was from
-	 * @param try_keyword should the lexeme block be checked against keywords
-	 * @return a Token
-	 * @throws KeywordException 
+	 * @return Token
 	 */
-	public static Token makeToken(String lexeme_block, int line_number, boolean try_keyword) throws KeywordException{
+	public static Token makeToken(String lexeme_block, int line_number){
 		Matcher operator_matcher = TOKEN_OPERATOR_PATTERN.matcher(lexeme_block);
 		Matcher number_matcher = TOKEN_NUMBER_PATTERN.matcher(lexeme_block);
 		Matcher word_matcher = TOKEN_WORD_PATTERN.matcher(lexeme_block);
@@ -125,7 +124,7 @@ public class Token {
 		Type type;
 		
 		//order is important!
-		/*checking of keywords should happen here when try_keyword is true*/
+		/*checking of keywords should happen here*/
 		/*we are not dealing with keywords yet though*/
 		if(lexeme_block.equals(".")){
 			type = Token.Type.EOF;

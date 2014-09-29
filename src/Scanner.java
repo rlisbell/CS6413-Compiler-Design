@@ -12,7 +12,6 @@ public class Scanner {
 	
 	/**
 	 * @author bobboau
-	 *
 	 * common base for all scanner exceptions
 	 */
 	public class ScannerException extends Exception {
@@ -25,7 +24,6 @@ public class Scanner {
 	
 	/**
 	 * @author bobboau
-	 *
 	 * thrown when the file ends while in a comment
 	 */
 	public class CommentNotClosedException extends ScannerException {
@@ -38,7 +36,6 @@ public class Scanner {
 	
 	/**
 	 * @author bobboau
-	 *
 	 * thrown when there is another comment inside a comment
 	 */
 	public class RecursiveCommentException extends ScannerException {
@@ -50,7 +47,8 @@ public class Scanner {
 	}
 	
 	/**
-	 * thrown when there is an apparent lexeme of a certain type that we cannot parse for some reason
+	 * thrown when there is an apparent lexeme of a certain type that we cannot 
+	 * parse for some reason
 	 */
 	public class LexemeLiteralInvalidException extends ScannerException {
 		private static final long serialVersionUID = -6527222350803000048L;
@@ -59,24 +57,21 @@ public class Scanner {
 			super(message);
 		}
 	}
-	 
+	
 	
 	/**********************\
 	|* private properties *|
 	\**********************/
-	
 	
 	/**
 	 * input giving us the source code
 	 */
 	private PushbackReader source;
 	
-	
 	/**
 	 * the line in the file we are currently on
 	 */
 	private int line_number;
-	
 	
 	/**
 	 * last char pulled from the file
@@ -84,9 +79,10 @@ public class Scanner {
 	private char last_char;
 	
 	/**
-	 * current chunk of lexemes
+	 * current block of lexemes
+	 * this is a set of consecutive lexemes, i.e. not whitespace/comments
 	 */
-	private StringBuilder lexeme_chunk;
+	private StringBuilder lexeme_block;
 	
 	/**
 	 * we have read past the end of the file
@@ -104,9 +100,9 @@ public class Scanner {
 	 */
 	public Scanner(PushbackReader _source) {
 		source = _source;
-		line_number = 1;
-		last_char = '\0';
-		lexeme_chunk = new StringBuilder();
+		line_number = 1; //starting at 0 is less intuitive
+		last_char = '\0'; //null byte default
+		lexeme_block = new StringBuilder();
 		eof = false;
 	}
 	
@@ -116,36 +112,27 @@ public class Scanner {
 	\******************/
 	
 	/**
-	 * Begins fetching next token
+	 * Fetches next token from file
 	 * @return Token the next one in the file, or null if there were none
 	 * @throws IOException
 	 * @throws ScannerException 
-	 * @throws KeywordException 
 	 */
-	public Token getNextToken() throws IOException, ScannerException, Token.KeywordException{
-		boolean try_keywords = false;
-		//if our current chunk is exhausted get a new one
-		if(lexeme_chunk.length()==0){
+	public Token getNextToken() throws IOException, ScannerException{
+		//if our current block is exhausted get a new one
+		if(lexeme_block.length()==0){
 			if(eof){
 				return null;
 			}
-			
 			//skip past comments, whitespace, and newlines
 			skipNonlexeme();
-			
-			//get the next chunk of interesting text from the file
-			getNextLexemeChunk();
-			
-			//this is a fresh chunk, so we should try to check keywords
-			try_keywords = true;
+			//get the next block of interesting text from the file
+			getNextLexemeBlock();
 		}
 		
-		//call the Token class' factory method on this chunk
-		Token found_token = Token.makeToken(lexeme_chunk.toString(), line_number, try_keywords);
-		
+		//call the Token class' factory method on this block
+		Token found_token = Token.makeToken(lexeme_block.toString(), line_number);
 		//consume the characters found by the token factory
-		lexeme_chunk.delete(0, found_token.getLexeme().length());
-		
+		lexeme_block.delete(0, found_token.getLexeme().length());
 		//return the found token
 		return found_token;
 	}
@@ -156,21 +143,20 @@ public class Scanner {
 	\*******************/
 
 	/**
-	 * Builds the next lexeme chunk
-	 * "chunk" here means there may possibly be multiple lexemes in the result
+	 * Builds the next lexeme block and assigns to global lexeme_block
+	 * "block" here means there may be multiple lexemes in the result
 	 * @return
 	 * @throws IOException
 	 */
-	private void getNextLexemeChunk() throws IOException{
+	private void getNextLexemeBlock() throws IOException{
 		char new_char;
 		while(isLexemeChar(new_char = getChar()) && !eof){
-			lexeme_chunk.append(new_char);
+			lexeme_block.append(new_char);
 		}
 		if(!eof){
 			backOut(new_char);
 		}
 	}
-
 	
 	/**
 	 * determines possible lexeme chars
@@ -185,7 +171,6 @@ public class Scanner {
 			&&
 				!isNewline(next_char);
 	}
-
 	
 	/**
 	 * moves past everything that is not part of the next useful lexeme
@@ -208,7 +193,7 @@ public class Scanner {
 	
 	/**
 	 * moves past comments
-	 * @return returns true if any comment was skipped
+	 * @return true if any comment was skipped
 	 * @throws IOException 
 	 * @throws ScannerException 
 	 */
@@ -241,10 +226,9 @@ public class Scanner {
 		return skip;
 	}
 	
-	
 	/**
 	 * moves past whitespace
-	 * @return returns true if any white space was skipped
+	 * @return true if any white space was skipped
 	 * @throws IOException 
 	 */
 	private boolean skipWhiteSpace() throws IOException{
@@ -259,10 +243,9 @@ public class Scanner {
 		return skip;
 	}
 	
-	
 	/**
 	 * moves past new lines
-	 * @return returns true if any new lines were skipped
+	 * @return true if any new lines were skipped
 	 * @throws IOException 
 	 */
 	private boolean skipNewlines() throws IOException{
@@ -276,24 +259,22 @@ public class Scanner {
 		}
 		return skip;
 	}
-
 	
 	/**
 	 * determines newlines
 	 * NOTE: windows newlines (\r\n) are a special case handled in getChar
 	 * @param next_char
-	 * @return returns true if the passed char is a newline character
+	 * @return true if the passed char is a newline character
 	 */
 	private static boolean isNewline(char next_char) {
 		return next_char == '\n' || next_char == '\r';
 	}
-
 	
 	/**
 	 * determines whitespace
 	 * TODO: Consider making this a whitelist instead of a blacklist
 	 * @param next_char
-	 * @return returns true if the passed char is a white space character
+	 * @return true if the passed char is a white space character
 	 */
 	private static boolean isWhiteSpace(char next_char) {
 		return next_char == ' ' || next_char == '\t';
@@ -301,17 +282,15 @@ public class Scanner {
 
 	
 	/**
-	 * gets the next character marks it in case we need to backtrack and moves past it
+	 * gets the next character, handles special cases (window characters, eof)
 	 * @return
 	 * @throws IOException
 	 */
 	private char getChar() throws IOException {
 		int next_char;
-		
 		//get the next char
 		next_char = source.read();
-		
-		//we check for end of line
+		//we check for end of file
 		if(next_char == -1){
 			eof = true;
 			//we shouldn't be using anything if we're at EOF
@@ -320,13 +299,12 @@ public class Scanner {
 		
 		//now we check for windows' messed up newlines
 		if(next_char == '\n' && last_char == '\r'){
-			//windows newlines are screwy, \r\n should be treated as a single character
+			//\r\n should be treated as a single character so we just swallow one of them
 			next_char = (char) source.read();
 		}
 		
-		//new we record the old char so next time we can find out if it's a windows newline
+		//now we record the old char so next time we can find out if it's a windows newline
 		last_char = (char)next_char;
-		
 		//if we got any form of newline increment the line count
 		if(isNewline(last_char)){
 			line_number++;
@@ -334,13 +312,13 @@ public class Scanner {
 		
 		return last_char;
 	}
-
 	
 	/**
 	 * Pushes character back onto the reader
 	 * @throws IOException
 	 */
 	private void backOut(char c) throws IOException{
+		//cast back to int for consistency
 		source.unread((int) c);
 		
 		//if we are pushing back a newline then we need to move the line count back
