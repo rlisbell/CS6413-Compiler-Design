@@ -1,6 +1,11 @@
 PROGRAM Sample (Input, Output);
   CONST {comment alongside code}
      x := 15;
+     y := 3.14;
+     x1:= 45E2;
+     x2:= 4.32E5;
+     <> <= >= > < 4<>5 OR AND DIV MOD
+     10MOD4
   BEGIN
   {here is a comment}
     WriteLn(x)

@@ -82,7 +82,7 @@ public class Compiler {
 				writer.newLine();
 			}
 		} catch (IOException e) {
-			System.out.println("could not open file "+out_file_name+" for writting");
+			System.out.println("could not open file "+out_file_name+" for writing");
 			System.out.println(e.toString());
 		}  catch (Scanner.ScannerException e) {
 			System.out.println("Syntax Error");

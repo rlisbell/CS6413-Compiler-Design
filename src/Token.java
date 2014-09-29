@@ -1,5 +1,5 @@
-import java.util.Arrays;
-import java.util.List;
+//import java.util.Arrays; //needed for keywords down the line
+//import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,8 +23,9 @@ public class Token {
 	}
 	/**
 	 * Language keywords
+	 * TODO: Implement along with symbol table
 	 */
-	static final List<String> KEYWORDS = Arrays.asList("PROGRAM","BEGIN","END","CONST");
+	//static final List<String> KEYWORDS = Arrays.asList("PROGRAM","BEGIN","END","CONST");
 	
 	/**
 	 * pattern that matches word type tokens 
@@ -37,12 +38,12 @@ public class Token {
 	 * \\d+  (\\.  \\d+   (E [+-]?  \\d+)? )?
 	 * 1+ digits, optional . and 1+ digits, optional E optional +/- and 1+ digits
 	 */
-	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+(E[+-]?\\d+)?)?");
+	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?");
 
 	/**
 	 * pattern that matches operator type tokens
 	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^(([-+/*=<>])|(<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;))");
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^((<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>]))");
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -149,7 +150,7 @@ public class Token {
 
 		Token token = new Token(lexeme, type, line_number);
 		
-		//not sure about this exception...
+		//TODO: implement keyword logic along with symbol table
 		/*
 		if(token.getType()==Type.WORD && KEYWORDS.contains(lexeme_block) && lexeme_block.charAt(lexeme_block.length()-1)!='.'){
 			throw new KeywordException("keyword "+lexeme_block+" on line "+line_number+" must be space delimited or end of program");
