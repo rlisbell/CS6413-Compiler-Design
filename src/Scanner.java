@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Class for interpreting file as lexemes
@@ -125,83 +123,37 @@ public class Scanner {
 	 * @throws KeywordException 
 	 */
 	public Token getNextToken() throws IOException, ScannerException, Token.KeywordException{
+		boolean try_keywords = false;
+		//if our current chunk is exhausted get a new one
 		if(lexeme_chunk.length()==0){
 			if(eof){
 				return null;
 			}
+			
+			//skip past comments, whitespace, and newlines
 			skipNonlexeme();
+			
+			//get the next chunk of interesting text from the file
 			getNextLexemeChunk();
-			Token tryKeywordToken = Token.makeKeywordToken(lexeme_chunk.toString(), line_number);
-			if(tryKeywordToken!=null){
-				dequeueLexeme();
-				return tryKeywordToken;
-			}
+			
+			//this is a fresh chunk, so we should try to check keywords
+			try_keywords = true;
 		}
-		String lexeme = dequeueLexeme();
-		return Token.makeToken(lexeme, line_number);
+		
+		//call the Token class' factory method on this chunk
+		Token found_token = Token.makeToken(lexeme_chunk.toString(), line_number, try_keywords);
+		
+		//consume the characters found by the token factory
+		lexeme_chunk.delete(0, found_token.getLexeme().length());
+		
+		//return the found token
+		return found_token;
 	}
 	
 	
 	/*******************\
 	|* private methods *|
 	\*******************/
-	
-	/**
-	 * Pulls next lexeme out of lexeme_chunk
-	 * @return
-	 * @throws LexemeLiteralInvalidException 
-	 */
-	private String dequeueLexeme() throws LexemeLiteralInvalidException{
-		String lexeme;
-		char first_char = lexeme_chunk.charAt(0);
-		if(first_char == '.'){
-			lexeme = ".";
-		} else if(isLetter(first_char)){
-			lexeme = parseLexeme(Token.TOKEN_WORD_PATTERN);
-		} else if(isDigit(first_char)){
-			lexeme = parseLexeme(Token.TOKEN_NUMBER_PATTERN);
-		} else{
-			lexeme = parseLexeme(Token.TOKEN_OPERATOR_PATTERN);
-		}
-		lexeme_chunk.delete(0, lexeme.length());
-		return lexeme;
-	}
-	
-	/**
-	 * Parses lexeme out of chunk of a given pattern type(WORD, NUMBER, OPERATOR)
-	 * @param pattern
-	 * @return
-	 * @throws LexemeLiteralInvalidException
-	 */
-	private String parseLexeme(Pattern pattern) throws LexemeLiteralInvalidException{
-		String lexeme;
-		Matcher m = pattern.matcher(lexeme_chunk);
-		if(m.find()){
-			lexeme = m.group(0);
-		}
-		else{
-			throw new LexemeLiteralInvalidException("invalid lexeme "+lexeme_chunk.toString()+" on line "+line_number);
-		}
-		return lexeme;
-	}
-	
-	/**
-	 * Determines if a character is a letter
-	 * @param c
-	 * @return
-	 */
-	private boolean isLetter(char c){
-		return Pattern.matches("[a-zA-Z]", Character.toString(c));
-	}
-	
-	/**
-	 * Determines if a character is a digit
-	 * @param c
-	 * @return
-	 */
-	private boolean isDigit(char c){
-		return Pattern.matches("\\d", Character.toString(c));
-	}
 
 	/**
 	 * Builds the next lexeme chunk

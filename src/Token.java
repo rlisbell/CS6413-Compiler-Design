@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -41,7 +42,7 @@ public class Token {
 	/**
 	 * pattern that matches operator type tokens
 	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^([-+/*=<>])|(<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)");
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^(([-+/*=<>])|(<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;))");
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -69,26 +70,10 @@ public class Token {
 	 * @param _lexeme
 	 * @param _line_number
 	 */
-	public Token(String _lexeme, int _line_number){
+	public Token(String _lexeme, Type _type, int _line_number){
 		lexeme = _lexeme;
 		line_number = _line_number;
-		//determine Token type... if Token is subclassed, consider factory method
-		//order is important!
-		if(lexeme == "."){
-			type = Token.Type.EOF;
-		}
-		else if(TOKEN_OPERATOR_PATTERN.matcher(lexeme).matches()){
-			type = Token.Type.OPERATOR;
-		}
-		else if(TOKEN_NUMBER_PATTERN.matcher(lexeme).matches()){
-			type = Token.Type.NUMBER;
-		}
-		else if(TOKEN_WORD_PATTERN.matcher(lexeme).matches()){
-			type = Token.Type.WORD;
-		}
-		else{
-			type = Token.Type.ERROR;
-		}
+		type = _type;
 	}
 
 	/**
@@ -123,37 +108,53 @@ public class Token {
 	
 
 	/**
-	 * factory that makes Tokens
-	 * @param _lexeme string that made the Token
-	 * @param _line_number where in the file the string was from
+	 * factory that makes Tokens from a block
+	 * @param lexeme_block string that should contain one or more lexemes
+	 * @param line_number where in the file the string was from
+	 * @param try_keyword should the lexeme block be checked against keywords
 	 * @return a Token
 	 * @throws KeywordException 
 	 */
-	public static Token makeToken(String _lexeme, int _line_number) throws KeywordException{
-		Token token = new Token(_lexeme, _line_number);
-		if(token.getType()==Type.WORD && KEYWORDS.contains(_lexeme) && _lexeme.charAt(_lexeme.length()-1)!='.'){
-			throw new KeywordException("keyword "+_lexeme+" on line "+_line_number+" must be space delimited or end of program");
+	public static Token makeToken(String lexeme_block, int line_number, boolean try_keyword) throws KeywordException{
+		Matcher operator_matcher = TOKEN_OPERATOR_PATTERN.matcher(lexeme_block);
+		Matcher number_matcher = TOKEN_NUMBER_PATTERN.matcher(lexeme_block);
+		Matcher word_matcher = TOKEN_WORD_PATTERN.matcher(lexeme_block);
+		
+		String lexeme = "";
+		Type type;
+		
+		//order is important!
+		/*checking of keywords should happen here when try_keyword is true*/
+		/*we are not dealing with keywords yet though*/
+		if(lexeme_block.equals(".")){
+			type = Token.Type.EOF;
+			lexeme = lexeme_block;
 		}
-		return token;
-	}
-	
-	/**
-	 * makes tokens and allows for keywords
-	 * @param _lexeme
-	 * @param _line_number
-	 * @return Token
-	 */
-	public static Token makeKeywordToken(String _lexeme, int _line_number){
-		Token token = new Token(_lexeme, _line_number);
-		if(token.getType()==Type.ERROR){
-			if(_lexeme.charAt(_lexeme.length()-1)=='.'){
-				String new_lexeme = _lexeme.substring(0,_lexeme.length()-1);
-				return makeKeywordToken(new_lexeme, _line_number);
-			}
-			return null;
+		else if(operator_matcher.find()){
+			type = Token.Type.OPERATOR;
+			lexeme = operator_matcher.group(0);
+		}
+		else if(number_matcher.find()){
+			type = Token.Type.NUMBER;
+			lexeme = number_matcher.group(0);
+		}
+		else if(word_matcher.find()){
+			type = Token.Type.WORD;
+			lexeme = word_matcher.group(0);
 		}
 		else{
-			return token;
+			type = Token.Type.ERROR;
+			lexeme = lexeme_block;
 		}
+
+		Token token = new Token(lexeme, type, line_number);
+		
+		//not sure about this exception...
+		/*
+		if(token.getType()==Type.WORD && KEYWORDS.contains(lexeme_block) && lexeme_block.charAt(lexeme_block.length()-1)!='.'){
+			throw new KeywordException("keyword "+lexeme_block+" on line "+line_number+" must be space delimited or end of program");
+		}
+		*/
+		return token;
 	}
 }
