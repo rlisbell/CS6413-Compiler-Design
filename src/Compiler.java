@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author bobboau
+ * @author Mike, Ryan
  * class for the top level organization of the compiler
  */
 public class Compiler {

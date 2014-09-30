@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
  * class that represents a token of code
  * the smallest atomic chunk that might have any meaning
  * class is immutable
- * @author bobboau
+ * @author Mike, Ryan
  */
 public class Token {
 	

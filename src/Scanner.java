@@ -2,7 +2,7 @@ import java.io.*;
 
 /**
  * Class for interpreting file as lexemes
- * @author Ryan
+ * @author Mike, Ryan
  */
 public class Scanner {
 
