@@ -25,36 +25,11 @@ public class Token {
 			"(\\d+(\\.\\d+)?(E[+-]?\\d+)?)"
 		+")", Pattern.CASE_INSENSITIVE);
 	
-	/**
-	 * enum that specifies the different options for what sort of token we might have 
-	 * @author bobboau
-	 */
-	public enum Type {
-		PAREN_OPEN, PAREN_CLOSE, BRACKET_OPEN, BRACKET_CLOSE, 
-		COLON, SEMICOLON, PERIOD, COMMA, 
-		REL_OP, ADD_OP, MUL_OP, ASSIGN_OP, NOT_OP,
-		IF, THEN, ELSE, 
-		WHILE, DO,
-		VAR_START,
-		FUNCTION, PROCEDURE, 
-		ARRAY, OF, 
-		BEGIN, END, 
-		INTEGER_TYPE, REAL_TYPE, 
-		PROGRAM_START, EOF,
-		NUMBER_LITERAL, 
-		IDENTIFIER, 
-		ERROR
-	}
 	
 	/**
 	 * what type of token this is
 	 */
-	private final Type type;
-	
-	/**
-	 * the string that generated this token
-	 */
-	private final String lexeme;
+	private final Symbol symbol;
 	
 	/**
 	 * which line in the source file did this token start on
@@ -66,17 +41,16 @@ public class Token {
 	 * @param _lexeme
 	 * @param _line_number
 	 */
-	public Token(String _lexeme, Type _type, int _line_number){
-		lexeme = _lexeme;
+	public Token(Symbol _symbol, int _line_number){
+		symbol = _symbol;
 		line_number = _line_number;
-		type = _type;
 	}
 
 	/**
 	 * @return the lexeme
 	 */
 	public String getLexeme() {
-		return lexeme;
+		return symbol.getLexeme();
 	}
 
 	/**
@@ -89,8 +63,8 @@ public class Token {
 	/**
 	 * @return the type
 	 */
-	public Type getType() {
-		return type;
+	public Symbol.Type getType() {
+		return symbol.getType();
 	}
 
 	/**
@@ -100,7 +74,7 @@ public class Token {
 	 */
 	public String print() {
 		//30 column aligned for prettification
-		return String.format("%-30s", lexeme)+"Type:"+type.toString();
+		return String.format("%-30s", getLexeme())+"Type:"+getType().toString();
 	}
 	
 	/**
@@ -113,20 +87,18 @@ public class Token {
 		Matcher lexeme_matcher = TOKEN_LEXEME_PATTERN.matcher(lexeme_block);
 		
 		String lexeme = "";
-		Type type;
+		Symbol.Type type;
 		
 		if(lexeme_matcher.find()){
 			/*TODO:use symbol table*/
-			type = Token.Type.ERROR;
+			type = Symbol.Type.ERROR;
 			lexeme = lexeme_matcher.group(0);
+			//return token from looked up symbol here
 		}
 		else{
-			type = Token.Type.ERROR;
-			lexeme = lexeme_block;
+			//TODO: THROW AN ERROR
 		}
-
-		Token token = new Token(lexeme, type, line_number);
 		
-		return token;
+		return null;
 	}
 }
