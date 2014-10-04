@@ -46,11 +46,11 @@ public class Token {
 	 * longer patterns must be listed first
 	 */
 	public static final Pattern TOKEN_LEXEME_PATTERN = Pattern.compile("^("+
+			"(<>)|(<=)|(>=)|(:=)|(DIV)|(MOD)|(OR)|(AND)|([-+/*=<>])"
+			+"|"+
 			"(\\()|(\\))|(\\[)|(\\])"
 			+"|"+
 			"(\\,)|(\\.)|(\\;)|(\\:)"
-			+"|"+
-			"(<>)|(<=)|(>=)|(:=)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>])"
 			+"|"+
 			"([a-z]\\w*)"
 			+"|"+
