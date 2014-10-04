@@ -10,23 +10,84 @@ import java.util.regex.Pattern;
 public class Token {
 	
 	/**
-	 * pattern that matches word type tokens 
-	 * \\w matches [a-zA-Z_0-9]
+	 * pattern that matches parentheses and brackets
+	 * longer patterns must be listed first
 	 */
-	static final Pattern TOKEN_WORD_PATTERN = Pattern.compile("^\\w+");
-
+	static final Pattern TOKEN_PAREN_PATTERN = Pattern.compile("^((\\()|(\\))|(\\[)|(\\]))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches :;.,
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_PUNCTUATION_PATTERN = Pattern.compile("^((\\,)|(\\.)|(\\;)|(\\:))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches operator type tokens
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^((<>)|(<=)|(>=)|(:=)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>]))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches if/else
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_IF_ELSE_PATTERN = Pattern.compile("^((IF)|(THEN)|(ELSE))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches loop structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_LOOP_PATTERN = Pattern.compile("^((WHILE)|(DO))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches variable structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_VARIABLE_PATTERN = Pattern.compile("^((FUNCTION)|(PROCEDURE))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches method structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_METHOD_PATTERN = Pattern.compile("^VAR", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches array structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_ARRAY_PATTERN = Pattern.compile("^((ARRAY)|(OF))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches block structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_BLOCK_PATTERN = Pattern.compile("^((BEGIN)|(END))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches basic type structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_TYPE_PATTERN = Pattern.compile("^((INTEGER)|(REAL))", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * pattern that matches high level program structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_PROGRAM_PATTERN = Pattern.compile("^((PROGRAM)|(\\.))", Pattern.CASE_INSENSITIVE);
+	
+	
+	/**
+	 * pattern that matches loop structures
+	 * longer patterns must be listed first
+	 */
+	static final Pattern TOKEN_IDENTIFIER_PATTERN = Pattern.compile("^\\w[\\w\\d]*", Pattern.CASE_INSENSITIVE);
+	
 	/**
 	 * pattern that matches number type tokens 
 	 * \\d+  (\\.  \\d+)?   (E [+-]?  \\d+)?
 	 * 1+ digits, optional . and 1+ digits, optional (E optional +/- and 1+ digits)
 	 */
-	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?");
-
-	/**
-	 * pattern that matches operator type tokens
-	 * longer patterns must be listed first
-	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^((<>)|(<=)|(>=)|(:=)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>]))");
+	static final Pattern TOKEN_NUMBER_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?(E[+-]?\\d+)?", Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -36,15 +97,16 @@ public class Token {
 		PAREN_OPEN, PAREN_CLOSE, BRACKET_OPEN, BRACKET_CLOSE, 
 		COLON, SEMICOLON, PERIOD, COMMA, 
 		REL_OP, ADD_OP, MUL_OP, ASSIGN_OP, NOT_OP,
-		IF, THEN, ELSE, ELSE_IF, 
+		IF, THEN, ELSE, 
 		WHILE, DO,
-		IDENTIFIER, 
-		VAR_START, 
+		VAR_START,
 		FUNCTION, PROCEDURE, 
 		ARRAY, OF, 
 		BEGIN, END, 
-		INTEGER_TYPE, REAL_TYPE, NUMBER_LITERAL, 
+		INTEGER_TYPE, REAL_TYPE, 
 		PROGRAM_START, EOF,
+		NUMBER_LITERAL, 
+		IDENTIFIER, 
 		ERROR
 	}
 	
