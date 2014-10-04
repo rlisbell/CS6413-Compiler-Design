@@ -1,11 +1,5 @@
 /**
- * 
- */
-
-/**
- * @author bobboau
  * class defines a symbol for something that has a type
- *
  */
 public class ValueSymbol<T> extends Symbol {
 	

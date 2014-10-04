@@ -73,7 +73,12 @@ public class Symbol {
 	 * type of symbol this symbol is
 	 */
 	private Type type;
-		
+
+	/**
+	 * constructor
+	 * @param _lexeme
+	 * @param _type
+	 */
 	public Symbol(String _lexeme, Symbol.Type _type) {
 		lexeme = _lexeme;
 		type = _type;
@@ -112,11 +117,11 @@ public class Symbol {
 		if(identifier_matcher.matches()){
 			 return_type = Type.IDENTIFIER;
 		}
-		else if (integer_matcher.matches()) {
-			return_type = Type.INTEGER_LITERAL;
-		}
 		else if (real_matcher.matches()) {
 			return_type = Type.REAL_LITERAL;
+		}
+		else if (integer_matcher.matches()) {
+			return_type = Type.INTEGER_LITERAL;
 		}
 		else {
 			throw new UnexpectedSymbolException("Unexpected symbol "+lexeme);
@@ -132,16 +137,9 @@ public class Symbol {
 	}
 
 	/**
-	 * @return the type
+	 * @return the symbol type
 	 */
 	public Type getType() {
 		return type;
 	}
-	
-	
-	
-	
-	
-	
-	
 }
