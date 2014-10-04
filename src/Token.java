@@ -26,13 +26,27 @@ public class Token {
 	 * pattern that matches operator type tokens
 	 * longer patterns must be listed first
 	 */
-	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^((<>)|(<=)|(>=)|(:=)|(==)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>]))");
+	static final Pattern TOKEN_OPERATOR_PATTERN = Pattern.compile("^((<>)|(<=)|(>=)|(:=)|(DIV)|(MOD)|(OR)|(AND)|(,)|(\\()|(\\))|(;)|([-+/*=<>]))");
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
 	 * @author bobboau
 	 */
-	public enum Type {WORD, NUMBER, OPERATOR, EOF, ERROR}
+	public enum Type {
+		PAREN_OPEN, PAREN_CLOSE, BRACKET_OPEN, BRACKET_CLOSE, 
+		COLON, SEMICOLON, PERIOD, COMMA, 
+		REL_OP, ADD_OP, MUL_OP, ASSIGN_OP, NOT_OP,
+		IF, THEN, ELSE, ELSE_IF, 
+		WHILE, DO,
+		IDENTIFIER, 
+		VAR_START, 
+		FUNCTION, PROCEDURE, 
+		ARRAY, OF, 
+		BEGIN, END, 
+		INTEGER_TYPE, REAL_TYPE, NUMBER_LITERAL, 
+		PROGRAM_START, EOF,
+		ERROR
+	}
 	
 	/**
 	 * what type of token this is
