@@ -22,7 +22,11 @@ public class Compiler {
 	 * Yanks lexemes from file and converts to tokens
 	 */
 	private Scanner scanner;
-
+	
+	/**
+	 * given a lexeme finds or creates an appropriate symbol
+	 */
+	private SymbolTable symbol_table;
 	
 	/****************\
 	|* constructors *| 
@@ -40,6 +44,7 @@ public class Compiler {
 		PushbackReader reader = new PushbackReader(Files.newBufferedReader(file_path,charset));
 		
 		scanner = new Scanner(reader);
+		symbol_table = SymbolTable.initializeSymbolTable();
 	}
 
 	
@@ -77,7 +82,7 @@ public class Compiler {
 		    file.createNewFile();
 			writer = new BufferedWriter(new FileWriter(file));
 			Token next_token;
-			while((next_token = scanner.getNextToken()) != null){
+			while((next_token = scanner.getNextToken(symbol_table)) != null){
 				System.out.println(next_token.print());
 				writer.write(next_token.print());
 				writer.newLine();

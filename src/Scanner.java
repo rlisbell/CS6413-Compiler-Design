@@ -117,7 +117,7 @@ public class Scanner {
 	 * @throws IOException
 	 * @throws ScannerException 
 	 */
-	public Token getNextToken() throws IOException, ScannerException{
+	public Token getNextToken(SymbolTable symbol_table) throws IOException, ScannerException{
 		//if our current block is exhausted get a new one
 		if(lexeme_block.length()==0){
 			if(eof){
@@ -130,7 +130,7 @@ public class Scanner {
 		}
 		
 		//call the Token class' factory method on this block
-		Token found_token = Token.makeToken(lexeme_block.toString(), line_number);
+		Token found_token = Token.makeToken(lexeme_block.toString(), line_number, symbol_table);
 		//consume the characters found by the token factory
 		lexeme_block.delete(0, found_token.getLexeme().length());
 		//return the found token

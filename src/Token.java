@@ -1,6 +1,8 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Scanner.ScannerException;
+
 /**
  * class that represents a token of code
  * the smallest atomic chunk that might have any meaning
@@ -9,11 +11,41 @@ import java.util.regex.Pattern;
  */
 public class Token {
 	
+	/*********************\
+	|* custom exceptions *| 
+	\*********************/
+	
+	/**
+	 * @author bobboau
+	 * common base for all Token exceptions
+	 */
+	public class TokenException extends Exception {
+		
+		public TokenException(String message){
+			super(message);
+		}
+	}
+	
+	/**
+	 * @author bobboau
+	 * thrown when the file ends while in a comment
+	 */
+	public class LexemeNotFoundException extends TokenException {
+		
+		public LexemeNotFoundException(String message){
+			super(message);
+		}
+	}
+	
+	/**************\
+	|* properties *|
+	\**************/
+
 	/**
 	 * pattern that matches parentheses and brackets
 	 * longer patterns must be listed first
 	 */
-	static final Pattern TOKEN_LEXEME_PATTERN = Pattern.compile("^("+
+	public static final Pattern TOKEN_LEXEME_PATTERN = Pattern.compile("^("+
 			"(\\()|(\\))|(\\[)|(\\])"
 			+"|"+
 			"(\\,)|(\\.)|(\\;)|(\\:)"
@@ -83,22 +115,14 @@ public class Token {
 	 * @param line_number where in the file the string was from
 	 * @return Token
 	 */
-	public static Token makeToken(String lexeme_block, int line_number){
+	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table){
 		Matcher lexeme_matcher = TOKEN_LEXEME_PATTERN.matcher(lexeme_block);
 		
-		String lexeme = "";
-		Symbol.Type type;
-		
 		if(lexeme_matcher.find()){
-			/*TODO:use symbol table*/
-			type = Symbol.Type.ERROR;
-			lexeme = lexeme_matcher.group(0);
-			//return token from looked up symbol here
+			return new Token(symbol_table.getSymbol(lexeme_matcher.group(0)), line_number);
 		}
 		else{
-			//TODO: THROW AN ERROR
+			throw new LexemeNotFoundException("could not find the next lexeme in the block on line #"+line_number+" : "+lexeme_block);
 		}
-		
-		return null;
 	}
 }
