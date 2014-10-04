@@ -62,8 +62,11 @@ public class Compiler {
 				Compiler compiler = new Compiler(file_name);
 				compiler.compile(file_name+"-compiled");
 				//we can come up with something better than this I think
-			} catch (Token.TokenException|Symbol.SymbolException|IOException e) {
+			} catch (IOException e) {
 				System.out.println("could not open file "+file_name+" for reading");
+				System.out.println(e.toString());
+			} catch (Token.TokenException|Symbol.SymbolException e) {
+				System.out.println("error in "+file_name);
 				System.out.println(e.toString());
 			}
 		}
