@@ -1,9 +1,19 @@
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 /**
  * Contains all information (attributes) for a single symbol
  * @author Mike, Ryan
  */
 public class Symbol {	
+	
+	/**
+	 * Matches valid identifiers
+	 */
+	public static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^([a-z]\\w*)", Pattern.CASE_INSENSITIVE);
+	/**
+	 * Matches valid number literals
+	 */
+	public static final Pattern NUMERIC_PATTERN = Pattern.compile("^(\\d+(\\.\\d+)?(E[+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * enum that specifies the different options for what sort of token we might have 
@@ -72,10 +82,84 @@ public class Symbol {
 		value = _value;
 		scope = _scope;
 	}
-		
+	
+	/**
+	 * Constructs a complete symbol manually, primarily used for symbol table initialization
+	 * @param _lexeme
+	 * @param _token_type
+	 * @param _data_type
+	 * @param _semantic_type
+	 * @param _value
+	 * @param _scope
+	 * @return
+	 */
 	public static Symbol makeSymbol(String _lexeme, Symbol.Type _token_type, DataType _data_type, SemanticType _semantic_type, String _value, int _scope) {
 		Symbol symbol = new Symbol(_lexeme, _token_type, _data_type, _semantic_type, _value, _scope);
 		return symbol;
+	}
+	
+	/**
+	 * Makes a new symbol on the fly as new lexemes are discovered
+	 * @param _lexeme
+	 * @return
+	 */
+	public static Symbol makeSymbol(String _lexeme) {
+		Type type = determineType(_lexeme);
+		DataType data_type = determineDataType(_lexeme);
+		SemanticType semantic_type = determineSemanticType(_lexeme);
+		String value = extractValue(_lexeme);
+		int scope = 0;//worry about this later
+		return new Symbol(_lexeme, type, data_type, semantic_type, value, scope);
+	}
+	
+	/**
+	 * If we don't know the type, it can only be an identifier or number literal
+	 * Exceptions arise if we messed up the symbol table init, or we find an invalid character
+	 * @param lexeme
+	 * @return
+	 */
+	private static Type determineType(String lexeme) {
+		Matcher identifier_matcher = IDENTIFIER_PATTERN.matcher(lexeme);
+		Matcher numeric_matcher = NUMERIC_PATTERN.matcher(lexeme);
+		Type return_type = null;
+		if(identifier_matcher.matches()){
+			 return_type = Type.IDENTIFIER;
+		}
+		else if (numeric_matcher.matches()) {
+			return_type = Type.NUMBER_LITERAL;
+		}
+		else {
+			//throw error
+		}
+		return return_type;
+	}
+	
+	/**
+	 * May not be determinable until parsing?
+	 * @param lexeme
+	 * @return
+	 */
+	private static DataType determineDataType(String lexeme) {
+		return DataType.UNKNOWN;
+	}
+	
+	/**
+	 * May not be determinable until parsing?
+	 * @param lexeme
+	 * @return
+	 */
+	private static SemanticType determineSemanticType(String lexeme) {
+		return SemanticType.UNKNOWN;
+	}
+	
+	/**
+	 * Need to return actual numeric value for numbers
+	 * This may not be possible until we know a symbol's data type?
+	 * @param lexeme
+	 * @return
+	 */
+	private static String extractValue(String lexeme) {
+		return "0";
 	}
 
 	/**
