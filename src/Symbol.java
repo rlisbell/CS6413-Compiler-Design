@@ -53,7 +53,7 @@ public class Symbol {
 		REL_OP, ADD_OP, MUL_OP, ASSIGN_OP, NOT_OP,
 		IF, THEN, ELSE, 
 		WHILE, DO,
-		VAR_START,
+		VAR,
 		FUNCTION, PROCEDURE, 
 		ARRAY, OF, 
 		BEGIN, END, 
