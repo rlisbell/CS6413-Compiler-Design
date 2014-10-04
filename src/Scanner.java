@@ -116,8 +116,9 @@ public class Scanner {
 	 * @return Token the next one in the file, or null if there were none
 	 * @throws IOException
 	 * @throws ScannerException 
+	 * @throws TokenException 
 	 */
-	public Token getNextToken(SymbolTable symbol_table) throws IOException, ScannerException{
+	public Token getNextToken(SymbolTable symbol_table) throws IOException, ScannerException, Token.TokenException{
 		//if our current block is exhausted get a new one
 		if(lexeme_block.length()==0){
 			if(eof){
