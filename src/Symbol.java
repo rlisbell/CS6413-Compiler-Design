@@ -16,7 +16,7 @@ public class Symbol {
 	public static final Pattern NUMERIC_PATTERN = Pattern.compile("^(\\d+(\\.\\d+)?(E[+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
 	
 	/**
-	 * enum that specifies the different options for what sort of token we might have 
+	 * enum that specifies the different options for what sort of symbol we might have 
 	 * @author bobboau
 	 */
 	public enum Type {
@@ -42,17 +42,17 @@ public class Symbol {
 	private String lexeme;
 	
 	/**
-	 * type of token this symbol is
+	 * type of symbol this symbol is
 	 */
 	private Symbol.Type type;
 	
 	/**
-	 * data type of this token (determined... when?)
+	 * data type of this symbol (determined... when?)
 	 */
 	private DataType data_type;
 	
 	/**
-	 * semantic type of this token (determined during semantic analysis)
+	 * semantic type of this symbol (determined during semantic analysis)
 	 */
 	private SemanticType semantic_type;
 	
@@ -86,15 +86,15 @@ public class Symbol {
 	/**
 	 * Constructs a complete symbol manually, primarily used for symbol table initialization
 	 * @param _lexeme
-	 * @param _token_type
+	 * @param _symbol_type
 	 * @param _data_type
 	 * @param _semantic_type
 	 * @param _value
 	 * @param _scope
 	 * @return
 	 */
-	public static Symbol makeSymbol(String _lexeme, Symbol.Type _token_type, DataType _data_type, SemanticType _semantic_type, String _value, int _scope) {
-		Symbol symbol = new Symbol(_lexeme, _token_type, _data_type, _semantic_type, _value, _scope);
+	public static Symbol makeSymbol(String _lexeme, Symbol.Type _symbol_type, DataType _data_type, SemanticType _semantic_type, String _value, int _scope) {
+		Symbol symbol = new Symbol(_lexeme, _symbol_type, _data_type, _semantic_type, _value, _scope);
 		return symbol;
 	}
 	
