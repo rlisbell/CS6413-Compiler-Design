@@ -37,7 +37,7 @@ public class Symbol {
 	 * Matches valid integer literals
 	 * numerals not followed by a dot (not including the dot in the match)
 	 */
-	public static final Pattern INTEGER_PATTERN = Pattern.compile("^\\d+(?!\\.)$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern INTEGER_PATTERN = Pattern.compile("^\\d+(?!\\.)(E[+-]?\\d+)?$", Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * Matches valid real literals
@@ -94,9 +94,10 @@ public class Symbol {
 		Type type = determineType(_lexeme);
 		switch(type){
 			case INTEGER_LITERAL:
-				return new LiteralSymbol<Integer>(_lexeme, type, Integer.parseInt(_lexeme));
+				//Going through double because Integer does not like scientific notation (e.g. 2342e2)
+				return new LiteralSymbol<Integer>(_lexeme, type, Double.valueOf(_lexeme).intValue());
 			case REAL_LITERAL:
-				return new LiteralSymbol<Double>(_lexeme, type, Double.parseDouble(_lexeme));
+				return new LiteralSymbol<Double>(_lexeme, type, Double.valueOf(_lexeme));
 			default:
 				return new Symbol(_lexeme, type);
 		}
