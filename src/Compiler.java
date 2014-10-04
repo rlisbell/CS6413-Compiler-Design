@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
 /**
  * @author Mike, Ryan
  * class for the top level organization of the compiler
@@ -63,7 +62,7 @@ public class Compiler {
 				Compiler compiler = new Compiler(file_name);
 				compiler.compile(file_name+"-compiled");
 				//we can come up with something better than this I think
-			} catch (Token.TokenException|IOException e) {
+			} catch (Token.TokenException|Symbol.SymbolException|IOException e) {
 				System.out.println("could not open file "+file_name+" for reading");
 				System.out.println(e.toString());
 			}
@@ -75,8 +74,9 @@ public class Compiler {
 	 * @param out_file_name destination path of output file
 	 * @throws IOException
 	 * @throws Token.TokenException 
+	 * @throws Symbol.SymbolException 
 	 */
-	private void compile(String out_file_name) throws IOException, Token.TokenException {
+	private void compile(String out_file_name) throws IOException, Token.TokenException, Symbol.SymbolException {
 		File file = new File(out_file_name);
 		BufferedWriter writer = null;
 

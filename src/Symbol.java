@@ -7,17 +7,39 @@ import java.util.regex.Pattern;
 public class Symbol {	
 	
 	/**
+	 * common base for all Symbol exceptions
+	 */
+	public static class SymbolException extends Exception {
+		private static final long serialVersionUID = -4457162023556548921L;
+
+		public SymbolException(String message){
+			super(message);
+		}
+	}
+	
+	/**
+	 * common base for all Symbol exceptions
+	 */
+	public static class UnexpectedSymbolException extends SymbolException {
+		private static final long serialVersionUID = 4153515580979985084L;
+
+		public UnexpectedSymbolException(String message){
+			super(message);
+		}
+	}
+	
+	/**
 	 * Matches valid identifiers
 	 */
 	public static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^([a-z]\\w*)", Pattern.CASE_INSENSITIVE);
+	
 	/**
 	 * Matches valid number literals
 	 */
-	public static final Pattern NUMERIC_PATTERN = Pattern.compile("^(\\d+(\\.\\d+)?(E[+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
+	public static final Pattern NUMBER_PATTERN = Pattern.compile("^(\\d+(\\.\\d+)?(E[+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * enum that specifies the different options for what sort of symbol we might have 
-	 * @author bobboau
 	 */
 	public enum Type {
 		PAREN_OPEN, PAREN_CLOSE, BRACKET_OPEN, BRACKET_CLOSE, 
@@ -44,72 +66,22 @@ public class Symbol {
 	/**
 	 * type of symbol this symbol is
 	 */
-	private Symbol.Type type;
-	
-	/**
-	 * data type of this symbol (determined... when?)
-	 */
-	private DataType data_type;
-	
-	/**
-	 * semantic type of this symbol (determined during semantic analysis)
-	 */
-	private SemanticType semantic_type;
-	
-	/**
-	 * Value (for literals)
-	 */
-	private String value;
-	
-	/**
-	 * Scope (not sure how to handle this)
-	 */
-	private int scope;
-	
-	/**
-	 * These two are ripped form the slides for JASON, needs to be updated for our version of Pascal
-	 */
-	public enum DataType {UNKNOWN, NONE, PROGRAM, PROCEDURE, INTEGER, REAL, ARRAY};
-	public enum SemanticType {UNKNOWN, KEYWORD, PROGRAM, 
-		PARAMETER, VARIABLE, TEMPVAR, CONSTANT, ENUM, STRUCT, 
-		UNION, PROCEDURE, FUNCTION, LABEL, LITERAL, OPERATOR};
+	private Type type;
 		
-	public Symbol(String _lexeme, Symbol.Type _type, DataType _data_type, SemanticType _semantic_type, String _value, int _scope) {
+	public Symbol(String _lexeme, Symbol.Type _type) {
 		lexeme = _lexeme;
 		type = _type;
-		data_type = _data_type;
-		semantic_type = _semantic_type;
-		value = _value;
-		scope = _scope;
-	}
-	
-	/**
-	 * Constructs a complete symbol manually, primarily used for symbol table initialization
-	 * @param _lexeme
-	 * @param _symbol_type
-	 * @param _data_type
-	 * @param _semantic_type
-	 * @param _value
-	 * @param _scope
-	 * @return
-	 */
-	public static Symbol makeSymbol(String _lexeme, Symbol.Type _symbol_type, DataType _data_type, SemanticType _semantic_type, String _value, int _scope) {
-		Symbol symbol = new Symbol(_lexeme, _symbol_type, _data_type, _semantic_type, _value, _scope);
-		return symbol;
 	}
 	
 	/**
 	 * Makes a new symbol on the fly as new lexemes are discovered
 	 * @param _lexeme
 	 * @return
+	 * @throws UnexpectedSymbolException 
 	 */
-	public static Symbol makeSymbol(String _lexeme) {
+	public static Symbol makeSymbol(String _lexeme) throws UnexpectedSymbolException {
 		Type type = determineType(_lexeme);
-		DataType data_type = determineDataType(_lexeme);
-		SemanticType semantic_type = determineSemanticType(_lexeme);
-		String value = extractValue(_lexeme);
-		int scope = 0;//worry about this later
-		return new Symbol(_lexeme, type, data_type, semantic_type, value, scope);
+		return new Symbol(_lexeme, type);
 	}
 	
 	/**
@@ -117,49 +89,22 @@ public class Symbol {
 	 * Exceptions arise if we messed up the symbol table init, or we find an invalid character
 	 * @param lexeme
 	 * @return
+	 * @throws UnexpectedSymbolException 
 	 */
-	private static Type determineType(String lexeme) {
+	private static Type determineType(String lexeme) throws UnexpectedSymbolException {
 		Matcher identifier_matcher = IDENTIFIER_PATTERN.matcher(lexeme);
-		Matcher numeric_matcher = NUMERIC_PATTERN.matcher(lexeme);
+		Matcher number_matcher = NUMBER_PATTERN.matcher(lexeme);
 		Type return_type = null;
 		if(identifier_matcher.matches()){
 			 return_type = Type.IDENTIFIER;
 		}
-		else if (numeric_matcher.matches()) {
+		else if (number_matcher.matches()) {
 			return_type = Type.NUMBER_LITERAL;
 		}
 		else {
-			//throw error
+			throw new UnexpectedSymbolException("Unexpected symbol "+lexeme);
 		}
 		return return_type;
-	}
-	
-	/**
-	 * May not be determinable until parsing?
-	 * @param lexeme
-	 * @return
-	 */
-	private static DataType determineDataType(String lexeme) {
-		return DataType.UNKNOWN;
-	}
-	
-	/**
-	 * May not be determinable until parsing?
-	 * @param lexeme
-	 * @return
-	 */
-	private static SemanticType determineSemanticType(String lexeme) {
-		return SemanticType.UNKNOWN;
-	}
-	
-	/**
-	 * Need to return actual numeric value for numbers
-	 * This may not be possible until we know a symbol's data type?
-	 * @param lexeme
-	 * @return
-	 */
-	private static String extractValue(String lexeme) {
-		return "0";
 	}
 
 	/**
@@ -168,7 +113,6 @@ public class Symbol {
 	public String getLexeme() {
 		return lexeme;
 	}
-
 
 	/**
 	 * @return the type

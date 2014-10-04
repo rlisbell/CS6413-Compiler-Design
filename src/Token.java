@@ -115,12 +115,17 @@ public class Token {
 	 * @param line_number where in the file the string was from
 	 * @return Token
 	 * @throws TokenException 
+	 * @throws Symbol.SymbolException 
 	 */
-	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table) throws TokenException{
+	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table) throws TokenException, Symbol.SymbolException{
 		Matcher lexeme_matcher = TOKEN_LEXEME_PATTERN.matcher(lexeme_block);
 		
 		if(lexeme_matcher.find()){
-			return new Token(symbol_table.getSymbol(lexeme_matcher.group(0)), line_number);
+			try {
+				return new Token(symbol_table.getSymbol(lexeme_matcher.group(0)), line_number);
+			} catch (Symbol.UnexpectedSymbolException e) {
+				throw new Symbol.UnexpectedSymbolException(e.getMessage()+" on line "+line_number);
+			}
 		}
 		else{
 			throw new Token.LexemeNotFoundException("could not find the next lexeme in the block on line #"+line_number+" : "+lexeme_block);

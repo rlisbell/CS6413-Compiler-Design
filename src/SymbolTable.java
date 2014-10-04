@@ -18,7 +18,7 @@ public class SymbolTable extends Hashtable<String, Symbol> {
 	public static SymbolTable initializeSymbolTable() {
 		SymbolTable symbol_table = new SymbolTable();
 		//This is just an idea of how this will work
-		symbol_table.put("(", Symbol.makeSymbol("(",Symbol.Type.PAREN_OPEN,Symbol.DataType.NONE,Symbol.SemanticType.OPERATOR,"",0));
+		symbol_table.put("(", new Symbol("(",Symbol.Type.PAREN_OPEN));
 		return symbol_table;
 	}
 	
@@ -26,8 +26,9 @@ public class SymbolTable extends Hashtable<String, Symbol> {
 	 * Get an existing symbol, or create a new one and return that
 	 * @param lexeme
 	 * @return
+	 * @throws Symbol.SymbolException 
 	 */
-	public Symbol getSymbol(String lexeme) {
+	public Symbol getSymbol(String lexeme) throws Symbol.SymbolException {
 		Symbol fetched_symbol = this.get(lexeme);
 		if(fetched_symbol == null) {
 			fetched_symbol = Symbol.makeSymbol(lexeme);
