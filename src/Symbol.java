@@ -31,12 +31,18 @@ public class Symbol {
 	/**
 	 * Matches valid identifiers
 	 */
-	public static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^([a-z]\\w*)", Pattern.CASE_INSENSITIVE);
+	public static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^([a-z]\\w*)$", Pattern.CASE_INSENSITIVE);
 	
 	/**
-	 * Matches valid number literals
+	 * Matches valid integer literals
+	 * numerals not followed by a dot (not including the dot in the match)
 	 */
-	public static final Pattern NUMBER_PATTERN = Pattern.compile("^(\\d+(\\.\\d+)?(E[+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
+	public static final Pattern INTEGER_PATTERN = Pattern.compile("^\\d+(?!\\.)$", Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * Matches valid real literals
+	 */
+	public static final Pattern REAL_PATTERN = Pattern.compile("^(\\d+\\.\\d+(E[+-]?\\d+)?)$", Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * enum that specifies the different options for what sort of symbol we might have 
@@ -53,7 +59,7 @@ public class Symbol {
 		BEGIN, END, 
 		INTEGER_TYPE, REAL_TYPE, 
 		PROGRAM_START, EOF,
-		NUMBER_LITERAL, 
+		INTEGER_LITERAL, REAL_LITERAL, 
 		IDENTIFIER, 
 		ERROR
 	}
@@ -81,7 +87,14 @@ public class Symbol {
 	 */
 	public static Symbol makeSymbol(String _lexeme) throws UnexpectedSymbolException {
 		Type type = determineType(_lexeme);
-		return new Symbol(_lexeme, type);
+		switch(type){
+			case INTEGER_LITERAL:
+				return new LiteralSymbol<Integer>(_lexeme, type, Integer.parseInt(_lexeme));
+			case REAL_LITERAL:
+				return new LiteralSymbol<Double>(_lexeme, type, Double.parseDouble(_lexeme));
+			default:
+				return new Symbol(_lexeme, type);
+		}
 	}
 	
 	/**
@@ -93,13 +106,17 @@ public class Symbol {
 	 */
 	private static Type determineType(String lexeme) throws UnexpectedSymbolException {
 		Matcher identifier_matcher = IDENTIFIER_PATTERN.matcher(lexeme);
-		Matcher number_matcher = NUMBER_PATTERN.matcher(lexeme);
+		Matcher integer_matcher = INTEGER_PATTERN.matcher(lexeme);
+		Matcher real_matcher = REAL_PATTERN.matcher(lexeme);
 		Type return_type = null;
 		if(identifier_matcher.matches()){
 			 return_type = Type.IDENTIFIER;
 		}
-		else if (number_matcher.matches()) {
-			return_type = Type.NUMBER_LITERAL;
+		else if (integer_matcher.matches()) {
+			return_type = Type.INTEGER_LITERAL;
+		}
+		else if (real_matcher.matches()) {
+			return_type = Type.REAL_LITERAL;
 		}
 		else {
 			throw new UnexpectedSymbolException("Unexpected symbol "+lexeme);
