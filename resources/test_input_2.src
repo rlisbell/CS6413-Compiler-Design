@@ -1,5 +1,5 @@
 PROGRAM Sample (Input, Output);
-  CONST {comment alongside code}
+  VAR {comment alongside code}
      x := 15;
      y := 3.14;
      x1:= 45E2;
