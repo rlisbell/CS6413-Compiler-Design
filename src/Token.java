@@ -18,7 +18,8 @@ public class Token {
 	 * common base for all Token exceptions
 	 */
 	public static class TokenException extends Exception {
-		
+		private static final long serialVersionUID = -4575729551102837842L;
+
 		public TokenException(String message){
 			super(message);
 		}
@@ -29,7 +30,8 @@ public class Token {
 	 * thrown when a lexeme cannot be found
 	 */
 	public static class LexemeNotFoundException extends TokenException {
-		
+		private static final long serialVersionUID = -4680793979317618076L;
+
 		public LexemeNotFoundException(String message){
 			super(message);
 		}

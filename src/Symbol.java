@@ -69,7 +69,7 @@ public class Symbol {
 	/**
 	 * These two are ripped form the slides for JASON, needs to be updated for our version of Pascal
 	 */
-	public enum DataType {UNKNOWN, NONE, PROGRAM, PROCEDURE, INTEGER, REAL};
+	public enum DataType {UNKNOWN, NONE, PROGRAM, PROCEDURE, INTEGER, REAL, ARRAY};
 	public enum SemanticType {UNKNOWN, KEYWORD, PROGRAM, 
 		PARAMETER, VARIABLE, TEMPVAR, CONSTANT, ENUM, STRUCT, 
 		UNION, PROCEDURE, FUNCTION, LABEL, LITERAL, OPERATOR};
