@@ -4,6 +4,10 @@ import java.util.regex.Pattern;
 /**
  * class that represents a token of code
  * the smallest atomic chunk that might have any meaning
+ * It is worth noting that while we could check that keywords are
+ * surrounded by whitespace during token generation, this step has
+ * been deemed better left for the parser at this point...
+ * 
  * class is immutable
  * @author Mike, Ryan
  */
