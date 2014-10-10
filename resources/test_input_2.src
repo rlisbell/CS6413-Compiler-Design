@@ -1,6 +1,6 @@
 PROGRAM Sample (Input, Output);
   VAR {comment alongside code}
-     x := 15;
+     x := -15;
      y := 3.14;
      x1:= 45E2;
      x2:= 4.32E5;

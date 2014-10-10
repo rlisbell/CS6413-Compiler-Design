@@ -61,6 +61,7 @@ public class Symbol {
 		PROGRAM_START, EOF,
 		INTEGER_LITERAL, REAL_LITERAL, 
 		IDENTIFIER, 
+		FINAL_DOT,
 		ERROR
 	}
 	

@@ -135,4 +135,14 @@ public class Token {
 			throw new Token.LexemeNotFoundException("could not find the next lexeme in the block on line #"+line_number+" : "+lexeme_block);
 		}
 	}
+	
+	/**
+	 * special case for returning eof token
+	 * this was simpler than engineering around a nonsensical "eof lexeme"
+	 * @param line_number
+	 * @return Token
+	 */
+	public static Token eofToken(int line_number) {
+		return new Token(new Symbol("",Symbol.Type.EOF), line_number);
+	}
 }

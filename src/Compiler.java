@@ -87,11 +87,13 @@ public class Compiler {
 		    file.createNewFile();
 			writer = new BufferedWriter(new FileWriter(file));
 			Token next_token;
-			while((next_token = scanner.getNextToken(symbol_table)) != null){
+			do {
+				next_token = scanner.getNextToken(symbol_table);	
 				System.out.println(next_token.print());
 				writer.write(next_token.print());
 				writer.newLine();
 			}
+			while(next_token.getType() != Symbol.Type.EOF);
 		} catch (IOException e) {
 			System.out.println("could not open file "+out_file_name+" for writing");
 			System.out.println(e.toString());

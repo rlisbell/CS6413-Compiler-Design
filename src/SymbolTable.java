@@ -62,7 +62,7 @@ public class SymbolTable extends Hashtable<String, Symbol> {
 		symbol_table.put(new Symbol("INTEGER",Symbol.Type.INTEGER_TYPE));
 		symbol_table.put(new Symbol("REAL",Symbol.Type.REAL_TYPE));
 		symbol_table.put(new Symbol("PROGRAM",Symbol.Type.PROGRAM_START));
-		symbol_table.put(new Symbol(".",Symbol.Type.EOF));
+		symbol_table.put(new Symbol(".",Symbol.Type.FINAL_DOT));
 		
 		return symbol_table;
 	}

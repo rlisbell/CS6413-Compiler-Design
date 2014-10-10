@@ -123,7 +123,8 @@ public class Scanner {
 		//if our current block is exhausted get a new one
 		if(lexeme_block.length()==0){
 			if(eof){
-				return null;
+				//special case token for EOF
+				return Token.eofToken(line_number);
 			}
 			//skip past comments, whitespace, and newlines
 			skipNonlexeme();
