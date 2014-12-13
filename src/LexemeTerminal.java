@@ -60,49 +60,29 @@ public class LexemeTerminal extends Terminal {
 	
 	/**
 	 * Makes a new symbol on the fly as new lexemes are discovered
+	 * If we don't know the type, it can only be an identifier or number literal
+	 * Exceptions arise if we messed up the symbol table init, or we find an invalid character
 	 * @param _lexeme
 	 * @return
 	 * @throws UnexpectedSymbolException 
 	 */
-	public static LexemeTerminal makeSymbol(String _lexeme) throws UnexpectedSymbolException {
-		int type = determineType(_lexeme);
-		switch(type){
-			case 3:
-				//Going through double because Integer does not like scientific notation (e.g. 2342e2)
-				return new LiteralSymbol<Integer>(_lexeme, Double.valueOf(_lexeme).intValue());
-			case 2:
-				return new LiteralSymbol<Double>(_lexeme, Double.valueOf(_lexeme));
-			default:
-				return new LexemeTerminal(_lexeme);
-		}
-	}
-	
-	/**
-	 * If we don't know the type, it can only be an identifier or number literal
-	 * Exceptions arise if we messed up the symbol table init, or we find an invalid character
-	 * when we refactor our classes this will be handled completely differently
-	 * @param lexeme
-	 * @return
-	 * @throws UnexpectedSymbolException 
-	 */
-	private static int determineType(String lexeme) throws UnexpectedSymbolException {
+	public static LexemeTerminal makeSymbol(String lexeme) throws UnexpectedSymbolException {
 		Matcher identifier_matcher = IDENTIFIER_PATTERN.matcher(lexeme);
 		Matcher integer_matcher = INTEGER_PATTERN.matcher(lexeme);
 		Matcher real_matcher = REAL_PATTERN.matcher(lexeme);
-		int return_type = -1;
 		if(identifier_matcher.matches()){
-			 return_type = 1;
+			return new IdentifierSymbol(lexeme);
 		}
 		else if (real_matcher.matches()) {
-			return_type = 2;
+			return new LiteralSymbol<Double>(lexeme, Double.valueOf(lexeme));
 		}
 		else if (integer_matcher.matches()) {
-			return_type = 3;
+			//Going through double because Integer does not like scientific notation (e.g. 2342e2)
+			return new LiteralSymbol<Integer>(lexeme, Double.valueOf(lexeme).intValue());
 		}
 		else {
 			throw new UnexpectedSymbolException("Unexpected symbol "+lexeme);
 		}
-		return return_type;
 	}
 
 	/**
