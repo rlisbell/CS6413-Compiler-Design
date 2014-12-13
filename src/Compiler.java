@@ -65,7 +65,7 @@ public class Compiler {
 			} catch (IOException e) {
 				System.out.println("could not open file "+file_name+" for reading");
 				System.out.println(e.toString());
-			} catch (Token.TokenException|LexemeTerminal.SymbolException e) {
+			} catch (Token.TokenException|LexemeTerminal.LexemeTerminalException e) {
 				System.out.println("error in "+file_name);
 				System.out.println(e.toString());
 			}
@@ -77,9 +77,9 @@ public class Compiler {
 	 * @param out_file_name destination path of output file
 	 * @throws IOException
 	 * @throws Token.TokenException 
-	 * @throws LexemeTerminal.SymbolException 
+	 * @throws LexemeTerminal.LexemeTerminalException 
 	 */
-	private void compile(String out_file_name) throws IOException, Token.TokenException, LexemeTerminal.SymbolException {
+	private void compile(String out_file_name) throws IOException, Token.TokenException, LexemeTerminal.LexemeTerminalException {
 		File file = new File(out_file_name);
 		BufferedWriter writer = null;
 

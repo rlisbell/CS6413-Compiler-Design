@@ -4,15 +4,15 @@ import java.util.regex.Pattern;
  * Contains all information (attributes) for a single symbol
  * @author Mike, Ryan
  */
-public class LexemeTerminal implements Terminal {	
+public class LexemeTerminal extends Terminal {	
 	
 	/**
 	 * common base for all Symbol exceptions
 	 */
-	public static class SymbolException extends Exception {
+	public static class LexemeTerminalException extends Exception {
 		private static final long serialVersionUID = -4457162023556548921L;
 
-		public SymbolException(String message){
+		public LexemeTerminalException(String message){
 			super(message);
 		}
 	}
@@ -20,7 +20,7 @@ public class LexemeTerminal implements Terminal {
 	/**
 	 * common base for all Symbol exceptions
 	 */
-	public static class UnexpectedSymbolException extends SymbolException {
+	public static class UnexpectedSymbolException extends LexemeTerminalException {
 		private static final long serialVersionUID = 4153515580979985084L;
 
 		public UnexpectedSymbolException(String message){

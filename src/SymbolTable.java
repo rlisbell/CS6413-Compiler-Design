@@ -71,9 +71,9 @@ public class SymbolTable extends Hashtable<String, LexemeTerminal> {
 	 * Get an existing symbol, or create a new one and return that
 	 * @param lexeme
 	 * @return
-	 * @throws LexemeTerminal.SymbolException 
+	 * @throws LexemeTerminal.LexemeTerminalException 
 	 */
-	public LexemeTerminal getSymbol(String lexeme) throws LexemeTerminal.SymbolException {
+	public LexemeTerminal getSymbol(String lexeme) throws LexemeTerminal.LexemeTerminalException {
 		LexemeTerminal fetched_symbol = this.get(lexeme);
 		if(fetched_symbol == null) {
 			fetched_symbol = LexemeTerminal.makeSymbol(lexeme);

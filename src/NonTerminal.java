@@ -1,4 +1,4 @@
 
-public interface NonTerminal extends Symbol {
+public abstract class NonTerminal implements Symbol {
 
 }

@@ -113,9 +113,9 @@ public class Token {
 	 * @param line_number where in the file the string was from
 	 * @return Token
 	 * @throws TokenException 
-	 * @throws LexemeTerminal.SymbolException 
+	 * @throws LexemeTerminal.LexemeTerminalException 
 	 */
-	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table) throws TokenException, LexemeTerminal.SymbolException{
+	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table) throws TokenException, LexemeTerminal.LexemeTerminalException{
 		Matcher lexeme_matcher = TOKEN_LEXEME_PATTERN.matcher(lexeme_block);
 		
 		if(lexeme_matcher.find()){
