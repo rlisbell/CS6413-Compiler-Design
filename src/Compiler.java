@@ -7,6 +7,11 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Stack;
+import java.util.List;
+import java.util.Collections;
+
 
 /**
  * @author Mike, Ryan
@@ -86,14 +91,27 @@ public class Compiler {
 	    try {
 		    file.createNewFile();
 			writer = new BufferedWriter(new FileWriter(file));
-			Token next_token;
-			do {
-				next_token = scanner.getNextToken(symbol_table);	
-				System.out.println(next_token.print());
-				writer.write(next_token.print());
+
+			//Parse through the program
+			Token token;
+			Symbol symbol;
+			List<Symbol> production; //is this the correct type?
+			Stack<Symbol> stack = new Stack<Symbol>(); //is this the correct type?
+			stack.push(new ProgramSymbol());
+			token = scanner.getNextToken(symbol_table);	
+			while(!stack.empty()) {
+				symbol = stack.pop();
+				System.out.println(symbol.print());
+				writer.write(symbol.print());
 				writer.newLine();
+				production = Collections.reverse(symbol.getProduction(token));
+				for(Symbol symbol : production) { //for Symbol or...?
+					stack.push(symbol);
+				}
+				if(symbol instanceof TerminalSymbol ) { //is this the correct instanceof?
+					token = scanner.getNextToken(symbol_table);
+				}
 			}
-			while(!next_token.isEofToken());
 		} catch (IOException e) {
 			System.out.println("could not open file "+out_file_name+" for writing");
 			System.out.println(e.toString());
