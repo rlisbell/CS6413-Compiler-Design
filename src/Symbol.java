@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
  * Contains all information (attributes) for a single symbol
  * @author Mike, Ryan
  */
-public class Symbol {	
+public class LexemeTerminal {	
 	
 	/**
 	 * common base for all Symbol exceptions
@@ -54,7 +54,7 @@ public class Symbol {
 	 * @param _lexeme
 	 * @param _type
 	 */
-	public Symbol(String _lexeme) {
+	public LexemeTerminal(String _lexeme) {
 		lexeme = _lexeme;
 	}
 	
@@ -64,7 +64,7 @@ public class Symbol {
 	 * @return
 	 * @throws UnexpectedSymbolException 
 	 */
-	public static Symbol makeSymbol(String _lexeme) throws UnexpectedSymbolException {
+	public static LexemeTerminal makeSymbol(String _lexeme) throws UnexpectedSymbolException {
 		int type = determineType(_lexeme);
 		switch(type){
 			case 3:
@@ -73,7 +73,7 @@ public class Symbol {
 			case 2:
 				return new LiteralSymbol<Double>(_lexeme, Double.valueOf(_lexeme));
 			default:
-				return new Symbol(_lexeme);
+				return new LexemeTerminal(_lexeme);
 		}
 	}
 	
@@ -116,8 +116,8 @@ public class Symbol {
 	 * special case for returning eof symbol
 	 * @return Symbol
 	 */
-	static final Symbol EOF = new Symbol("");
-	public static Symbol eofSymbol() {
+	static final LexemeTerminal EOF = new LexemeTerminal("");
+	public static LexemeTerminal eofSymbol() {
 		return EOF;
 	}
 }

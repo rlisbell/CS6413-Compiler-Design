@@ -65,7 +65,7 @@ public class Token {
 	/**
 	 * what type of token this is
 	 */
-	private final Symbol symbol;
+	private final LexemeTerminal symbol;
 	
 	/**
 	 * which line in the source file did this token start on
@@ -77,7 +77,7 @@ public class Token {
 	 * @param _lexeme
 	 * @param _line_number
 	 */
-	public Token(Symbol _symbol, int _line_number){
+	public Token(LexemeTerminal _symbol, int _line_number){
 		symbol = _symbol;
 		line_number = _line_number;
 	}
@@ -112,16 +112,16 @@ public class Token {
 	 * @param line_number where in the file the string was from
 	 * @return Token
 	 * @throws TokenException 
-	 * @throws Symbol.SymbolException 
+	 * @throws LexemeTerminal.SymbolException 
 	 */
-	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table) throws TokenException, Symbol.SymbolException{
+	public static Token makeToken(String lexeme_block, int line_number, SymbolTable symbol_table) throws TokenException, LexemeTerminal.SymbolException{
 		Matcher lexeme_matcher = TOKEN_LEXEME_PATTERN.matcher(lexeme_block);
 		
 		if(lexeme_matcher.find()){
 			try {
 				return new Token(symbol_table.getSymbol(lexeme_matcher.group(0)), line_number);
-			} catch (Symbol.UnexpectedSymbolException e) {
-				throw new Symbol.UnexpectedSymbolException(e.getMessage()+" on line "+line_number);
+			} catch (LexemeTerminal.UnexpectedSymbolException e) {
+				throw new LexemeTerminal.UnexpectedSymbolException(e.getMessage()+" on line "+line_number);
 			}
 		}
 		else{
@@ -136,7 +136,7 @@ public class Token {
 	 * @return Token
 	 */
 	public static Token eofToken(int line_number) {
-		return new Token(Symbol.eofSymbol(), line_number);
+		return new Token(LexemeTerminal.eofSymbol(), line_number);
 	}
 	
 	/**
@@ -145,6 +145,6 @@ public class Token {
 	 * @return boolean
 	 */
 	public boolean isEofToken() {
-		return symbol == Symbol.eofSymbol();
+		return symbol == LexemeTerminal.eofSymbol();
 	}
 }
