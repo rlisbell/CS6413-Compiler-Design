@@ -38,7 +38,7 @@ public class SymbolTable extends Hashtable<String, LexemeTerminal> {
 		symbol_table.put(new RelationalOperatorSymbol(">="));
 		symbol_table.put(new RelationalOperatorSymbol("="));
 		symbol_table.put(new RelationalOperatorSymbol("<"));
-		symbol_table.put(new RelationalOperatorSymbol(">"));
+		symbol_table.put(new LexemeTerminal(">"));
 		symbol_table.put(new AdditionOperatorSymbol("+"));
 		symbol_table.put(new AdditionOperatorSymbol("-"));
 		symbol_table.put(new MultiplicationOperatorSymbol("DIV"));
