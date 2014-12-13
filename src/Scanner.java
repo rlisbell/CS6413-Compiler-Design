@@ -124,7 +124,7 @@ public class Scanner {
 		if(lexeme_block.length()==0){
 			if(eof){
 				//special case token for EOF
-				return Token.eofToken(line_number);
+				return new Token(new EofSymbol(), line_number);
 			}
 			//skip past comments, whitespace, and newlines
 			skipNonlexeme();

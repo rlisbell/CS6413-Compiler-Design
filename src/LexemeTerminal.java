@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
  * Contains all information (attributes) for a single symbol
  * @author Mike, Ryan
  */
-public class LexemeTerminal {	
+public class LexemeTerminal implements Terminal {	
 	
 	/**
 	 * common base for all Symbol exceptions
@@ -110,14 +110,5 @@ public class LexemeTerminal {
 	 */
 	public String getLexeme() {
 		return lexeme;
-	}
-	
-	/**
-	 * special case for returning eof symbol
-	 * @return Symbol
-	 */
-	static final LexemeTerminal EOF = new LexemeTerminal("");
-	public static LexemeTerminal eofSymbol() {
-		return EOF;
 	}
 }

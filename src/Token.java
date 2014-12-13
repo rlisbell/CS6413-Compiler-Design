@@ -65,7 +65,7 @@ public class Token {
 	/**
 	 * what type of token this is
 	 */
-	private final LexemeTerminal symbol;
+	private final Terminal terminal;
 	
 	/**
 	 * which line in the source file did this token start on
@@ -77,16 +77,9 @@ public class Token {
 	 * @param _lexeme
 	 * @param _line_number
 	 */
-	public Token(LexemeTerminal _symbol, int _line_number){
-		symbol = _symbol;
+	public Token(Terminal _terminal, int _line_number){
+		terminal = _terminal;
 		line_number = _line_number;
-	}
-
-	/**
-	 * @return the lexeme
-	 */
-	public String getLexeme() {
-		return symbol.getLexeme();
 	}
 
 	/**
@@ -106,6 +99,14 @@ public class Token {
 		return String.format("%-30s", getLexeme());
 	}
 	
+	/**
+	 * get the lexeme of the terminal we are wrapping
+	 * @return
+	 */
+	public String getLexeme() {
+		return terminal.getLexeme();
+	}
+
 	/**
 	 * factory that makes Tokens from a block
 	 * @param lexeme_block string that should contain one or more lexemes
@@ -130,21 +131,11 @@ public class Token {
 	}
 	
 	/**
-	 * special case for returning eof token
-	 * this was simpler than engineering around a nonsensical "eof lexeme"
-	 * @param line_number
-	 * @return Token
-	 */
-	public static Token eofToken(int line_number) {
-		return new Token(LexemeTerminal.eofSymbol(), line_number);
-	}
-	
-	/**
 	 * returns true if this is an eof token
 	 * this function is only going to be around for a short while until we refactor our Symbol hierarchy
 	 * @return boolean
 	 */
 	public boolean isEofToken() {
-		return symbol == LexemeTerminal.eofSymbol();
+		return terminal instanceof EofSymbol;
 	}
 }
