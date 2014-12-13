@@ -45,44 +45,17 @@ public class Symbol {
 	public static final Pattern REAL_PATTERN = Pattern.compile("^(\\d+\\.\\d+(E[+-]?\\d+)?)$", Pattern.CASE_INSENSITIVE);
 	
 	/**
-	 * enum that specifies the different options for what sort of symbol we might have 
-	 */
-	public enum Type {
-		PAREN_OPEN, PAREN_CLOSE, BRACKET_OPEN, BRACKET_CLOSE, 
-		COLON, SEMICOLON, PERIOD, COMMA, 
-		REL_OP, ADD_OP, MUL_OP, ASSIGN_OP, NOT_OP,
-		IF, THEN, ELSE, 
-		WHILE, DO,
-		VAR,
-		FUNCTION, PROCEDURE, 
-		ARRAY, OF, 
-		BEGIN, END, 
-		INTEGER_TYPE, REAL_TYPE, 
-		PROGRAM_START, EOF,
-		INTEGER_LITERAL, REAL_LITERAL, 
-		IDENTIFIER, 
-		FINAL_DOT,
-		ERROR
-	}
-	
-	/**
 	 * the lexeme for this symbol, redundant, but may be useful
 	 */
 	private String lexeme;
-	
-	/**
-	 * type of symbol this symbol is
-	 */
-	private Type type;
 
 	/**
 	 * constructor
 	 * @param _lexeme
 	 * @param _type
 	 */
-	public Symbol(String _lexeme, Symbol.Type _type) {
+	public Symbol(String _lexeme) {
 		lexeme = _lexeme;
-		type = _type;
 	}
 	
 	/**
@@ -92,38 +65,39 @@ public class Symbol {
 	 * @throws UnexpectedSymbolException 
 	 */
 	public static Symbol makeSymbol(String _lexeme) throws UnexpectedSymbolException {
-		Type type = determineType(_lexeme);
+		int type = determineType(_lexeme);
 		switch(type){
-			case INTEGER_LITERAL:
+			case 3:
 				//Going through double because Integer does not like scientific notation (e.g. 2342e2)
-				return new LiteralSymbol<Integer>(_lexeme, type, Double.valueOf(_lexeme).intValue());
-			case REAL_LITERAL:
-				return new LiteralSymbol<Double>(_lexeme, type, Double.valueOf(_lexeme));
+				return new LiteralSymbol<Integer>(_lexeme, Double.valueOf(_lexeme).intValue());
+			case 2:
+				return new LiteralSymbol<Double>(_lexeme, Double.valueOf(_lexeme));
 			default:
-				return new Symbol(_lexeme, type);
+				return new Symbol(_lexeme);
 		}
 	}
 	
 	/**
 	 * If we don't know the type, it can only be an identifier or number literal
 	 * Exceptions arise if we messed up the symbol table init, or we find an invalid character
+	 * when we refactor our classes this will be handled completely differently
 	 * @param lexeme
 	 * @return
 	 * @throws UnexpectedSymbolException 
 	 */
-	private static Type determineType(String lexeme) throws UnexpectedSymbolException {
+	private static int determineType(String lexeme) throws UnexpectedSymbolException {
 		Matcher identifier_matcher = IDENTIFIER_PATTERN.matcher(lexeme);
 		Matcher integer_matcher = INTEGER_PATTERN.matcher(lexeme);
 		Matcher real_matcher = REAL_PATTERN.matcher(lexeme);
-		Type return_type = null;
+		int return_type = -1;
 		if(identifier_matcher.matches()){
-			 return_type = Type.IDENTIFIER;
+			 return_type = 1;
 		}
 		else if (real_matcher.matches()) {
-			return_type = Type.REAL_LITERAL;
+			return_type = 2;
 		}
 		else if (integer_matcher.matches()) {
-			return_type = Type.INTEGER_LITERAL;
+			return_type = 3;
 		}
 		else {
 			throw new UnexpectedSymbolException("Unexpected symbol "+lexeme);
@@ -137,11 +111,13 @@ public class Symbol {
 	public String getLexeme() {
 		return lexeme;
 	}
-
+	
 	/**
-	 * @return the symbol type
+	 * special case for returning eof symbol
+	 * @return Symbol
 	 */
-	public Type getType() {
-		return type;
+	static final Symbol EOF = new Symbol("");
+	public static Symbol eofSymbol() {
+		return EOF;
 	}
 }

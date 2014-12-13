@@ -97,20 +97,13 @@ public class Token {
 	}
 
 	/**
-	 * @return the type
-	 */
-	public Symbol.Type getType() {
-		return symbol.getType();
-	}
-
-	/**
 	 * generates formatted output for presenting to the user
 	 * could have used toString, but I am not a fan of that method as there are a dozen different ways you might want to make something into a string
 	 * @return String with a small mini-report about this token
 	 */
 	public String print() {
 		//30 column aligned for prettification
-		return String.format("%-30s", getLexeme())+"Type:"+getType().toString();
+		return String.format("%-30s", getLexeme());
 	}
 	
 	/**
@@ -143,6 +136,15 @@ public class Token {
 	 * @return Token
 	 */
 	public static Token eofToken(int line_number) {
-		return new Token(new Symbol("",Symbol.Type.EOF), line_number);
+		return new Token(Symbol.eofSymbol(), line_number);
+	}
+	
+	/**
+	 * returns true if this is an eof token
+	 * this function is only going to be around for a short while until we refactor our Symbol hierarchy
+	 * @return boolean
+	 */
+	public boolean isEofToken() {
+		return symbol == Symbol.eofSymbol();
 	}
 }

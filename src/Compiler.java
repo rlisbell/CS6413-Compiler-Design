@@ -93,7 +93,7 @@ public class Compiler {
 				writer.write(next_token.print());
 				writer.newLine();
 			}
-			while(next_token.getType() != Symbol.Type.EOF);
+			while(!next_token.isEofToken());
 		} catch (IOException e) {
 			System.out.println("could not open file "+out_file_name+" for writing");
 			System.out.println(e.toString());

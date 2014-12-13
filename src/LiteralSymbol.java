@@ -12,8 +12,8 @@ public class LiteralSymbol<T> extends ValueSymbol<T> {
 	 * @param _lexeme
 	 * @param _type
 	 */
-	public LiteralSymbol(String _lexeme, Type _type, T _value) {
-		super(_lexeme, _type);
+	public LiteralSymbol(String _lexeme, T _value) {
+		super(_lexeme);
 		value = _value;
 	}
 
