@@ -51,204 +51,217 @@ public class NonTerminal implements Symbol {
 	public List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException {
 		switch(this.type) {
 			case Arguments:
-				switch(next_token.getLexeme()) {
-					case "(":
-						return Arrays.asList(
-							new LexemeTerminal("("), 
-							new NonTerminal(TYPE.ParameterList), 
-							new LexemeTerminal(")")
-						);
-					case ";":
-					case ":":
-						return Arrays.asList();
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals(new LexemeTerminal("("))) {
+					return Arrays.asList(
+						(Symbol)new LexemeTerminal("("), 
+						(Symbol)new NonTerminal(TYPE.ParameterList), 
+						(Symbol)new LexemeTerminal(")")
+					);
+				}
+				else if(next_token.equals(new LexemeTerminal(";")) || next_token.equals(new LexemeTerminal(":"))) {
+					return Arrays.asList();
 				}
 
 			case CompoundStatement:
 				switch(next_token.getLexeme()) {
+					case "begin":
+						return Arrays.asList(
+							(Symbol)new LexemeTerminal("begin"),
+							(Symbol)new NonTerminal(TYPE.OptionalStatements),
+							(Symbol)new LexemeTerminal("end")
+						);
 					default:
 						throw new UnexpectedTokenException(next_token);
 				}
 
 			case Declarations:
 				switch(next_token.getLexeme()) {
+					case "var":
+						return Arrays.asList(
+							(Symbol)new LexemeTerminal("var"),
+							(Symbol)new NonTerminal(TYPE.IdList),
+							(Symbol)new LexemeTerminal(":"),
+							(Symbol)new NonTerminal(TYPE.Type),
+							(Symbol)new LexemeTerminal(";"),
+							(Symbol)new NonTerminal(TYPE.Declarations)
+						);
+					case "function":
+					case "procedure":
+					case "begin":
+						return Arrays.asList();
 					default:
 						throw new UnexpectedTokenException(next_token);
 				}
 
 			case Expression:
 				switch(next_token.getLexeme()) {
+					case id:
+					case num:
+					case "(":
+					case "not":
+					case "+":
+					case "-":
+						return Arrays.asList(
+							(Symbol)new NonTerminal(TYPE.SimpleExpression),
+							(Symbol)new NonTerminal(TYPE.ExpressionPrime)
+						);
 					default:
 						throw new UnexpectedTokenException(next_token);
 				}
 
 			case ExpressionList:
 				switch(next_token.getLexeme()) {
+					case "id":
+					case "id":
+					case "id":
+					case "id":
+					case "id":
+					case "id":
+						return Arrays.asList(
+							new LexemeTerminal("var"),
+							new NonTerminal(TYPE.IdList),
+							new LexemeTerminal(":"),
+							new NonTerminal(TYPE.Type),
+							new LexemeTerminal(";"),
+							new NonTerminal(TYPE.Declarations)
+						);
 					default:
 						throw new UnexpectedTokenException(next_token);
 				}
 
 			case ExpressionListPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case ExpressionPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case Factor:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case FactorPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case IdList:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case IdListPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case IdStatement:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case IdStatementPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case OptionalStatements:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case ParameterList:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case ParameterListPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case ProcedureStatement:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case Program:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case Sign:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case SimpleExpression:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case SimpleExpressionPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case StandardType:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case Statement:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case StatementList:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case StatementListPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case SubprogramDeclaration:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case SubprogramDeclarations:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case SubprogramHead:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case Term:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case TermPrime:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case Type:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			case VariableStatement:
-				switch(next_token.getLexeme()) {
-					default:
-						throw new UnexpectedTokenException(next_token);
+				if(next_token.equals() {
+					return Arrays.asList();
 				}
 
 			default:
