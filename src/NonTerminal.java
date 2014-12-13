@@ -254,7 +254,19 @@ public class NonTerminal implements Symbol {
 			default:
 				throw new UnexpectedTokenException(next_token);
 		}
-		return null;
+	}
+
+	/**
+	 * equivilence
+	 */
+	@Override
+	public boolean equals(Symbol other) {
+		if(other.getClass().equals(getClass())){
+			 return ((NonTerminal)other).type.equals(type);
+		}
+		else{
+			return false;
+		}
 	}
 
 }

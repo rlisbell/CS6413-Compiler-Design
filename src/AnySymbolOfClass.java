@@ -30,4 +30,17 @@ public class AnySymbolOfClass implements Symbol {
 		return new LinkedList<Symbol>();
 	}
 
+	/**
+	 * equivilence
+	 */
+	@Override
+	public boolean equals(Symbol other) {
+		if(other.getClass().equals(getClass())){
+			 return ((AnySymbolOfClass)other).base_class.equals(base_class);
+		}
+		else{
+			return base_class.isAssignableFrom(other.getClass());
+		}
+	}
+
 }

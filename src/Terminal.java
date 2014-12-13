@@ -9,7 +9,22 @@ public abstract class Terminal implements Symbol {
 	 * @return
 	 */
 	public abstract String getLexeme();
-	
+
+	/**
+	 * Equivalence
+	 */
+	@Override
+	public boolean equals(Symbol other){
+		if(other.getClass().equals(getClass())){
+			 return ((Terminal)other).getLexeme().equals(getLexeme());
+		}
+		else if(other instanceof AnySymbolOfClass){
+			return other.equals(this);
+		}
+		else{
+			return false;
+		}
+	}
 
 
 	/**

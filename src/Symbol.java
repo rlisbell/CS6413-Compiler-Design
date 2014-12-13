@@ -34,5 +34,12 @@ public interface Symbol {
 	 * @param next_token -- the token we just pulled out of the source code
 	 */
 	public List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException;
+	
+
+	
+	/**
+	 * Equivalence
+	 */
+	public abstract boolean equals(Symbol other);
 
 }
