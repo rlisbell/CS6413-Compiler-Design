@@ -142,4 +142,13 @@ public class Token {
 	public Class<? extends Terminal> getTerminalClass() {
 		return terminal.getClass();
 	}
+	
+	/**
+	 * returns true if the held terminal is equal to the passed symbol
+	 * @param symbol
+	 * @return
+	 */
+	public boolean equals(Symbol symbol) {
+		return terminal.equals(symbol);
+	}
 }
