@@ -1,6 +1,6 @@
 /**
  * class is tagging class that means this was an relational operator
- * @author bobboau
+ * @author Mike Abegg
  *
  */
 public class RelationalOperatorSymbol extends LexemeTerminal {

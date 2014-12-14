@@ -2,6 +2,7 @@ import java.util.Hashtable;
 
 /**
  * Represents the symbol table
+ * assumes anything not already in symbol table is an identifier and adds it on first discovery
  * @author Mike, Ryan
  */
 public class SymbolTable extends Hashtable<String, LexemeTerminal> {

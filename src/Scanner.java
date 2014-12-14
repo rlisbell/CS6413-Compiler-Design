@@ -11,7 +11,7 @@ public class Scanner {
 	\*********************/
 	
 	/**
-	 * @author bobboau
+	 * @author Mike Abegg
 	 * common base for all scanner exceptions
 	 */
 	public class ScannerException extends Exception {
@@ -23,7 +23,7 @@ public class Scanner {
 	}
 	
 	/**
-	 * @author bobboau
+	 * @author Mike Abegg
 	 * thrown when the file ends while in a comment
 	 */
 	public class CommentNotClosedException extends ScannerException {
@@ -35,7 +35,7 @@ public class Scanner {
 	}
 	
 	/**
-	 * @author bobboau
+	 * @author Mike Abegg
 	 * thrown when there is another comment inside a comment
 	 */
 	public class RecursiveCommentException extends ScannerException {

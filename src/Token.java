@@ -4,9 +4,6 @@ import java.util.regex.Pattern;
 /**
  * class that represents a token of code
  * the smallest atomic chunk that might have any meaning
- * It is worth noting that while we could check that keywords are
- * surrounded by whitespace during token generation, this step has
- * been deemed better left for the parser at this point...
  * 
  * class is immutable
  * @author Mike, Ryan
@@ -18,7 +15,7 @@ public class Token {
 	\*********************/
 	
 	/**
-	 * @author bobboau
+	 * @author Mike Abegg
 	 * common base for all Token exceptions
 	 */
 	public static class TokenException extends Exception {
@@ -30,7 +27,7 @@ public class Token {
 	}
 	
 	/**
-	 * @author bobboau
+	 * @author Mike Abegg
 	 * thrown when a lexeme cannot be found
 	 */
 	public static class LexemeNotFoundException extends TokenException {
@@ -146,6 +143,10 @@ public class Token {
 		return terminal;
 	}
 
+	/**
+	 * returns the Class metadata about the symbol
+	 * @return
+	 */
 	public Class<? extends Terminal> getTerminalClass() {
 		return terminal.getClass();
 	}

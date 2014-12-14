@@ -1,7 +1,7 @@
 import java.util.List;
 
 /**
- * @author bobboau
+ * @author Mike Abegg
  *
  */
 public abstract class Symbol {
@@ -70,8 +70,10 @@ public abstract class Symbol {
 	
 	
 	/**
-	 * due to the way that equivalence works between AnySymbolOfClass and everything else any symbol can be equivalent to any other symbol
-	 * so we do this to force HashMap into it's conflict resolution mode full time
+	 * due to the way that equivalence works between AnySymbolOfClass and everything else, any symbol can be equivalent to any other symbol
+	 * so we do this to force HashMap into it's conflict resolution mode full time, this is acceptable because the hash map being used with
+	 * Symbols as keys will only have at most half a dozen positions, and will typically only have 2. we are basically just using HashMap
+	 * in this instance as a convenience interface for a linear search
 	 */
 	@Override
 	public int hashCode(){

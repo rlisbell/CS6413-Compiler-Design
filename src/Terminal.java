@@ -1,7 +1,11 @@
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * class represents Terminal Symbols 
+ * @author Mike Abegg
+ *
+ */
 public abstract class Terminal extends Symbol {
 
 	/**
@@ -48,6 +52,9 @@ public abstract class Terminal extends Symbol {
 		return new LinkedList<Symbol>();
 	}
 
+	/**
+	 * returns if when this symbol is the current symbol if a new Token should be pulled
+	 */
 	@Override
 	public boolean shouldGetToken() {
 		return true;
