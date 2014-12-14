@@ -1,4 +1,3 @@
-import java.util.List;
 
 
 public class EofSymbol extends Terminal {

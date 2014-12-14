@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a NonTerminal
@@ -41,6 +42,8 @@ public class NonTerminal implements Symbol {
 		FactorPrime,
 		Sign
 	}
+	
+	static Map<TYPE,Map<Symbol, List<Symbol>>> parse_table;
 	
 	private TYPE type;
 	
@@ -260,8 +263,14 @@ public class NonTerminal implements Symbol {
 				}
 
 			case VariableStatement:
-				if(next_token.equals() {
-					return Arrays.asList();
+				if(next_token.equals(new AnySymbolOfClass(AssignmentOperatorSymbol.class))) {
+					return Arrays.asList(
+						(Symbol)new AnySymbolOfClass(AssignmentOperatorSymbol.class)
+					);
+				}else if(next_token.equals(new LexemeTerminal("["))) {
+					return Arrays.asList(
+						(Symbol)new LexemeTerminal("[")
+					);
 				}
 
 			default:
