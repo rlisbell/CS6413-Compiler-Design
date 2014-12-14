@@ -93,7 +93,7 @@ Production:LexemeTerminal("while")|NonTerminal(Expressions)|LexemeTerminal("do")
 Symbol:LexemeTerminal("while")
 
 Type:IdStatement
-Production:AnySymbolOfClass(IdentifierSymbol))|NonTerminal(IdStatement`)
+Production:AnySymbolOfClass(IdentifierSymbol)|NonTerminal(IdStatement`)
 Symbol:AnySymbolOfClass(IdentifierSymbol)
 
 Type:IdStatement`
