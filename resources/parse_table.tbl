@@ -87,9 +87,9 @@ Production:NonTerminal(IdStatement)
 Symbol:AnySymbolOfClass(IdentifierSymbol)
 Production:NonTerminal(CompoundStatement)
 Symbol:LexemeTerminal("begin")
-Production:LexemeTerminal("if")|NonTerminal(Expressions)|LexemeTerminal("then")|NonTerminal(Statement)|LexemeTerminal("else")|NonTerminal(Statement)
+Production:LexemeTerminal("if")|NonTerminal(Expression)|LexemeTerminal("then")|NonTerminal(Statement)|LexemeTerminal("else")|NonTerminal(Statement)
 Symbol:LexemeTerminal("if")
-Production:LexemeTerminal("while")|NonTerminal(Expressions)|LexemeTerminal("do")|NonTerminal(Statement)
+Production:LexemeTerminal("while")|NonTerminal(Expression)|LexemeTerminal("do")|NonTerminal(Statement)
 Symbol:LexemeTerminal("while")
 
 Type:IdStatement
@@ -145,7 +145,7 @@ Type:SimpleExpression`
 Production:AnySymbolOfClass(AdditionOperatorSymbol)|NonTerminal(Term)|NonTerminal(SimpleExpression`)
 Symbol:AnySymbolOfClass(AdditionOperatorSymbol)
 Production:
-Symbol:AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerminal("]")|LexemeTerminal(",")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")
+Symbol:AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerminal("]")|LexemeTerminal(",")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")|LexemeTerminal("do")|LexemeTerminal("then")
 
 Type:Term
 Production:NonTerminal(Factor)|NonTerminal(Term`)
@@ -155,7 +155,7 @@ Type:Term`
 Production:AnySymbolOfClass(MultiplicationOperatorSymbol)|NonTerminal(Factor)|NonTerminal(Term`)
 Symbol:AnySymbolOfClass(MultiplicationOperatorSymbol)
 Production:
-Symbol:AnySymbolOfClass(AdditionOperatorSymbol)|AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerminal("]")|LexemeTerminal(",")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")
+Symbol:AnySymbolOfClass(AdditionOperatorSymbol)|AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerminal("]")|LexemeTerminal(",")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")|LexemeTerminal("do")|LexemeTerminal("then")
 
 Type:Factor
 Production:AnySymbolOfClass(IdentifierSymbol)|NonTerminal(Factor`)
@@ -169,7 +169,7 @@ Symbol:LexemeTerminal("not")
 
 Type:Factor`
 Production:
-Symbol:AnySymbolOfClass(MultiplicationOperatorSymbol)|AnySymbolOfClass(AdditionOperatorSymbol)|AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerminal("]")|LexemeTerminal(",")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")
+Symbol:AnySymbolOfClass(MultiplicationOperatorSymbol)|AnySymbolOfClass(AdditionOperatorSymbol)|AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerminal("]")|LexemeTerminal(",")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")|LexemeTerminal("do")|LexemeTerminal("then")
 Production:LexemeTerminal("(")|NonTerminal(ExpressionList)|LexemeTerminal(")")
 Symbol:LexemeTerminal("(")
 
