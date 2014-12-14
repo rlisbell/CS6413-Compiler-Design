@@ -26,7 +26,7 @@ public class ParseTableGenerator {
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static Map<String, Map<Symbol, List<Symbol>>> generateHashMap(String file_path) throws ParseTableException, ClassNotFoundException, IOException {
+	public static Map<String, Map<Symbol, List<Symbol>>> generateHashMap(String file_path) throws ParseTableException, IOException {
 
 		File file = new File(file_path);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -62,7 +62,12 @@ public class ParseTableGenerator {
 						working_sym = createNonTerminal(extractArg(str));
 					}
 					else if(str.startsWith("AnySymbolOfClass")) {
-						working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
+						try {
+							working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
+						} catch (ClassNotFoundException e) {
+							reader.close();
+							throw new ParseTableException("Bad Class '"+extractArg(str)+"' on line "+line_number+": "+str);
+						}
 					}
 					else if(str.isEmpty()) {
 						continue;
@@ -82,7 +87,12 @@ public class ParseTableGenerator {
 						working_sym = createLexemeTerminal(extractArg(str));
 					}
 					else if(str.startsWith("AnySymbolOfClass")) {
-						working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
+						try {
+							working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
+						} catch (ClassNotFoundException e) {
+							reader.close();
+							throw new ParseTableException("Bad Class '"+extractArg(str)+"' on line "+line_number+": "+str);
+						}
 					}
 					else {
 						reader.close();
