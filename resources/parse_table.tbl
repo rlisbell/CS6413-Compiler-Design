@@ -99,7 +99,7 @@ Symbol:AnySymbolOfClass(IdentifierSymbol)
 Type:IdStatement`
 Production:NonTerminal(VariableStatement)
 Symbol:AnySymbolOfClass(AssignmentOperatorSymbol)|LexemeTerminal("[")
-Production:ProcedureStatement
+Production:NonTerminal(ProcedureStatement)
 Symbol:LexemeTerminal("(")|LexemeTerminal("else")|LexemeTerminal(";")|LexemeTerminal("end")
 
 
@@ -117,7 +117,7 @@ Symbol:LexemeTerminal("(")
 
 Type:ExpressionList
 Production:NonTerminal(Expression)|NonTerminal(ExpressionList`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol<int>)|LexemeTerminal("(")|LexemeTerminal("not")|LexemeTerminal("+")|LexemeTerminal("-")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|LexemeTerminal("+")|LexemeTerminal("-")
 
 Type:ExpressionList`
 Production:LexemeTerminal(",")|NonTerminal(Expression)|NonTerminal(ExpressionList`)
@@ -127,7 +127,7 @@ Symbol:LexemeTerminal(")")
 
 Type:Expression
 Production:NonTerminal(SimpleExpression)|NonTerminal(Expression`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol<int>)|LexemeTerminal("(")|LexemeTerminal("not")|LexemeTerminal("+")|LexemeTerminal("-")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|LexemeTerminal("+")|LexemeTerminal("-")
 
 Type:Expression`
 Production:
@@ -137,7 +137,7 @@ Symbol:AnySymbolOfClass(RelationalOperatorSymbol)
 
 Type:SimpleExpression
 Production:NonTerminal(Term)|NonTerminal(SimpleExpression`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol<int>)|LexemeTerminal("(")|LexemeTerminal("not")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
 Production:NonTerminal(Sign)|NonTerminal(Term)|NonTerminal(SimpleExpression`)
 Symbol:LexemeTerminal("+")|LexemeTerminal("-")
 
@@ -149,9 +149,9 @@ Symbol:AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerm
 
 Type:Term
 Production:NonTerminal(Factor)|NonTerminal(Term`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol<int>)|LexemeTerminal("(")|LexemeTerminal("not")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
 
-Symbol:Term`
+Type:Term`
 Production:AnySymbolOfClass(MultiplicationOperatorSymbol)|NonTerminal(Factor)|NonTerminal(Term`)
 Symbol:AnySymbolOfClass(MultiplicationOperatorSymbol)
 Production:
@@ -160,8 +160,8 @@ Symbol:AnySymbolOfClass(AdditionOperatorSymbol)|AnySymbolOfClass(RelationalOpera
 Type:Factor
 Production:AnySymbolOfClass(IdentifierSymbol)|NonTerminal(Factor`)
 Symbol:AnySymbolOfClass(IdentifierSymbol)
-Production:AnySymbolOfClass(LiteralSymbol<int>)
-Symbol:AnySymbolOfClass(LiteralSymbol<int>)
+Production:AnySymbolOfClass(LiteralSymbol)
+Symbol:AnySymbolOfClass(LiteralSymbol)
 Production:LexemeTerminal("(")|NonTerminal(Expression)|LexemeTerminal(")")
 Symbol:LexemeTerminal("(")
 Production:LexemeTerminal("not")|NonTerminal(Factor)
