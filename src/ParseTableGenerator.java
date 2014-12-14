@@ -12,7 +12,7 @@ import java.io.*;
 public class ParseTableGenerator {
 	
 	/**
-	 * Error that origonated in reading the parse table file
+	 * Error that originated in reading the parse table file
 	 *
 	 */
 	public static class ParseTableException extends Exception {
@@ -25,6 +25,11 @@ public class ParseTableGenerator {
 	
 	/**
 	 * Creates a hash map from the provided file
+	 * It's a map that maps...
+	 * A String (the symbol type) to a map that maps...
+	 * A Symbol (the expected token) to a list of...
+	 * Symbols (the production)
+	 * example entry: <Arguments, <(, <(, ParameterList, )>>>
 	 * @param file_path
 	 * @return
 	 * @throws ParseTableException
@@ -49,13 +54,13 @@ public class ParseTableGenerator {
 			if(line.isEmpty()) continue; //skip blanks lines
 			
 			split_line = line.split(":",2); //only split into two
-			if(split_line[0].equals("Type")) {
+			if(split_line[0].equals("Type")) { //Set the current symbol type
 				type = split_line[1];
 			}
-			else if(split_line[0].equals("Production")) {
+			else if(split_line[0].equals("Production")) { //Set the current production
 				production = loadProduction(reader, line_number, split_line[1]);
 			}
-			else if(split_line[0].equals("Symbol")) {
+			else if(split_line[0].equals("Symbol")) { //load an entry with the given tokens
 				loadSymbol(reader, parse_table, line_number, type, split_line[1], production);
 			}
 			else {
@@ -85,8 +90,11 @@ public class ParseTableGenerator {
 		Map<Symbol, List<Symbol>> value_map;
 		Symbol working_sym = null;
 		if(!parse_table.containsKey(type)) {
+			//value map is a reference!
+			//need to generate a NEW inner map if one doesn't already exist for this type
 			parse_table.put(type, new HashMap<Symbol, List<Symbol>>());
 		}
+		//now we can safely get the map
 		value_map = parse_table.get(type);
 		symbol_strings = line_symbols.split("\\|");
 		for(String str : symbol_strings) {
@@ -143,6 +151,7 @@ public class ParseTableGenerator {
 				}
 			}
 			else if(str.isEmpty()) {
+				//allows for empty productions
 				continue;
 			}
 			else {

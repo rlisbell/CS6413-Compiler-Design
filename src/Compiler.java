@@ -7,7 +7,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.Stack;
 import java.util.List;
 
@@ -101,14 +100,18 @@ public class Compiler {
 	    try {
 		    file.createNewFile();
 			writer = new BufferedWriter(new FileWriter(file));
+			//hardcoded location of table file
 			NonTerminal.loadParseTable("resources/parse_table.tbl");
 
-			//Parse through the program
+			/**Parse through the program
+			 * Note there is no parser class, the functionality is small enough to put here
+			 * and at this point our "compiler" is really just a parser
+			 */
 			Token token;
 			Symbol symbol;
-			List<Symbol> production; //is this the correct type?
-			Stack<Symbol> stack = new Stack<Symbol>(); //is this the correct type?
-			stack.push(new NonTerminal("Program"));
+			List<Symbol> production;
+			Stack<Symbol> stack = new Stack<Symbol>();
+			stack.push(new NonTerminal("Program")); //initial symbol
 			token = scanner.getNextToken(symbol_table);	
 			while(!stack.empty()) {
 				symbol = stack.pop();
@@ -116,10 +119,10 @@ public class Compiler {
 				writer.write(symbol.print(token));
 				writer.newLine();
 				production = symbol.getProduction(token);
-				for(Symbol production_sym : production) { //for Symbol or...?
+				for(Symbol production_sym : production) {
 					stack.push(production_sym);
 				}
-				if(symbol.shouldGetToken() ) { //is this the correct instanceof?
+				if(symbol.shouldGetToken() ) { 
 					token = scanner.getNextToken(symbol_table);
 				}
 			}
