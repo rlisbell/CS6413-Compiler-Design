@@ -63,7 +63,7 @@ Production:
 Symbol:LexemeTerminal(")")
 
 Type:CompoundStatement
-Production:LexemeTerminal("begin")|NonTerminal(OptionalStatements)|LexemeTerminal("end)
+Production:LexemeTerminal("begin")|NonTerminal(OptionalStatements)|LexemeTerminal("end")
 Symbol:LexemeTerminal("begin")
 
 Type:OptionalStatements

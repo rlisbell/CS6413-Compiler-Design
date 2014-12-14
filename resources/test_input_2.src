@@ -10,6 +10,6 @@ PROGRAM Sample (Input, Output);
     if z < zz then zz := x1-5 else x1 := z+4
   END;
   BEGIN
-    x2[3] + 3.5
+    x2[3] := x1 + 3.5
   END
   .
