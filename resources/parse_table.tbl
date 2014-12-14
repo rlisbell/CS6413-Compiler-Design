@@ -21,7 +21,7 @@ Symbol:LexemeTerminal("function")|LexemeTerminal("procedure")|LexemeTerminal("be
 Type:Type
 Production:NonTerminal(StandardType)
 Symbol:LexemeTerminal("integer")|LexemeTerminal("real")
-Production:LexemeTerminal("array")|LexemeTerminal("[")|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal(".")|LexemeTerminal(".")|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("]")|LexemeTerminal("of")|NonTerminal(StandardType)
+Production:LexemeTerminal("array")|LexemeTerminal("[")|AnySymbolOfClass(NumberSymbol)|LexemeTerminal(".")|LexemeTerminal(".")|AnySymbolOfClass(NumberSymbol)|LexemeTerminal("]")|LexemeTerminal("of")|NonTerminal(StandardType)
 Symbol:LexemeTerminal("array")
 
 Type:StandardType
@@ -117,7 +117,7 @@ Symbol:LexemeTerminal("(")
 
 Type:ExpressionList
 Production:NonTerminal(Expression)|NonTerminal(ExpressionList`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|AnySymbolOfClass(AdditionOperatorSymbol)
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(NumberSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|AnySymbolOfClass(AdditionOperatorSymbol)
 
 Type:ExpressionList`
 Production:LexemeTerminal(",")|NonTerminal(Expression)|NonTerminal(ExpressionList`)
@@ -127,7 +127,7 @@ Symbol:LexemeTerminal(")")
 
 Type:Expression
 Production:NonTerminal(SimpleExpression)|NonTerminal(Expression`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|AnySymbolOfClass(AdditionOperatorSymbol)
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(NumberSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|AnySymbolOfClass(AdditionOperatorSymbol)
 
 Type:Expression`
 Production:
@@ -137,7 +137,7 @@ Symbol:AnySymbolOfClass(RelationalOperatorSymbol)
 
 Type:SimpleExpression
 Production:NonTerminal(Term)|NonTerminal(SimpleExpression`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(NumberSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
 Production:NonTerminal(Sign)|NonTerminal(Term)|NonTerminal(SimpleExpression`)
 Symbol:AnySymbolOfClass(AdditionOperatorSymbol)
 
@@ -149,7 +149,7 @@ Symbol:AnySymbolOfClass(RelationalOperatorSymbol)|LexemeTerminal(")")|LexemeTerm
 
 Type:Term
 Production:NonTerminal(Factor)|NonTerminal(Term`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(NumberSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
 
 Type:Term`
 Production:AnySymbolOfClass(MultiplicationOperatorSymbol)|NonTerminal(Factor)|NonTerminal(Term`)
@@ -160,8 +160,8 @@ Symbol:AnySymbolOfClass(AdditionOperatorSymbol)|AnySymbolOfClass(RelationalOpera
 Type:Factor
 Production:AnySymbolOfClass(IdentifierSymbol)|NonTerminal(Factor`)
 Symbol:AnySymbolOfClass(IdentifierSymbol)
-Production:AnySymbolOfClass(LiteralSymbol)
-Symbol:AnySymbolOfClass(LiteralSymbol)
+Production:AnySymbolOfClass(NumberSymbol)
+Symbol:AnySymbolOfClass(NumberSymbol)
 Production:LexemeTerminal("(")|NonTerminal(Expression)|LexemeTerminal(")")
 Symbol:LexemeTerminal("(")
 Production:LexemeTerminal("not")|NonTerminal(Factor)

@@ -75,11 +75,11 @@ public class LexemeTerminal extends Terminal {
 			return new IdentifierSymbol(lexeme);
 		}
 		else if (real_matcher.matches()) {
-			return new LiteralSymbol<Double>(lexeme, Double.valueOf(lexeme));
+			return new RealLiteralSymbol(lexeme, Double.valueOf(lexeme));
 		}
 		else if (integer_matcher.matches()) {
 			//Going through double because Integer does not like scientific notation (e.g. 2342e2)
-			return new LiteralSymbol<Integer>(lexeme, Double.valueOf(lexeme).intValue());
+			return new IntegerLiteralSymbol(lexeme, Double.valueOf(lexeme).intValue());
 		}
 		else {
 			throw new UnexpectedSymbolException("Unexpected symbol "+lexeme);
