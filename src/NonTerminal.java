@@ -45,9 +45,9 @@ public class NonTerminal extends Symbol {
 	
 	static Map<TYPE,Map<Symbol, List<Symbol>>> parse_table;
 	
-	private TYPE type;
+	private String type;
 	
-	public NonTerminal(TYPE type) {
+	public NonTerminal(String type) {
 		this.type = type;
 	}
 
