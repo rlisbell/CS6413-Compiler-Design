@@ -120,7 +120,7 @@ public class Compiler {
 				for(Symbol production_sym : production) { //for Symbol or...?
 					stack.push(production_sym);
 				}
-				if(symbol instanceof Terminal ) { //is this the correct instanceof?
+				if(symbol.shouldGetToken() ) { //is this the correct instanceof?
 					token = scanner.getNextToken(symbol_table);
 				}
 			}

@@ -66,4 +66,9 @@ public abstract class Symbol {
 	public int hashCode(){
 		return 0;
 	}
+	
+	/**
+	 * tells if this symbol when pulled from the stack should result in pulling a token from the source file
+	 */
+	abstract public boolean shouldGetToken();
 }

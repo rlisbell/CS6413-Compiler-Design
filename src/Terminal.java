@@ -47,4 +47,9 @@ public abstract class Terminal extends Symbol {
 		}
 		return new LinkedList<Symbol>();
 	}
+
+	@Override
+	public boolean shouldGetToken() {
+		return true;
+	}
 }

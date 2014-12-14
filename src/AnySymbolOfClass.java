@@ -48,4 +48,15 @@ public class AnySymbolOfClass extends Symbol {
 		}
 	}
 
+	@Override
+	public boolean shouldGetToken() {
+		if(Terminal.class.isAssignableFrom(base_class)){
+			return true;
+		}
+		if(NonTerminal.class.isAssignableFrom(base_class)){
+			return false;
+		}
+		return false;
+	}
+
 }

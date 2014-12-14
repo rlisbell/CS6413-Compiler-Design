@@ -72,4 +72,9 @@ public class NonTerminal extends Symbol {
 		}
 	}
 
+	@Override
+	public boolean shouldGetToken() {
+		return false;
+	}
+
 }
