@@ -80,7 +80,10 @@ public class ParseTableGenerator {
 				}
 			}
 			else if(split_line[0].equals("Symbol")) {
-				value_map = new HashMap<Symbol, List<Symbol>>();
+				if(!parse_table.containsKey(type)) {
+					parse_table.put(type, new HashMap<Symbol, List<Symbol>>());
+				}
+				value_map = parse_table.get(type);
 				symbol_strings = split_line[1].split("\\|");
 				for(String str : symbol_strings) {
 					if(str.startsWith("LexemeTerminal")) {
@@ -101,10 +104,6 @@ public class ParseTableGenerator {
 					//populate the inner map
 					value_map.put(working_sym, production);
 				}
-				//populate the outer map
-				parse_table.put(
-						type, value_map
-					);
 			}
 			else {
 				reader.close();
