@@ -77,6 +77,10 @@ public class NonTerminal extends Symbol {
 		}
 	}
 
+	/**
+	 * returns if we should pull another Token from the source code file if this is the current Symbol
+	 * for NonTerminals this is always false
+	 */
 	@Override
 	public boolean shouldGetToken() {
 		return false;

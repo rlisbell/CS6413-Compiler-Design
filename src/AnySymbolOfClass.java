@@ -61,6 +61,7 @@ public class AnySymbolOfClass extends Symbol {
 
 	/**
 	 * returns true if this class should result in another Token getting pulled from the source file
+	 * if the matching class is terminal then yest, if non-terminal then no, if something else... probably also no
 	 */
 	@Override
 	public boolean shouldGetToken() {
