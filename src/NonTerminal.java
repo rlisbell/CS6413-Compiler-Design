@@ -54,9 +54,9 @@ public class NonTerminal extends Symbol {
 	/**
 	 * prints terminal type
 	 */
-	public String print() {
+	public String print(Token found) {
 		//30 column aligned for prettification
-		return String.format("%-30s", type);
+		return "NonTerminal: \""+type+"\"";
 	}
 
 	/**

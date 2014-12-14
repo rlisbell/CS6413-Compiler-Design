@@ -29,9 +29,9 @@ public abstract class Terminal extends Symbol {
 	/**
 	 * Print terminal lexeme
 	 */
-	public String print(){
+	public String print(Token found){
 		//30 column aligned for prettification
-		return String.format("%-30s", getLexeme());
+		return getLexeme();
 	}
 
 	/**

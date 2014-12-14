@@ -18,7 +18,7 @@ public abstract class Symbol {
 	}
 	
 	/**
-	 * common base for all Symbol exceptions
+	 * error thrown when we find a token we were not expecting
 	 */
 	public static class UnexpectedTokenException extends SymbolException {
 		private static final long serialVersionUID = -515908850221632681L;
@@ -35,11 +35,22 @@ public abstract class Symbol {
 	 */
 	public abstract List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException;
 	
+
 	/**
 	 * Print appropriate name/value for the symbol
 	 * @return
 	 */
-	public abstract String print();
+	public String print(){
+		return print(null);
+	}
+
+	/**
+	 * Print appropriate name/value for the symbol
+	 * given an optional found token
+	 * @return
+	 */
+	public abstract String print(Token found);
+	
 	
 	/**
 	 * Equivalence

@@ -16,9 +16,9 @@ public class AnySymbolOfClass extends Symbol {
 	 */
 	private Class<? extends Symbol> base_class;
 	
-	public String print() {
+	public String print(Token found) {
 		//30 column aligned for prettification
-		return String.format("%-30s", base_class.getName());
+		return base_class.getName()+": '"+found.print()+"'";
 	}
 
 	public AnySymbolOfClass(Class<? extends Symbol> _base_class) {

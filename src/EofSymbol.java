@@ -15,5 +15,13 @@ public class EofSymbol extends Terminal {
 	{
 		return "";
 	}
+	
+	/**
+	 * Print
+	 */
+	public String print(Token found){
+		return String.format("%-30s", "End Of File");
+	}
+
 
 }

@@ -95,8 +95,7 @@ public class Token {
 	 * @return String with a small mini-report about this token
 	 */
 	public String print() {
-		//30 column aligned for prettification
-		return String.format("%-30s", getLexeme());
+		return terminal.print();
 	}
 	
 	/**

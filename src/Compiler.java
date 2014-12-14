@@ -112,8 +112,8 @@ public class Compiler {
 			token = scanner.getNextToken(symbol_table);	
 			while(!stack.empty()) {
 				symbol = stack.pop();
-				System.out.println(symbol.print());
-				writer.write(symbol.print());
+				System.out.println(symbol.print(token));
+				writer.write(symbol.print(token));
 				writer.newLine();
 				production = symbol.getProduction(token);
 				for(Symbol production_sym : production) { //for Symbol or...?
