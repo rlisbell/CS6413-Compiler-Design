@@ -1,8 +1,8 @@
 PROGRAM Sample (Input, Output);
   VAR {comment alongside code}
      x, y: integer;
-     x1: real;
-     x2: array [ 1 .. 5 ] of integer;
+     var x1: real;
+     var x2: array [ 1 .. 5 ] of integer;
   FUNCTION someFunc (z:integer) : integer;
   VAR zz:integer;
   BEGIN
