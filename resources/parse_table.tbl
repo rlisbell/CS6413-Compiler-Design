@@ -31,7 +31,7 @@ Production:LexemeTerminal("real")
 Symbol:LexemeTerminal("real")
 
 Type:SubprogramDeclarations
-Production:NonTerminal(SubprogramDeclaration)|LexemeTerminal(";")|NonTerminal(SubprogramDeclarations)
+Production:NonTerminal(SubprogramDeclaration)|NonTerminal(SubprogramDeclarations)|LexemeTerminal(";")
 Symbol:LexemeTerminal("function")|LexemeTerminal("procedure")
 Production:
 Symbol:LexemeTerminal("begin")

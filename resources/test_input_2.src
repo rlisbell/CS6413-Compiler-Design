@@ -8,7 +8,7 @@ PROGRAM Sample (Input, Output);
   BEGIN
     zz := 35;
     if z < zz then zz := x1-5 else x1 := z+4
-  END
+  END;
   BEGIN
     x2[3] + 3.5
   END
