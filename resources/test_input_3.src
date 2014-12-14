@@ -1,6 +1,6 @@
 PROGRAM Average;
   VAR Average : Integer;
-      Sum, Val1, Val2, Val3 : Real;
+  VAR Sum, Val1, Val2, Val3 : Real;
   BEGIN
     Val1 := 6.0;
     Val2 := 4;			{mixed type assignment, but we are not doing semantic analysis so who cares}
