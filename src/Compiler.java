@@ -116,7 +116,6 @@ public class Compiler {
 				writer.write(symbol.print());
 				writer.newLine();
 				production = symbol.getProduction(token);
-				Collections.reverse(production);
 				for(Symbol production_sym : production) { //for Symbol or...?
 					stack.push(production_sym);
 				}

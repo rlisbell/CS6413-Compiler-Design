@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -101,6 +102,8 @@ public class ParseTableGenerator {
 						reader.close();
 						throw new ParseTableException("Bad symbol on line "+line_number+": "+str);
 					}
+					//the parsing stack wants this in reverse order
+					Collections.reverse(production);
 					//populate the inner map
 					value_map.put(working_sym, production);
 				}
