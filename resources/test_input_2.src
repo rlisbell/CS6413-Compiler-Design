@@ -1,12 +1,15 @@
 PROGRAM Sample (Input, Output);
   VAR {comment alongside code}
-     x := -15;
-     y := 3.14;
-     x1:= 45E2;
-     x2:= 4.32E5;
-     <> <= >= > < 4<>5 OR AND DIV MOD
-     10MOD4
+     x, y: integer;
+     x1: real;
+     x2: array [ 1 .. 5 ] of integer;
+  FUNCTION someFunc (z:integer) : integer;
+  VAR zz:integer;
   BEGIN
-  {here is a comment}
-    WriteLn(x)
-  END.
+    zz := 35;
+    if z < zz then zz := x1-5 else x1 := z+4
+  END
+  BEGIN
+    x2[3] + 3.5
+  END
+  .
