@@ -117,7 +117,7 @@ Symbol:LexemeTerminal("(")
 
 Type:ExpressionList
 Production:NonTerminal(Expression)|NonTerminal(ExpressionList`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|LexemeTerminal("+")|LexemeTerminal("-")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|AnySymbolOfClass(AdditionOperatorSymbol)
 
 Type:ExpressionList`
 Production:LexemeTerminal(",")|NonTerminal(Expression)|NonTerminal(ExpressionList`)
@@ -127,7 +127,7 @@ Symbol:LexemeTerminal(")")
 
 Type:Expression
 Production:NonTerminal(SimpleExpression)|NonTerminal(Expression`)
-Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|LexemeTerminal("+")|LexemeTerminal("-")
+Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")|AnySymbolOfClass(AdditionOperatorSymbol)
 
 Type:Expression`
 Production:
@@ -139,7 +139,7 @@ Type:SimpleExpression
 Production:NonTerminal(Term)|NonTerminal(SimpleExpression`)
 Symbol:AnySymbolOfClass(IdentifierSymbol)|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("(")|LexemeTerminal("not")
 Production:NonTerminal(Sign)|NonTerminal(Term)|NonTerminal(SimpleExpression`)
-Symbol:LexemeTerminal("+")|LexemeTerminal("-")
+Symbol:AnySymbolOfClass(AdditionOperatorSymbol)
 
 Type:SimpleExpression`
 Production:AnySymbolOfClass(AdditionOperatorSymbol)|NonTerminal(Term)|NonTerminal(SimpleExpression`)
@@ -174,7 +174,5 @@ Production:LexemeTerminal("(")|NonTerminal(ExpressionList)|LexemeTerminal(")")
 Symbol:LexemeTerminal("(")
 
 Type:Sign
-Production:LexemeTerminal("+")
-Symbol:LexemeTerminal("+")
-Production:LexemeTerminal("-")
-Symbol:LexemeTerminal("-")
+Production:AnySymbolOfClass(AdditionOperatorSymbol)
+Symbol:AnySymbolOfClass(AdditionOperatorSymbol)

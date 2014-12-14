@@ -1,0 +1,24 @@
+PROGRAM Sample (Input, Output);
+     VAR x, y: integer; {in line comment}
+     var x1: real;
+     var x2: array [ 1 .. 5 ] of integer;
+     {comment on its own line}
+  FUNCTION someFunc (z:integer) : integer;
+  VAR zz:integer;
+  BEGIN
+    test := -3;
+    zz := 35;
+    if z < zz then zz := x1-5 else x1 := z+4
+  END;
+  procedure someProc (a,b,c:integer; d:real);
+  BEGIN
+    x2[3] := x1 + 3.5;
+    an_id (-4 + 5 * 10, 18 >= 15 DIV b);
+    c;
+    BEGIN
+      while d <> a do a := a+1
+    END;
+    blah
+  END;
+  begin end
+  .
