@@ -21,9 +21,9 @@ Symbol:LexemeTerminal("function")|LexemeTerminal("procedure")|LexemeTerminal("be
 Type:Type
 Production:NonTerminal(StandardType)
 Symbol:LexemeTerminal("integer")|LexemeTerminal("real")
-Production:LexemeTerminal("array")|LexemeTerminal("[")|AnySymbolOfClass(LiteralSymbol<int>)|LexemeTerminal(".")|LexemeTerminal(".")|AnySymbolOfClass(LiteralSymbol<int>)|LexemeTerminal("]")|LexemeTerminal("of")|NonTerminal(StandardType)
+Production:LexemeTerminal("array")|LexemeTerminal("[")|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal(".")|LexemeTerminal(".")|AnySymbolOfClass(LiteralSymbol)|LexemeTerminal("]")|LexemeTerminal("of")|NonTerminal(StandardType)
 Symbol:LexemeTerminal("array")
-~~~~~
+
 Type:StandardType
 Production:LexemeTerminal("integer")
 Symbol:LexemeTerminal("integer")
@@ -32,7 +32,7 @@ Symbol:LexemeTerminal("real")
 
 Type:SubprogramDeclarations
 Production:NonTerminal(SubprogramDeclaration)|LexemeTerminal(";")|NonTerminal(SubprogramDeclarations)
-Symbol:LexemeTerminal("function")|Symbol:LexemeTerminal("procedure")
+Symbol:LexemeTerminal("function")|LexemeTerminal("procedure")
 Production:
 Symbol:LexemeTerminal("begin")
 

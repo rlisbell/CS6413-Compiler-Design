@@ -34,6 +34,7 @@ public class ParseTableGenerator {
 		//some variables for upkeep
 		Map<String, Map<Symbol, List<Symbol>>> parse_table = new HashMap<String, Map<Symbol, List<Symbol>>>();
 		String line = null;
+		int line_number = 0;
 		String type = null;
 		String[] split_line = null;
 		List<Symbol> production = new LinkedList<Symbol>();
@@ -43,15 +44,16 @@ public class ParseTableGenerator {
 		Map<Symbol, List<Symbol>> value_map = new HashMap<Symbol, List<Symbol>>();
 
 		while((line = reader.readLine()) != null) {
+			line_number++;
 			if(line.isEmpty()) continue; //skip blanks lines
 			
 			split_line = line.split(":",2); //only split into two
 			if(split_line[0].equals("Type")) {
 				type = split_line[1];
 			}
-			else if(split_line[0].equals("Program")) {
+			else if(split_line[0].equals("Production")) {
 				production.clear();
-				production_strings = split_line[1].split("|");
+				production_strings = split_line[1].split("\\|");
 				for(String str : production_strings) {
 					if(str.startsWith("LexemeTerminal")) {
 						working_sym = createLexemeTerminal(extractArg(str));
@@ -62,16 +64,19 @@ public class ParseTableGenerator {
 					else if(str.startsWith("AnySymbolOfClass")) {
 						working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
 					}
+					else if(str.isEmpty()) {
+						continue;
+					}
 					else {
 						reader.close();
-						throw new ParseTableException("Bad production: "+str);
+						throw new ParseTableException("Bad production on line "+line_number+": "+str);
 					}
 					production.add(working_sym);
 				}
 			}
 			else if(split_line[0].equals("Symbol")) {
 				value_map.clear();
-				symbol_strings = split_line[1].split("|");
+				symbol_strings = split_line[1].split("\\|");
 				for(String str : symbol_strings) {
 					if(str.startsWith("LexemeTerminal")) {
 						working_sym = createLexemeTerminal(extractArg(str));
@@ -81,7 +86,7 @@ public class ParseTableGenerator {
 					}
 					else {
 						reader.close();
-						throw new ParseTableException("Bad production: "+str);
+						throw new ParseTableException("Bad symbol on line "+line_number+": "+str);
 					}
 					//populate the inner map
 					value_map.put(working_sym, production);
@@ -93,7 +98,7 @@ public class ParseTableGenerator {
 			}
 			else {
 				reader.close();
-				throw new ParseTableException("Bad line type: "+line);
+				throw new ParseTableException("Bad line type on line "+line_number+": "+line);
 			}
 		}
 		reader.close();
@@ -106,7 +111,7 @@ public class ParseTableGenerator {
 	 * @return
 	 */
 	private static String extractArg(String str) {
-		return str.substring(str.indexOf('('),str.lastIndexOf(')'));
+		return str.substring(str.indexOf('(')+1,str.lastIndexOf(')'));
 	}
 	
 	/**
@@ -115,7 +120,7 @@ public class ParseTableGenerator {
 	 * @return
 	 */
 	private static LexemeTerminal createLexemeTerminal(String str) {
-		return new LexemeTerminal(str);
+		return new LexemeTerminal(str.substring(1,str.length()-1));
 	}
 	
 	/**
