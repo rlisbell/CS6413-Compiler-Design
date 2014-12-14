@@ -108,7 +108,7 @@ public class Compiler {
 			Symbol symbol;
 			List<Symbol> production; //is this the correct type?
 			Stack<Symbol> stack = new Stack<Symbol>(); //is this the correct type?
-			stack.push(new NonTerminal("PROGRAM"));
+			stack.push(new NonTerminal("Program"));
 			token = scanner.getNextToken(symbol_table);	
 			while(!stack.empty()) {
 				symbol = stack.pop();

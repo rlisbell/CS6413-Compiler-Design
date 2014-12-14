@@ -32,7 +32,7 @@ public class NonTerminal extends Symbol {
 	 * @throws Exception
 	 */
 	public static void loadParseTable(String file) throws ClassNotFoundException, ParseTableGenerator.ParseTableException, IOException {
-		ParseTableGenerator.generateHashMap(file);
+		parse_table = ParseTableGenerator.generateHashMap(file);
 	}
 
 	/**
@@ -42,7 +42,10 @@ public class NonTerminal extends Symbol {
 	 * @throws UnexpectedTokenException
 	 */
 	public List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException {
-		if(!parse_table.containsKey(this.type) || !parse_table.get(this.type).containsKey(next_token.getTerminal())) {
+		if(!parse_table.containsKey(this.type)) {
+			throw new UnexpectedTokenException(next_token);
+		}
+		if(!parse_table.get(this.type).containsKey(next_token.getTerminal())) {
 			throw new UnexpectedTokenException(next_token);
 		}
 		return parse_table.get(this.type).get(next_token.getTerminal());

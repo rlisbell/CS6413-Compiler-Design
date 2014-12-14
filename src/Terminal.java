@@ -42,7 +42,7 @@ public abstract class Terminal extends Symbol {
 	public List<Symbol> getProduction(Token next_token)
 			throws UnexpectedTokenException
 	{
-		if(!next_token.getTerminalClass().getClass().equals(getClass()) || !next_token.getLexeme().equals(getLexeme())){
+		if(!next_token.getTerminalClass().equals(getClass()) || !next_token.getLexeme().equals(getLexeme())){
 			throw new UnexpectedTokenException(next_token);
 		}
 		return new LinkedList<Symbol>();

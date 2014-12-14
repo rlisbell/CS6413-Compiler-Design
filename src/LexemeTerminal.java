@@ -55,7 +55,7 @@ public class LexemeTerminal extends Terminal {
 	 * @param _type
 	 */
 	public LexemeTerminal(String _lexeme) {
-		lexeme = _lexeme;
+		lexeme = _lexeme.toUpperCase();
 	}
 	
 	/**

@@ -37,11 +37,11 @@ public class ParseTableGenerator {
 		int line_number = 0;
 		String type = null;
 		String[] split_line = null;
-		List<Symbol> production = new LinkedList<Symbol>();
+		List<Symbol> production = null;
 		String[] production_strings = null;
 		String[] symbol_strings = null;
 		Symbol working_sym = null;
-		Map<Symbol, List<Symbol>> value_map = new HashMap<Symbol, List<Symbol>>();
+		Map<Symbol, List<Symbol>> value_map = null;
 
 		while((line = reader.readLine()) != null) {
 			line_number++;
@@ -52,7 +52,7 @@ public class ParseTableGenerator {
 				type = split_line[1];
 			}
 			else if(split_line[0].equals("Production")) {
-				production.clear();
+				production = new LinkedList<Symbol>();
 				production_strings = split_line[1].split("\\|");
 				for(String str : production_strings) {
 					if(str.startsWith("LexemeTerminal")) {
@@ -80,7 +80,7 @@ public class ParseTableGenerator {
 				}
 			}
 			else if(split_line[0].equals("Symbol")) {
-				value_map.clear();
+				value_map = new HashMap<Symbol, List<Symbol>>();
 				symbol_strings = split_line[1].split("\\|");
 				for(String str : symbol_strings) {
 					if(str.startsWith("LexemeTerminal")) {
