@@ -35,7 +35,11 @@ public abstract class Symbol {
 	 */
 	public abstract List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException;
 	
-
+	/**
+	 * Print appropriate name/value for the symbol
+	 * @return
+	 */
+	public abstract String print();
 	
 	/**
 	 * Equivalence

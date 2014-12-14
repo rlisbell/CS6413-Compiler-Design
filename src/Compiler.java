@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Stack;
 import java.util.List;
-import java.util.Collections;
 
 
 /**
@@ -73,6 +72,15 @@ public class Compiler {
 			} catch (Token.TokenException|LexemeTerminal.LexemeTerminalException e) {
 				System.out.println("error in "+file_name);
 				System.out.println(e.toString());
+			} catch (Symbol.UnexpectedTokenException e) {
+				System.out.println("error in "+file_name);
+				System.out.println(e.toString());
+			} catch (ClassNotFoundException e) {
+				System.out.println("error in "+file_name);
+				System.out.println(e.toString());
+			} catch (ParseTableGenerator.ParseTableException e) {
+				System.out.println("error in "+file_name);
+				System.out.println(e.toString());
 			}
 		}
 	}
@@ -83,32 +91,36 @@ public class Compiler {
 	 * @throws IOException
 	 * @throws Token.TokenException 
 	 * @throws LexemeTerminal.LexemeTerminalException 
+	 * @throws ParseTableGenerator.:wParseTableException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void compile(String out_file_name) throws IOException, Token.TokenException, LexemeTerminal.LexemeTerminalException {
+	private void compile(String out_file_name) throws IOException, Token.TokenException, LexemeTerminal.LexemeTerminalException, Symbol.UnexpectedTokenException, ClassNotFoundException, ParseTableGenerator.ParseTableException {
 		File file = new File(out_file_name);
 		BufferedWriter writer = null;
 
 	    try {
 		    file.createNewFile();
 			writer = new BufferedWriter(new FileWriter(file));
+			NonTerminal.loadParseTable("resources/parse_table.tbl");
 
 			//Parse through the program
 			Token token;
 			Symbol symbol;
 			List<Symbol> production; //is this the correct type?
 			Stack<Symbol> stack = new Stack<Symbol>(); //is this the correct type?
-			stack.push(new ProgramSymbol());
+			stack.push(new NonTerminal("PROGRAM"));
 			token = scanner.getNextToken(symbol_table);	
 			while(!stack.empty()) {
 				symbol = stack.pop();
 				System.out.println(symbol.print());
 				writer.write(symbol.print());
 				writer.newLine();
-				production = Collections.reverse(symbol.getProduction(token));
-				for(Symbol symbol : production) { //for Symbol or...?
-					stack.push(symbol);
+				production = symbol.getProduction(token);
+				Collections.reverse(production);
+				for(Symbol production_sym : production) { //for Symbol or...?
+					stack.push(production_sym);
 				}
-				if(symbol instanceof TerminalSymbol ) { //is this the correct instanceof?
+				if(symbol instanceof Terminal ) { //is this the correct instanceof?
 					token = scanner.getNextToken(symbol_table);
 				}
 			}

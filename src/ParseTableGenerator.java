@@ -9,10 +9,30 @@ import java.io.*;
  * a hashmap from it
  */
 public class ParseTableGenerator {
-	public Map<String, Map<Symbol, List<Symbol>>> generateHashMap(String file_path) throws Exception {
-		Map<String, Map<Symbol, List<Symbol>>> parse_table = new HashMap<String, Map<Symbol, List<Symbol>>>();
+	
+	public static class ParseTableException extends Exception {
+		private static final long serialVersionUID = -4579432542470048977L;
+
+		public ParseTableException(String message){
+			super(message);
+		}
+	}
+	
+	/**
+	 * Creates a hash map from the provided file
+	 * @param file_path
+	 * @return
+	 * @throws ParseTableException
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 */
+	public static Map<String, Map<Symbol, List<Symbol>>> generateHashMap(String file_path) throws ParseTableException, ClassNotFoundException, IOException {
+
 		File file = new File(file_path);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
+
+		//some variables for upkeep
+		Map<String, Map<Symbol, List<Symbol>>> parse_table = new HashMap<String, Map<Symbol, List<Symbol>>>();
 		String line = null;
 		String type = null;
 		String[] split_line = null;
@@ -21,10 +41,11 @@ public class ParseTableGenerator {
 		String[] symbol_strings = null;
 		Symbol working_sym = null;
 		Map<Symbol, List<Symbol>> value_map = new HashMap<Symbol, List<Symbol>>();
+
 		while((line = reader.readLine()) != null) {
 			if(line.isEmpty()) continue; //skip blanks lines
 			
-			split_line = line.split(":",2);
+			split_line = line.split(":",2); //only split into two
 			if(split_line[0].equals("Type")) {
 				type = split_line[1];
 			}
@@ -33,18 +54,17 @@ public class ParseTableGenerator {
 				production_strings = split_line[1].split("|");
 				for(String str : production_strings) {
 					if(str.startsWith("LexemeTerminal")) {
-						working_sym = this.createLexemeTerminal(this.extractArg(str));
+						working_sym = createLexemeTerminal(extractArg(str));
 					}
 					else if(str.startsWith("NonTerminal")) {
-						working_sym = this.createNonTerminal(this.extractArg(str));
+						working_sym = createNonTerminal(extractArg(str));
 					}
 					else if(str.startsWith("AnySymbolOfClass")) {
-						Class<? extends Symbol> forName = (Class<? extends Symbol>)Class.forName(this.extractArg(str));
-						working_sym = this.createAnySymbolOfClass(forName);
+						working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
 					}
 					else {
 						reader.close();
-						throw new Exception("Bad production: "+str);
+						throw new ParseTableException("Bad production: "+str);
 					}
 					production.add(working_sym);
 				}
@@ -54,24 +74,26 @@ public class ParseTableGenerator {
 				symbol_strings = split_line[1].split("|");
 				for(String str : symbol_strings) {
 					if(str.startsWith("LexemeTerminal")) {
-						working_sym = this.createLexemeTerminal(this.extractArg(str));
+						working_sym = createLexemeTerminal(extractArg(str));
 					}
 					else if(str.startsWith("AnySymbolOfClass")) {
-						working_sym = this.createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(this.extractArg(str)));
+						working_sym = createAnySymbolOfClass((Class<? extends Symbol>)Class.forName(extractArg(str)));
 					}
 					else {
 						reader.close();
-						throw new Exception("Bad production: "+str);
+						throw new ParseTableException("Bad production: "+str);
 					}
+					//populate the inner map
 					value_map.put(working_sym, production);
 				}
+				//populate the outer map
 				parse_table.put(
 						type, value_map
 					);
 			}
 			else {
 				reader.close();
-				throw new Exception("Bad line type: "+line);
+				throw new ParseTableException("Bad line type: "+line);
 			}
 		}
 		reader.close();
@@ -83,7 +105,7 @@ public class ParseTableGenerator {
 	 * @param str
 	 * @return
 	 */
-	private String extractArg(String str) {
+	private static String extractArg(String str) {
 		return str.substring(str.indexOf('('),str.lastIndexOf(')'));
 	}
 	
@@ -92,7 +114,7 @@ public class ParseTableGenerator {
 	 * @param str
 	 * @return
 	 */
-	private LexemeTerminal createLexemeTerminal(String str) {
+	private static LexemeTerminal createLexemeTerminal(String str) {
 		return new LexemeTerminal(str);
 	}
 	
@@ -101,7 +123,7 @@ public class ParseTableGenerator {
 	 * @param str
 	 * @return
 	 */
-	private NonTerminal createNonTerminal(String str) {
+	private static NonTerminal createNonTerminal(String str) {
 		return new NonTerminal(str);
 	}
 	
@@ -110,7 +132,7 @@ public class ParseTableGenerator {
 	 * @param sym 
 	 * @return
 	 */
-	private AnySymbolOfClass createAnySymbolOfClass(Class<? extends Symbol> sym) {
+	private static AnySymbolOfClass createAnySymbolOfClass(Class<? extends Symbol> sym) {
 		return new AnySymbolOfClass(sym);
 	}
 }

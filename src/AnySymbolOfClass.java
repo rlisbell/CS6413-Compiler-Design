@@ -15,6 +15,11 @@ public class AnySymbolOfClass extends Symbol {
 	 * the base type of the class we expect the token to be of
 	 */
 	private Class<? extends Symbol> base_class;
+	
+	public String print() {
+		//30 column aligned for prettification
+		return String.format("%-30s", base_class.getName());
+	}
 
 	public AnySymbolOfClass(Class<? extends Symbol> _base_class) {
 		base_class = _base_class;

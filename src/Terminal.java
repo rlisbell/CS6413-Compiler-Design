@@ -26,6 +26,13 @@ public abstract class Terminal extends Symbol {
 		}
 	}
 
+	/**
+	 * Print terminal lexeme
+	 */
+	public String print(){
+		//30 column aligned for prettification
+		return String.format("%-30s", getLexeme());
+	}
 
 	/**
 	 * returns an empty list, throws an exception if the passed token does not match

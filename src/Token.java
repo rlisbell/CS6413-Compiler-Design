@@ -138,6 +138,14 @@ public class Token {
 	public boolean isEofToken() {
 		return terminal instanceof EofSymbol;
 	}
+	
+	/**
+	 * returns the terminal
+	 * @return
+	 */
+	public Terminal getTerminal() {
+		return terminal;
+	}
 
 	public Class<? extends Terminal> getTerminalClass() {
 		return terminal.getClass();
