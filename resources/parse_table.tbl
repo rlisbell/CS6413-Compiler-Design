@@ -43,11 +43,11 @@ Symbol:LexemeTerminal("function")|LexemeTerminal("procedure")
 Type:SubprogramHead
 Production:LexemeTerminal("function")|AnySymbolOfClass(IdentifierSymbol)|NonTerminal(Arguments)|LexemeTerminal(":")|NonTerminal(StandardType)|LexemeTerminal(";")
 Symbol:LexemeTerminal("function")
-Production:LexemeTerminal("procedure")|AnySymbolOfClass(IdentifierSymbol))|NonTerminal(Arguments)|LexemeTerminal(";")
+Production:LexemeTerminal("procedure")|AnySymbolOfClass(IdentifierSymbol)|NonTerminal(Arguments)|LexemeTerminal(";")
 Symbol:LexemeTerminal("procedure")
 
 Type:Arguments
-Production:LexemeTerminal("(")|NonTerminal(ParameterList)|LexemeTerminal(")"
+Production:LexemeTerminal("(")|NonTerminal(ParameterList)|LexemeTerminal(")")
 Symbol:LexemeTerminal("(")
 Production:
 Symbol:LexemeTerminal(";")|LexemeTerminal(":")
