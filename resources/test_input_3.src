@@ -1,10 +1,8 @@
-PROGRAM Average;
-  VAR Average : Integer;
-  VAR Sum, Val1, Val2, Val3 : Real;
+PROGRAM Average(Val1, Val2, Val3);
+  VAR Count : Integer;
+  VAR Sum, Average : Real;
   BEGIN
-    Val1 := 6.0;
-    Val2 := 4;			{mixed type assignment, but we are not doing semantic analysis so who cares}
-    Val3 := 37.5;
+  	Count :=3;
     Sum := Val1 + Val2 + Val3;
-    Average := (Val1 + Val2 + Val3) DIV 3
+    Average := (Val1 + Val2 + Val3) DIV Count
   END.
