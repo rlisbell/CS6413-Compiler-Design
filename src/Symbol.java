@@ -42,11 +42,23 @@ public abstract class Symbol {
 	 */
 	public abstract boolean equals(Symbol other);
 	
+	/**
+	 * Equivalence
+	 */
+	@Override
+	public boolean equals(Object other){
+		if(other instanceof Symbol){
+			return equals((Symbol)other);
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * due to the way that equivalence works between AnySymbolOfClass and everything else any symbol can be equivalent to any other symbol
 	 * so we do this to force HashMap into it's conflict resolution mode full time
 	 */
+	@Override
 	public int hashCode(){
 		return 0;
 	}
