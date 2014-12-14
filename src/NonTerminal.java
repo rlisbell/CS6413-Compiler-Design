@@ -6,7 +6,7 @@ import java.util.Map;
  * Represents a NonTerminal
  * Handles productions logic for them
  */
-public class NonTerminal implements Symbol {
+public class NonTerminal extends Symbol {
 	
 	private enum TYPE {
 		Program,

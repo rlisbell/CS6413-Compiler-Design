@@ -9,7 +9,7 @@ import java.util.List;
  * @author bobboau
  *
  */
-public class AnySymbolOfClass implements Symbol {
+public class AnySymbolOfClass extends Symbol {
 	
 	/**
 	 * the base type of the class we expect the token to be of

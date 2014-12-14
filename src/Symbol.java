@@ -4,7 +4,7 @@ import java.util.List;
  * @author bobboau
  *
  */
-public interface Symbol {
+public abstract class Symbol {
 	
 	/**
 	 * common base for all Symbol exceptions
@@ -33,7 +33,7 @@ public interface Symbol {
 	 * throws an exception when the passed token is unexpected (not in non-terminal parse table or does not match for terminals)
 	 * @param next_token -- the token we just pulled out of the source code
 	 */
-	public List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException;
+	public abstract List<Symbol> getProduction(Token next_token) throws UnexpectedTokenException;
 	
 
 	
@@ -41,5 +41,13 @@ public interface Symbol {
 	 * Equivalence
 	 */
 	public abstract boolean equals(Symbol other);
-
+	
+	
+	/**
+	 * due to the way that equivalence works between AnySymbolOfClass and everything else any symbol can be equivalent to any other symbol
+	 * so we do this to force HashMap into it's conflict resolution mode full time
+	 */
+	public int hashCode(){
+		return 0;
+	}
 }

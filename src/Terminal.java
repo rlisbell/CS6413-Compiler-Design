@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public abstract class Terminal implements Symbol {
+public abstract class Terminal extends Symbol {
 
 	/**
 	 * gets the file contents that generated this terminal
