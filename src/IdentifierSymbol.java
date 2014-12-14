@@ -1,7 +1,7 @@
 
 /**
  * class is tagging class that means this was an identifier
- * @author bobboau
+ * @author Mike Abegg
  *
  */
 public class IdentifierSymbol extends LexemeTerminal {

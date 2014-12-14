@@ -76,7 +76,7 @@ public class SymbolTable extends Hashtable<String, LexemeTerminal> {
 	public LexemeTerminal getSymbol(String lexeme) throws LexemeTerminal.LexemeTerminalException {
 		LexemeTerminal fetched_symbol = this.get(lexeme.toUpperCase());
 		if(fetched_symbol == null) {
-			fetched_symbol = LexemeTerminal.makeSymbol(lexeme);
+			fetched_symbol = LexemeTerminal.makeLexemeTerminal(lexeme);
 			this.put(lexeme, fetched_symbol);
 		}
 		return fetched_symbol;

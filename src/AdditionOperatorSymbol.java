@@ -1,6 +1,6 @@
 /**
  * class is tagging class that means this was an addition/subtraction operator
- * @author bobboau
+ * @author Mike Abegg
  *
  */
 public class AdditionOperatorSymbol extends LexemeTerminal {

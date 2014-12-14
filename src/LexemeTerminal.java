@@ -1,13 +1,14 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /**
- * Contains all information (attributes) for a single symbol
+ * Class represents a Terminal Symbol that is based on a found Lexeme in the source code file
  * @author Mike, Ryan
  */
 public class LexemeTerminal extends Terminal {	
 	
 	/**
-	 * common base for all Symbol exceptions
+	 * common base for all LexemeTerminal exceptions
 	 */
 	public static class LexemeTerminalException extends Exception {
 		private static final long serialVersionUID = -4457162023556548921L;
@@ -18,7 +19,7 @@ public class LexemeTerminal extends Terminal {
 	}
 	
 	/**
-	 * common base for all Symbol exceptions
+	 * common base for all LexemeTerminal exceptions
 	 */
 	public static class UnexpectedSymbolException extends LexemeTerminalException {
 		private static final long serialVersionUID = 4153515580979985084L;
@@ -45,7 +46,7 @@ public class LexemeTerminal extends Terminal {
 	public static final Pattern REAL_PATTERN = Pattern.compile("^(\\d+\\.\\d+(E[+-]?\\d+)?)$", Pattern.CASE_INSENSITIVE);
 	
 	/**
-	 * the lexeme for this symbol, redundant, but may be useful
+	 * the lexeme for this symbol
 	 */
 	private String lexeme;
 
@@ -59,14 +60,14 @@ public class LexemeTerminal extends Terminal {
 	}
 	
 	/**
-	 * Makes a new symbol on the fly as new lexemes are discovered
+	 * Makes a new LexemeTerminal on the fly as new lexemes are discovered
 	 * If we don't know the type, it can only be an identifier or number literal
 	 * Exceptions arise if we messed up the symbol table init, or we find an invalid character
 	 * @param _lexeme
 	 * @return
 	 * @throws UnexpectedSymbolException 
 	 */
-	public static LexemeTerminal makeSymbol(String lexeme) throws UnexpectedSymbolException {
+	public static LexemeTerminal makeLexemeTerminal(String lexeme) throws UnexpectedSymbolException {
 		Matcher identifier_matcher = IDENTIFIER_PATTERN.matcher(lexeme);
 		Matcher integer_matcher = INTEGER_PATTERN.matcher(lexeme);
 		Matcher real_matcher = REAL_PATTERN.matcher(lexeme);

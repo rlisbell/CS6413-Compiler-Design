@@ -6,13 +6,18 @@ import java.util.Map;
 /**
  * Represents a NonTerminal
  * Handles productions logic
+ * Parse Table lives here
  */
 public class NonTerminal extends Symbol {
 	
-	//parse table to generate productions
+	/**
+	 * parse table to generate productions
+	 */
 	static Map<String ,Map<Symbol, List<Symbol>>> parse_table = new HashMap<String, Map<Symbol, List<Symbol>>>();
 	
-	//name / type of this nonterminal
+	/**
+	 * name / type of this nonterminal
+	 */
 	private String type;
 	
 	/**

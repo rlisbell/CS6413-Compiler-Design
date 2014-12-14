@@ -6,7 +6,7 @@ import java.util.List;
  * where this is used is when we push expected symbols on the parse stack we push one of these, 
  * then when we compare the found symbol (terminal in practice) it will throw an error if the 
  * found token is not of the class this class is looking for.
- * @author bobboau
+ * @author Mike Abegg
  *
  */
 public class AnySymbolOfClass extends Symbol {
@@ -16,15 +16,26 @@ public class AnySymbolOfClass extends Symbol {
 	 */
 	private Class<? extends Symbol> base_class;
 	
+	/**
+	 * used to print info about this symbol mainly for the main output of the applicaiton
+	 */
 	public String print(Token found) {
 		//30 column aligned for prettification
 		return base_class.getName()+": '"+found.print()+"'";
 	}
 
+	/**
+	 * constructor
+	 * @param _base_class the class this symbol should match against
+	 */
 	public AnySymbolOfClass(Class<? extends Symbol> _base_class) {
 		base_class = _base_class;
 	}
 
+	/**
+	 * checks the passed Token and throw an error if it is not what we expected
+	 * returns a list of Symbols to replace it's self in the stack with, which is always for this class an empty list
+	 */
 	@Override
 	public List<Symbol> getProduction(Token next_token)
 			throws UnexpectedTokenException
@@ -36,7 +47,7 @@ public class AnySymbolOfClass extends Symbol {
 	}
 
 	/**
-	 * equivilence
+	 * Equivalence
 	 */
 	@Override
 	public boolean equals(Symbol other) {
@@ -48,6 +59,9 @@ public class AnySymbolOfClass extends Symbol {
 		}
 	}
 
+	/**
+	 * returns true if this class should result in another Token getting pulled from the source file
+	 */
 	@Override
 	public boolean shouldGetToken() {
 		if(Terminal.class.isAssignableFrom(base_class)){
